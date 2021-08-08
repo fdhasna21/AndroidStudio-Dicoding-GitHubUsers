@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/about_email"
+        android:title="Email"
+        android:icon="@drawable/ic_gmail"/>
+
+    <item
+        android:id="@+id/about_whatsapp"
+        android:title="Whatsapp"
+        android:icon="@drawable/ic_whatsapp"/>
+
+    <item
+        android:id="@+id/about_github"
+        android:title="Github"
+        android:icon="@drawable/ic_github"/>
+
+    <item
+        android:id="@+id/about_dicoding"
+        android:title="Dicoding"
+        android:icon="@drawable/ic_dicoding" />
+</menu>

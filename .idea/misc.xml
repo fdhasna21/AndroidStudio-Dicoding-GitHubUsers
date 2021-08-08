@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/drawable/divider_view_padding.xml" value="0.14635416666666667" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/drawable/ic_circle.xml" value="0.1824074074074074" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/drawable/ic_dicoding.xml" value="0.14635416666666667" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/drawable/icon_freepik.xml" value="0.2703125" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/drawable/icon_whatsapp.xml" value="0.2703125" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/layout/activity_about_me.xml" value="0.2" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/layout/activity_main.xml" value="0.14628623188405798" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/layout/activity_user_detail.xml" value="0.3871794871794872" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/layout/row_recycler.xml" value="0.176" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/menu/main_detail.xml" value="0.16018518518518518" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/menu/main_menu.xml" value="0.13020833333333334" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/menu/menu_about.xml" value="0.16018518518518518" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/menu/menu_about_credit.xml" value="0.25416666666666665" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/menu/menu_detail.xml" value="0.16018518518518518" />
+        <entry key="..\:/GitHub/AndroidStudio_Dicoding_GitHubUsers/app/src/main/res/menu/menu_detail_user.xml" value="0.16018518518518518" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

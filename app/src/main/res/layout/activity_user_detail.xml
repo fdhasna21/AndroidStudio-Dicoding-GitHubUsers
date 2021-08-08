@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserDetailActivity"
+    android:layout_margin="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_view_padding">
+
+        <ImageView
+            android:id="@+id/detail_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginRight="@dimen/view_padding"
+            android:layout_marginBottom="@dimen/view_padding"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/detail_name"
+            style="?attr/textAppearanceHeadline5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/subview_padding"
+            android:layout_toRightOf="@id/detail_image"
+            android:lineSpacingExtra="1.5dp"
+            android:maxLines="1"
+            android:text="Account Name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detail_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/detail_image"
+            android:layout_below="@id/detail_name"
+            android:text="Account username"
+            android:maxLines="1"
+            android:lineSpacingExtra="1.5dp"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_marginBottom="@dimen/subview_padding"/>
+
+        <LinearLayout
+            android:id="@+id/detail_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="@drawable/divider_view_padding"
+            android:layout_below="@id/detail_image">
+
+            <TextView
+                android:id="@+id/detail_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company"
+                android:drawableLeft="@drawable/ic_company"
+                android:drawablePadding="@dimen/subview_padding"
+                style="?attr/textAppearanceBody2"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingVertical="4dp"
+                android:paddingRight="@dimen/subview_padding"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="@dimen/subview_padding"
+                style="?attr/textAppearanceBody2"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingVertical="4dp"
+                android:paddingRight="@dimen/subview_padding"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/detail_repositories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repositories"
+                android:drawableLeft="@drawable/ic_repository"
+                android:drawablePadding="@dimen/subview_padding"
+                style="?attr/textAppearanceBody2"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingVertical="4dp"
+                android:paddingRight="@dimen/subview_padding"
+                android:gravity="center"/>
+
+            <LinearLayout
+                android:id="@+id/detail_follows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_person"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/detail_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Followers"
+                    style="?attr/textAppearanceBody2"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:paddingVertical="4dp"
+                    android:paddingHorizontal="@dimen/subview_padding"
+                    android:gravity="center"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle"
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="@dimen/subview_padding"/>
+
+                <TextView
+                    android:id="@+id/detail_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Following"
+                    style="?attr/textAppearanceBody2"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:paddingVertical="4dp"
+                    android:paddingHorizontal="@dimen/subview_padding"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_detail_github"
+            style="?attr/buttonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_all"
+            android:layout_marginTop="@dimen/view_padding"
+            android:text="Open with GitHub" />
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:title="Content by"-->
+<!--        android:id="@+id/abput_content">-->
+<!--        <menu>-->
+<!--            <group>-->
+<!--                <item-->
+<!--                    android:id="@+id/about_content1"-->
+<!--                    android:title="Kpop Wiki Fandom"-->
+<!--                    android:icon="@drawable/icon_kpop_wiki" />-->
+
+<!--            </group>-->
+<!--        </menu>-->
+<!--    </item>-->
+    <item
+        android:id="@+id/about_lottie"
+        android:title="Splash Screen Animation by ..."
+        android:icon="@drawable/icon_lottie" />
+    <item
+        android:id="@+id/about_freepik"
+        android:title="Icon by Freepik"
+        android:icon="@drawable/icon_freepik" />
+</menu>

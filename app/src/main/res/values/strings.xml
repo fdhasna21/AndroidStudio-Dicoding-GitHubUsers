@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GitHubUsers</string>
+    <string name="about_me">About Me</string>
+    <string name="profile_description">
+        As known as Nanda, I was born in Magelang on August 21, 1998. I am the first of three children who have completed education at Computer Engineering FTEIC Institut Teknologi Sepuluh Nopember Surabaya.
+        I am interested in the field of digital technology, especially in the fields of IT Project Management, User-Oriented Product Development, and Design System Analysis. Currently, I am exploring Mobile Programming with Android Studio.
+    </string>
+    <string name="profile_name">Fernanda Daymara Hasna</string>
+    <string name="profile_email">fernanda.daymara.hasna@gmail.com</string>
+    <string name="tab">\t\t\t\t\t\t</string>
+</resources>
