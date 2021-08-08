@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers
+package com.fdhasna21.githubusers.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,11 +7,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.DataResolver.User
+import com.fdhasna21.githubusers.DataResolver.getImageID
+import com.fdhasna21.githubusers.R
+import com.fdhasna21.githubusers.browserIntent
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
 class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
-
+    lateinit var user : User
     companion object{
         const val EXTRA_USER = "extra_user"
     }
@@ -22,8 +26,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.title = ""
+        supportActionBar?.elevation = 0f
 
-        val user = intent.getParcelableExtra<User>(EXTRA_USER) as User
+        user = intent.getParcelableExtra<User>(EXTRA_USER) as User
 
         val views = arrayListOf(
             detail_image,           //0
@@ -38,7 +43,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         views.forEachIndexed{ idx: Int, it: View? ->
             if(idx == 0){
-                //todo : glide (user.avatar)
+                Glide.with(this)
+                    .load(getImageID((user.avatar.toString()).substringAfterLast("/"), this))
+                    .circleCrop()
+                    .into(detail_image)
             }
             else{
                 if(idx > 2){
@@ -79,10 +87,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             //todo : intent
             R.id.detail_company -> Toast.makeText(this, "company", Toast.LENGTH_SHORT).show()
             R.id.detail_location -> Toast.makeText(this, "location", Toast.LENGTH_SHORT).show()
-            R.id.detail_repositories -> Toast.makeText(this, "repositories", Toast.LENGTH_SHORT).show()
-            R.id.detail_followers -> Toast.makeText(this, "followers", Toast.LENGTH_SHORT).show()
-            R.id.detail_following -> Toast.makeText(this, "following", Toast.LENGTH_SHORT).show()
-            R.id.btn_detail_github -> Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
+            R.id.detail_repositories -> browserIntent("https://github.com/${user.username}?tab=repositories", this)
+            R.id.detail_followers -> browserIntent("https://github.com/${user.username}?tab=followers", this)
+            R.id.detail_following -> browserIntent("https://github.com/${user.username}?tab=following", this)
+            R.id.btn_detail_github -> browserIntent("https://github.com/${user.username}", this)
         }
     }
 

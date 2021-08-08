@@ -10,10 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GitHubUsers">
         <activity
-            android:name=".UserDetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Activity.SplashScreenActivity"
+            android:theme="@style/Theme.GitHubUsers.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutMeActivity">
+        <activity
+            android:name=".Activity.UserDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activity.MainActivity"
+            android:exported="true"/>
+        <activity android:name=".Activity.AboutMeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 

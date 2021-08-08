@@ -3,40 +3,59 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="6dp"
-    android:layout_marginTop="6dp"
+    android:paddingVertical="12dp"
     android:paddingHorizontal="@dimen/layout_padding"
     android:background="?attr/selectableItemBackground"
     android:id="@+id/row_user">
-
-<!--todo : benerin ini -->
 
     <ImageView
         android:id="@+id/row_image"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginRight="12dp"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:id="@+id/row_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="75dp"
+        android:orientation="vertical"
+        android:divider="@drawable/divider_view_padding"
+        android:showDividers="middle"
         android:layout_toRightOf="@id/row_image"
-        android:text="Account Name"
-        android:textStyle="bold"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:lineSpacingExtra="1.5dp"
-        android:maxLines="1"/>
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/row_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/row_image"
-        android:layout_below="@id/row_name"
-        android:text="Account Username"
-        style="@style/TextAppearance.MaterialComponents.Subtitle2"
-        android:lineSpacingExtra="1.5dp"
-        android:maxLines="1"/>
+        <TextView
+            android:id="@+id/row_name"
+            style="?attr/textAppearanceHeadline5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Account Name"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/row_username"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/row_name"
+            android:maxLines="1"
+            android:textSize="14dp"
+            android:text="Account Username" />
+
+        <TextView
+            android:id="@+id/row_company"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_company"
+            android:maxLines="2"
+            android:text="Company"
+            android:drawablePadding="@dimen/subview_padding"
+            android:gravity="center_vertical"
+            android:textSize="14dp"/>
+    </LinearLayout>
 </RelativeLayout>

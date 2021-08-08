@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.DataResolver.User
+import com.fdhasna21.githubusers.DataResolver.getImageID
 import kotlinx.android.synthetic.main.row_recycler.view.*
 
 class RowAdapter(val data:ArrayList<User>, val context: Context)
@@ -18,6 +19,7 @@ class RowAdapter(val data:ArrayList<User>, val context: Context)
         val usernameGH = itemView.row_username
         val nameGH = itemView.row_name
         val imageGH = itemView.row_image
+        val companyGH = itemView.row_company
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,13 +30,13 @@ class RowAdapter(val data:ArrayList<User>, val context: Context)
         val item = data.get(position)
         holder.usernameGH.text = item.username
         holder.nameGH.text = item.name
+        holder.companyGH.text = item.company
         holder.userGH.setOnClickListener {
             onItemClickCallback.onItemClicked(data[holder.adapterPosition])
         }
-        //todo : glide
-//        Glide.with(context)
-//            .load()
-//            .into(holder.imageGH)
+        Glide.with(context)
+            .load(getImageID((item.avatar.toString()).substringAfterLast("/"), context))
+            .into(holder.imageGH)
     }
 
     override fun getItemCount(): Int {
