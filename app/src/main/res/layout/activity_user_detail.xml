@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,121 +16,154 @@
         android:showDividers="middle"
         android:divider="@drawable/divider_view_padding">
 
-        <ImageView
-            android:id="@+id/detail_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            android:id="@+id/detail_name"
-            style="?attr/textAppearanceHeadline6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="Account Name"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:layout_marginTop="@dimen/subview_padding"/>
-
-        <TextView
-            android:id="@+id/detail_username"
-            style="?attr/textAppearanceSubtitle1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="1.5dp"
-            android:maxLines="1"
-            android:text="Account username"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/detail_company"
-            style="?attr/textAppearanceBody1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_company"
-            android:drawablePadding="@dimen/subview_padding"
-            android:gravity="center"
-            android:paddingVertical="4dp"
-            android:paddingRight="@dimen/subview_padding"
-            android:text="Company"
-            android:layout_marginTop="@dimen/view_padding"
-            android:maxLines="2"/>
-
-        <TextView
-            android:id="@+id/detail_location"
-            style="?attr/textAppearanceBody1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_location"
-            android:drawablePadding="@dimen/subview_padding"
-            android:gravity="center"
-            android:paddingVertical="4dp"
-            android:paddingRight="@dimen/subview_padding"
-            android:text="Location"
-            android:maxLines="2"/>
-
-        <TextView
-            android:id="@+id/detail_repositories"
-            style="?attr/textAppearanceBody1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_repository"
-            android:drawablePadding="@dimen/subview_padding"
-            android:gravity="center"
-            android:paddingVertical="4dp"
-            android:paddingRight="@dimen/subview_padding"
-            android:text="Repositories"
-            android:maxLines="1"/>
-
         <LinearLayout
-            android:id="@+id/detail_follows"
-            android:layout_width="wrap_content"
+            android:id="@+id/detail_shareable"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/detail_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
-                android:id="@+id/detail_followers"
+                android:id="@+id/detail_name"
+                style="?attr/textAppearanceHeadline6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Account Name"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:layout_marginTop="@dimen/subview_padding"/>
+
+            <TextView
+                android:id="@+id/detail_username"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="1.5dp"
+                android:maxLines="1"
+                android:text="Account username"
+                android:gravity="center"/>
+
+            <LinearLayout
+                android:id="@+id/detail_follows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="3"
+                android:showDividers="middle"
+                android:divider="@drawable/divider_view_padding">
+
+                <LinearLayout
+                    android:id="@+id/detail_followers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="16dp">
+                    <TextView
+                        android:id="@+id/detail_followers_count"
+                        style="?attr/textAppearanceHeadline6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textSize="18dp"
+                        android:padding="4dp"
+                        android:maxLines="1"
+                        android:textStyle="bold"/>
+                    <TextView
+                        style="?attr/textAppearanceBody1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Followers"
+                        android:maxLines="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/detail_following"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="16dp">
+                    <TextView
+                        android:id="@+id/detail_following_count"
+                        style="?attr/textAppearanceHeadline6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textSize="18dp"
+                        android:maxLines="1"
+                        android:padding="4dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        style="?attr/textAppearanceBody1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Following"
+                        android:maxLines="1"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/detail_company"
                 style="?attr/textAppearanceBody1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableLeft="@drawable/ic_person"
+                android:drawableLeft="@drawable/ic_company"
                 android:drawablePadding="@dimen/subview_padding"
                 android:gravity="center"
                 android:paddingVertical="4dp"
                 android:paddingRight="@dimen/subview_padding"
-                android:text="Followers"
-                android:maxLines="1"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingHorizontal="@dimen/subview_padding"
-                android:src="@drawable/ic_circle" />
+                android:text="Company"
+                android:maxLines="2"/>
 
             <TextView
-                android:id="@+id/detail_following"
+                android:id="@+id/detail_location"
                 style="?attr/textAppearanceBody1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:drawableLeft="@drawable/ic_location"
+                android:drawablePadding="@dimen/subview_padding"
                 android:gravity="center"
-                android:paddingHorizontal="@dimen/subview_padding"
                 android:paddingVertical="4dp"
-                android:text="Following"
+                android:paddingRight="@dimen/subview_padding"
+                android:text="Location"
+                android:maxLines="2"/>
+
+            <TextView
+                android:id="@+id/detail_repositories"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_repository"
+                android:drawablePadding="@dimen/subview_padding"
+                android:gravity="center"
+                android:paddingVertical="4dp"
+                android:paddingRight="@dimen/subview_padding"
+                android:text="Repositories"
                 android:maxLines="1"/>
         </LinearLayout>
 
@@ -142,4 +175,4 @@
             android:layout_marginTop="@dimen/view_padding"
             android:text="Open GitHub User" />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.SplashScreenActivity"
-    android:background="@color/darkmode">
+    android:background="@color/darkmode"
+    android:forceDarkAllowed="false">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -18,9 +19,9 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintVertical_bias="0.45"
         android:scaleType="centerCrop"
-        app:lottie_scale="0.1"
+        app:lottie_scale="0.25"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/github_ss" />
