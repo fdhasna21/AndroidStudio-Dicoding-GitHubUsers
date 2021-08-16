@@ -1,39 +1,38 @@
-package com.fdhasna21.githubusers.Activity
+package com.fdhasna21.githubusers.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_about_me.*
-import java.lang.String
 import android.content.pm.PackageManager
-
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.browserIntent
+import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
 
 
 class AboutMeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAboutMeBinding
     private lateinit var findMeMenu : NavigationView
     private lateinit var creditMenu : NavigationView
 
-    @SuppressLint("ClickableViewAccessibility", "ResourceAsColor", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about_me)
+        binding = ActivityAboutMeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
-        supportActionBar?.title = "About Me"
+        supportActionBar?.title = getString(R.string.about_me)
 
-        about_description.text = getString(R.string.tab)+getString(R.string.profile_description)
+        binding.aboutDescription.text = getString(R.string.tab)+getString(R.string.profile_description)
 
         Glide.with(this)
             .load(R.drawable.profile_photo)
             .circleCrop()
-            .into(profile_picture)
+            .into(binding.profilePicture)
 
         findMeMenu = findViewById(R.id.about_find_me)
         findMeMenu.itemIconTintList = null
@@ -49,7 +48,7 @@ class AboutMeActivity : AppCompatActivity() {
                         intent.setPackage("com.whatsapp")
                         startActivity(intent)
                     } catch (e : PackageManager.NameNotFoundException) {
-                        Toast.makeText(this, "WhatsApp not installed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
                     }
                     true }
                 R.id.about_dicoding -> {

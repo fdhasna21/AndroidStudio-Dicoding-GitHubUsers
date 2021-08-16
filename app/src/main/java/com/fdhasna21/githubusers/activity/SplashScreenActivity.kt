@@ -1,14 +1,16 @@
-package com.fdhasna21.githubusers.Activity
+package com.fdhasna21.githubusers.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.fdhasna21.githubusers.R
+import androidx.appcompat.app.AppCompatActivity
+import com.fdhasna21.githubusers.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySplashScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val timer = object : Thread() {
             override fun run() {

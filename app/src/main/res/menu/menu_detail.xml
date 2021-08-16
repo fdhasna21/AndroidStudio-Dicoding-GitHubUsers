@@ -6,5 +6,5 @@
         app:showAsAction="always"
         android:tooltipText="Share"
         android:icon="@drawable/ic_share"
-        android:title="Share User Account" />
+        android:title="@string/share_user_account" />
 </menu>

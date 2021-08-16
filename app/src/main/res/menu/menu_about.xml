@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/about_email"
-        android:title="Email"
+        android:title="@string/email"
         android:icon="@drawable/ic_gmail"/>
 
     <item
         android:id="@+id/about_whatsapp"
-        android:title="Whatsapp"
+        android:title="@string/whatsapp"
         android:icon="@drawable/ic_whatsapp"/>
 
     <item
         android:id="@+id/about_github"
-        android:title="Github"
+        android:title="@string/github"
         android:icon="@drawable/ic_github"/>
 
     <item
         android:id="@+id/about_dicoding"
-        android:title="Dicoding"
+        android:title="@string/dicoding"
         android:icon="@drawable/ic_dicoding" />
 </menu>

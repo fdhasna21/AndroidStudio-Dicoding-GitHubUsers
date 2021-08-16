@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.DataResolver
+package com.fdhasna21.githubusers.dataResolver
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,15 +11,14 @@ fun getImageID(imageName: String, context: Context): Int {
 }
 
 @SuppressLint("ResourceAsColor")
-fun getBitmapFromView(view: View) : Bitmap{
+fun getBitmapFromView(view: View): Bitmap {
     val output = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(output)
     val bg = view.background
 
-    if(bg != null){
+    if (bg != null) {
         bg.draw(canvas)
-    }
-    else{
+    } else {
         canvas.drawColor(android.R.color.white)
     }
     view.draw(canvas)

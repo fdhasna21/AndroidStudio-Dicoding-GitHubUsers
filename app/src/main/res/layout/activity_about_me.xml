@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".Activity.AboutMeActivity">
+    tools:context=".activity.AboutMeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,8 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:src="@drawable/profile_photo" />
+            android:src="@drawable/profile_photo"
+            android:contentDescription="@string/profile_picture" />
 
         <TextView
             android:layout_width="match_parent"
@@ -41,13 +42,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Biography"
+            android:text="@string/biography"
             style="?attr/textAppearanceSubtitle1"
             android:textStyle="bold"
             android:layout_marginTop="6dp"
             android:paddingVertical="6dp"
             android:paddingHorizontal="@dimen/layout_padding"
-            android:background="@color/darkmode"
+            android:background="@color/dark_mode"
             android:textColor="@color/white"/>
 
         <TextView
@@ -62,13 +63,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Find Me"
+            android:text="@string/find_me"
             style="?attr/textAppearanceSubtitle1"
             android:textStyle="bold"
             android:layout_marginTop="6dp"
             android:paddingVertical="6dp"
             android:paddingHorizontal="@dimen/layout_padding"
-            android:background="@color/darkmode"
+            android:background="@color/dark_mode"
             android:textColor="@color/white"/>
 
         <com.google.android.material.navigation.NavigationView
@@ -82,13 +83,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Credit"
+            android:text="@string/credit"
             style="?attr/textAppearanceSubtitle1"
             android:textStyle="bold"
             android:layout_marginTop="6dp"
             android:paddingVertical="6dp"
             android:paddingHorizontal="@dimen/layout_padding"
-            android:background="@color/darkmode"
+            android:background="@color/dark_mode"
             android:textColor="@color/white"/>
 
         <com.google.android.material.navigation.NavigationView
@@ -103,7 +104,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Made for Dicoding Submission 2021"
+            android:text="@string/made_for_dicoding_submission_2021"
             android:textAlignment="textEnd"
             style="?attr/textAppearanceSubtitle2"
             android:layout_marginHorizontal="@dimen/layout_padding"/>
