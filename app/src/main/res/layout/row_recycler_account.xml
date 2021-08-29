@@ -7,7 +7,7 @@
     android:paddingVertical="12dp"
     android:paddingHorizontal="@dimen/layout_padding"
     android:background="?attr/selectableItemBackground"
-    android:id="@+id/row_user">
+    android:id="@+id/row_account">
 
     <ImageView
         android:id="@+id/row_image"
@@ -48,15 +48,15 @@
             android:text="@string/account_username" />
 
         <TextView
-            android:id="@+id/row_company"
+            android:id="@+id/row_location"
             style="?attr/textAppearanceSubtitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="@string/company"
+            android:text="@string/location"
             android:drawablePadding="@dimen/subview_padding"
             android:gravity="center_vertical"
             android:textSize="14sp"
-            app:drawableLeftCompat="@drawable/ic_company" />
+            app:drawableLeftCompat="@drawable/ic_location" />
     </LinearLayout>
 </RelativeLayout>

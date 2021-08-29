@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.dataResolver
+package com.fdhasna21.githubusers.dataclass
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.parcelize.Parceler
 
 @Parcelize
-data class User(
+data class Account(
     val avatar: String?,
     val username: String?,
     val name: String?,
@@ -27,9 +27,9 @@ data class User(
         parcel.readInt()
     )
 
-    companion object : Parceler<User> {
+    companion object : Parceler<Account> {
 
-        override fun User.write(parcel: Parcel, flags: Int) {
+        override fun Account.write(parcel: Parcel, flags: Int) {
             parcel.writeString(avatar)
             parcel.writeString(username)
             parcel.writeString(name)
@@ -40,8 +40,8 @@ data class User(
             parcel.writeInt(following)
         }
 
-        override fun create(parcel: Parcel): User {
-            return User(parcel)
+        override fun create(parcel: Parcel): Account {
+            return Account(parcel)
         }
     }
 }

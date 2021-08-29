@@ -1,32 +1,30 @@
-package com.fdhasna21.githubusers
+package com.fdhasna21.githubusers.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.fdhasna21.githubusers.dataResolver.User
+import com.fdhasna21.githubusers.dataclass.Account
 import com.fdhasna21.githubusers.dataResolver.getImageID
-import com.fdhasna21.githubusers.databinding.RowRecyclerBinding
+import com.fdhasna21.githubusers.databinding.RowRecyclerAccountBinding
 
-class RowAdapter(private val data:ArrayList<User>, val context: Context)
-    :RecyclerView.Adapter<RowAdapter.ViewHolder>() {
+class AccountRowAdapter(private val data:ArrayList<Account>, val context: Context)
+    :RecyclerView.Adapter<AccountRowAdapter.ViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    class ViewHolder(val binding: RowRecyclerBinding):RecyclerView.ViewHolder(binding.root) {
-    }
+    class ViewHolder(val binding: RowRecyclerAccountBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(RowRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(RowRecyclerAccountBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
         holder.binding.rowUsername.text = item.username
         holder.binding.rowName.text = item.name
-        holder.binding.rowCompany.text = item.company
-        holder.binding.rowUser.setOnClickListener {
+        holder.binding.rowLocation.text = item.location
+        holder.binding.rowAccount.setOnClickListener {
             onItemClickCallback.onItemClicked(data[holder.adapterPosition])
         }
         Glide.with(context)
@@ -43,6 +41,6 @@ class RowAdapter(private val data:ArrayList<User>, val context: Context)
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: User)
+        fun onItemClicked(data: Account)
     }
 }

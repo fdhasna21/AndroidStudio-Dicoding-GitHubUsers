@@ -1,12 +1,11 @@
 package com.fdhasna21.githubusers.activity
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.navigation.NavigationView
-import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.browserIntent
@@ -15,28 +14,10 @@ import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
 
 class AboutMeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutMeBinding
-    private lateinit var findMeMenu : NavigationView
-    private lateinit var creditMenu : NavigationView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAboutMeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(false)
-        supportActionBar?.title = getString(R.string.about_me)
-
-        binding.aboutDescription.text = getString(R.string.tab)+getString(R.string.profile_description)
-
-        Glide.with(this)
-            .load(R.drawable.profile_photo)
-            .circleCrop()
-            .into(binding.profilePicture)
-
-        findMeMenu = findViewById(R.id.about_find_me)
-        findMeMenu.itemIconTintList = null
-        findMeMenu.setNavigationItemSelectedListener {
+    private fun setupFindMe(){
+        binding.aboutFindMe.itemIconTintList = null
+        binding.aboutFindMe.setNavigationItemSelectedListener {
             val intent = Intent()
             when(it.itemId) {
                 R.id.about_whatsapp -> {
@@ -66,10 +47,11 @@ class AboutMeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
 
-        creditMenu = findViewById(R.id.about_credit)
-        creditMenu.itemIconTintList = null
-        creditMenu.setNavigationItemSelectedListener {
+    private fun setupCredit() {
+        binding.aboutCredit.itemIconTintList = null
+        binding.aboutCredit.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.about_dicoding_content -> browserIntent("https://www.dicoding.com/academies/14", this)
                 R.id.about_lottie -> browserIntent("https://lottiefiles.com/6637-github-logo", this)
@@ -77,6 +59,25 @@ class AboutMeActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityAboutMeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.title = getString(R.string.about_me)
+
+        binding.aboutDescription.text = getString(R.string.tab)+getString(R.string.profile_description)
+        Glide.with(this)
+            .load(R.drawable.profile_photo)
+            .circleCrop()
+            .into(binding.profilePicture)
+
+        setupFindMe()
+        setupCredit()
     }
 
     override fun onSupportNavigateUp(): Boolean {
