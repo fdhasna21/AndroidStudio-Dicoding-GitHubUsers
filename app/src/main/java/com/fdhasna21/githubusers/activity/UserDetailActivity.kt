@@ -10,79 +10,101 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
+import com.fdhasna21.githubusers.DataUtils
+import com.fdhasna21.githubusers.IntentData
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.ViewPagerAdapter
-import com.fdhasna21.githubusers.browserIntent
-import com.fdhasna21.githubusers.dataclass.Account
-import com.fdhasna21.githubusers.dataResolver.getBitmapFromView
-import com.fdhasna21.githubusers.dataResolver.getImageID
 import com.fdhasna21.githubusers.databinding.ActivityUserDetailBinding
-import com.google.android.material.appbar.AppBarLayout
+import com.fdhasna21.githubusers.dataclass.DataType
+import com.fdhasna21.githubusers.dataclass.Repository
+import com.fdhasna21.githubusers.dataclass.User
+import com.fdhasna21.githubusers.server.ServerAPI
+import com.fdhasna21.githubusers.server.ServerInterface
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayoutMediator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import com.google.android.material.card.MaterialCardView
-
 
 class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserDetailBinding
-    private lateinit var account: Account
+    private lateinit var serverInterface: ServerInterface
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
+    private lateinit var username : String
+    private lateinit var user: User
+    private var intentData = IntentData(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityUserDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private var repository : ArrayList<Repository> = arrayListOf()
+    private var starred : ArrayList<Repository> = arrayListOf()
+    private var followers : ArrayList<User> = arrayListOf()
+    private var following : ArrayList<User> = arrayListOf()
 
-        setupObject()
-        setupBottomSheet()
-        setupToolbar()
-        setupTabLayout()
-    }
-
-    private fun setupObject(){
-        account = intent.getParcelableExtra<Account>(EXTRA_USER) as Account
-
+    private fun setupHeader(){
         val views = arrayListOf(
             binding.detailImage,           //0
             binding.detailUsername,        //1
             binding.detailName,            //2
-            binding.detailCompany,         //3
-            binding.detailLocation,        //4
-            binding.detailFollowers,       //5
-            binding.detailFollowing        //6
+            binding.detailBio,             //3
+            binding.detailCompany,         //4
+            binding.detailLocation,        //5
+            binding.detailFollowers,       //6
+            binding.detailFollowing,       //7
+            binding.detailWebsite,         //8
+            binding.detailEmail            //9
         )
+        binding.detailProgress.visibility = View.VISIBLE
+        serverInterface.user(username).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if(response.isSuccessful){
+                    user = response.body()!!
+                    binding.detailContent.visibility = View.VISIBLE
+                    binding.detailProgress.visibility = View.INVISIBLE
+                    views.forEachIndexed { idx: Int, it: View? ->
+                        if (idx == 0) {
+                            Glide.with(this@UserDetailActivity)
+                                .load(user.photo_profile)
+                                .circleCrop()
+                                .into(binding.detailImage)
+                        } else {
+                            if (idx > 3) {
+                                it?.setOnClickListener(this@UserDetailActivity)
+                            }
+                            (it as TextView).text = when (idx) {
+                                1 -> user.username
+                                2 -> user.name
+                                3 -> user.bio
+                                4 -> user.company
+                                5 -> user.location
+                                6 -> listOf(DataUtils().withSuffix(user.followers!!), getString(R.string.followers)).joinToString(" ")
+                                7 -> listOf(DataUtils().withSuffix(user.following!!), getString(R.string.following)).joinToString(" ")
+                                8 -> user.website
+                                9 -> user.email
+                                else -> null
+                            }
 
-        views.forEachIndexed { idx: Int, it: View? ->
-            if (idx == 0) {
-                Glide.with(this)
-                    .load(getImageID((account.avatar.toString()).substringAfterLast("/"), this))
-                    .circleCrop()
-                    .into(binding.detailImage)
-            } else {
-                if (idx > 2) {
-                    it?.setOnClickListener(this)
-                }
-                if (idx != 8) {
-                    (it as TextView).text = when (idx) {
-                        1 -> account.username
-                        2 -> account.name
-                        3 -> account.company
-                        4 -> account.location
-                        5 -> listOf(account.follower, getString(R.string.followers)).joinToString(" ")
-                        6 -> listOf(account.following, getString(R.string.following)).joinToString(" ")
-                        else -> null
+                            if(it.text.isNullOrBlank() || it.text.isNullOrEmpty()){
+                                it.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }
-        }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                //todo : kalo failure
+                Toast.makeText(this@UserDetailActivity, t.toString(), Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     private fun setupToolbar() {
@@ -90,28 +112,50 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.elevation = 0f
         supportActionBar?.title = ""
-
-        var scrollRange = -1
-        binding.detailContent.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if(scrollRange == -1){
-                scrollRange = appBarLayout.totalScrollRange
-            }
-            if((scrollRange + verticalOffset == 0)){
-                supportActionBar?.title = account.name
-                supportActionBar?.subtitle = account.username
-            }
-            else {
-                supportActionBar?.title = ""
-                supportActionBar?.subtitle = ""
-            }
-        })
     }
 
     private fun setupTabLayout(){
-        binding.detailViewPager.adapter = ViewPagerAdapter(this, 2)
+        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(repository, starred), DataType.REPOSITORY)
+        binding.detailViewPager.adapter = tabLayoutAdapter
         TabLayoutMediator(binding.detailTabRepo, binding.detailViewPager) { tab, position ->
             tab.text = resources.getString(REPO_TAB_TITLES[position])
         }.attach()
+
+        serverInterface.repository(username).enqueue(object : Callback<ArrayList<Repository>>{
+            override fun onResponse(
+                call: Call<ArrayList<Repository>>,
+                response: Response<ArrayList<Repository>>
+            ) {
+                if(response.isSuccessful){
+                    repository.addAll(response.body()!!)
+                    tabLayoutAdapter.updateAdapter()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Repository>>, t: Throwable) {
+                //todo : kalo failure
+                Toast.makeText(this@UserDetailActivity, t.toString(), Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+        serverInterface.starred(username).enqueue(object : Callback<ArrayList<Repository>>{
+            override fun onResponse(
+                call: Call<ArrayList<Repository>>,
+                response: Response<ArrayList<Repository>>
+            ) {
+                if(response.isSuccessful){
+                    starred.addAll(response.body()!!)
+                    tabLayoutAdapter.updateAdapter()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Repository>>, t: Throwable) {
+                //todo : kalo failure
+                Toast.makeText(this@UserDetailActivity, t.toString(), Toast.LENGTH_LONG).show()
+            }
+
+        })
     }
 
     private fun setupBottomSheet(){
@@ -120,10 +164,64 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             state = BottomSheetBehavior.STATE_COLLAPSED
             isDraggable = false
         }
-        binding.detailBottomSheet.followViewPager.adapter = ViewPagerAdapter(this, 2)
+
+        val bottomSheetAdapter = ViewPagerAdapter(this, arrayListOf(followers, following), DataType.USER)
+        binding.detailBottomSheet.followViewPager.adapter = bottomSheetAdapter
         TabLayoutMediator(binding.detailBottomSheet.followTabLayout, binding.detailBottomSheet.followViewPager) { tab, position ->
             tab.text = resources.getString(FOLLOW_TAB_TITLES[position])
         }.attach()
+
+        serverInterface.followers(username).enqueue(object : Callback<ArrayList<User>>{
+            override fun onResponse(
+                call: Call<ArrayList<User>>,
+                response: Response<ArrayList<User>>
+            ) {
+                if(response.isSuccessful){
+                    followers.addAll(response.body()!!)
+                    bottomSheetAdapter.updateAdapter()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
+                //todo : kalo failure
+                Toast.makeText(this@UserDetailActivity, t.toString(), Toast.LENGTH_LONG).show()
+            }
+        })
+
+        serverInterface.following(username).enqueue(object : Callback<ArrayList<User>>{
+            override fun onResponse(
+                call: Call<ArrayList<User>>,
+                response: Response<ArrayList<User>>
+            ) {
+                if(response.isSuccessful){
+                    following.addAll(response.body()!!)
+                    bottomSheetAdapter.updateAdapter()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
+                //todo : kalo failure
+                Toast.makeText(this@UserDetailActivity, t.toString(), Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityUserDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        username = intent.getStringExtra(EXTRA_USER)!!
+
+        val serverAPI = ServerAPI()
+        serverInterface = serverAPI.getServerAPI(binding.detailProgress, this)!!.create(ServerInterface::class.java)
+        binding.detailContent.visibility = View.INVISIBLE
+        binding.detailProgress.visibility = View.VISIBLE
+
+        setupToolbar()
+        setupHeader()
+        setupBottomSheet()
+        setupTabLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -135,9 +233,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         when (item.itemId) {
             R.id.menu_share -> {
                 try {
-                    val file = File(this.externalCacheDir, "${account.username}.png")
+                    val file = File(this.externalCacheDir, "${user.username}.png")
                     val fout = FileOutputStream(file)
-                    getBitmapFromView(binding.detailShareable).compress(
+                    DataUtils().getBitmapFromView(binding.detailShareable).compress(
                         Bitmap.CompressFormat.PNG,
                         100,
                         fout
@@ -155,7 +253,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
                     intent.putExtra(Intent.EXTRA_STREAM, photoUri)
                     intent.putExtra(
                         Intent.EXTRA_TEXT,
-                        "See ${account.username} on GitHub via https://github.com/${account.username}"
+                        "See ${user.username} on GitHub via https://github.com/${user.username}"
                     )
                     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     intent.type = "image/png"
@@ -167,7 +265,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
                     e.printStackTrace()
                 }
             }
-            R.id.menu_open_github -> browserIntent("https://github.com/${account.username}", this)
+            R.id.menu_open_github -> intentData.openBrowser("https://github.com/${user.username}")
         }
         return super.onOptionsItemSelected(item)
     }
@@ -192,25 +290,26 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.detail_company -> browserIntent(
+            R.id.detail_company -> intentData.openBrowser(
                 "https://www.google.com/search?q=${
-                    account.company!!.replace(
+                    user.company!!.replace(
                         ' ',
                         '+'
                     )
-                }", this
+                }"
             )
-            R.id.detail_location -> browserIntent(
+            R.id.detail_location -> intentData.openBrowser(
                 "https://www.google.com/maps?q=${
-                    account.location!!.replace(
+                    user.location!!.replace(
                         ' ',
                         '+'
                     )
-                }", this
+                }"
             )
             R.id.detail_followers -> isBottomSheetExpanded(true, R.string.followers)
             R.id.detail_following -> isBottomSheetExpanded(true, R.string.following)
-
+            R.id.detail_website   -> intentData.openBrowser(user.website.toString())
+            R.id.detail_email     -> intentData.openEmail(user.email.toString())
         }
     }
 
@@ -233,11 +332,11 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         const val EXTRA_USER = "extra_user"
-        private val REPO_TAB_TITLES = intArrayOf(
+        val REPO_TAB_TITLES = intArrayOf(
             R.string.repositories,
             R.string.starred
         )
-        private val FOLLOW_TAB_TITLES = intArrayOf(
+        val FOLLOW_TAB_TITLES = intArrayOf(
             R.string.followers,
             R.string.following
         )

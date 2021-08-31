@@ -7,4 +7,6 @@
     <color name="dark_mode">#121212</color>
     <color name="dark_mode_text">#757575</color>
     <color name="yellow">#FBC02D</color>
+    <color name="blue">#FF0D47A1</color>
+    <color name="purple">#FFAB47BC</color>
 </resources>

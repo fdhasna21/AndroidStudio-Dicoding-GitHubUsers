@@ -53,7 +53,9 @@
         android:layout_height="wrap_content"
         android:maxLines="3"
         android:textSize="14sp"
-        android:text="@string/repository_description"/>
+        android:text="@string/repository_description"
+        android:layout_marginBottom="4dp"
+        android:lineSpacingExtra="4dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,29 +64,44 @@
         <TextView
             android:id="@+id/row_repoStar"
             style="?attr/textAppearanceSubtitle1"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textSize="14sp"
             android:text="@string/starred"
             android:drawablePadding="@dimen/subview_padding"
-            android:gravity="center"
+            android:gravity="left"
             android:paddingEnd="@dimen/subview_padding"
             app:drawableTint="@color/yellow"
             app:drawableLeftCompat="@drawable/ic_star" />
 
         <TextView
+            android:id="@+id/row_repoWatcher"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:text="@string/watchers"
+            android:drawablePadding="@dimen/subview_padding"
+            android:gravity="left"
+            android:paddingEnd="@dimen/subview_padding"
+            app:drawableTint="@color/blue"
+            app:drawableLeftCompat="@drawable/ic_watch" />
+
+        <TextView
             android:id="@+id/row_repoLanguage"
             style="?attr/textAppearanceSubtitle1"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textSize="14sp"
             android:text="@string/language"
             android:drawablePadding="@dimen/subview_padding"
-            android:gravity="center"
+            android:gravity="left"
             android:paddingEnd="@dimen/subview_padding"
             android:paddingStart="@dimen/subview_padding"
-            app:drawableLeftCompat="@drawable/ic_circle" />
+            app:drawableLeftCompat="@drawable/ic_circle"
+            app:drawableTint="@color/purple"/>
     </LinearLayout>
 </LinearLayout>

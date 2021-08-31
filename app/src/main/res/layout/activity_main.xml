@@ -48,5 +48,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/main_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="6dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

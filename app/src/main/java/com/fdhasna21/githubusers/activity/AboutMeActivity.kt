@@ -7,21 +7,22 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.fdhasna21.githubusers.IntentData
 import com.fdhasna21.githubusers.R
-import com.fdhasna21.githubusers.browserIntent
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
 
 
 class AboutMeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutMeBinding
+    private var intentData = IntentData(this)
 
     private fun setupFindMe(){
         binding.aboutFindMe.itemIconTintList = null
         binding.aboutFindMe.setNavigationItemSelectedListener {
-            val intent = Intent()
             when(it.itemId) {
                 R.id.about_whatsapp -> {
                     try{
+                        val intent = Intent()
                         applicationContext.packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
                         intent.action = Intent.ACTION_VIEW
                         intent.type = "text/plain"
@@ -29,20 +30,17 @@ class AboutMeActivity : AppCompatActivity() {
                         intent.setPackage("com.whatsapp")
                         startActivity(intent)
                     } catch (e : PackageManager.NameNotFoundException) {
-                        Toast.makeText(this, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
                     }
                     true }
                 R.id.about_dicoding -> {
-                    browserIntent("https://www.dicoding.com/users/fernandahasna", this)
+                    intentData.openBrowser("https://www.dicoding.com/users/fernandahasna")
                     true }
                 R.id.about_email ->{
-                    intent.action = Intent.ACTION_SENDTO
-                    intent.type = "message/rfc822"
-                    intent.data = Uri.parse("mailto:fernanda.daymara.hasna@gmail.com")
-                    startActivity(Intent.createChooser(intent, "Send email with"))
+                    intentData.openEmail("fernanda.daymara.hasna@gmail.com")
                     true }
                 R.id.about_github -> {
-                    browserIntent("https://github.com/fdhasna21", this)
+                    intentData.openBrowser("https://github.com/fdhasna21")
                     true }
                 else -> false
             }
@@ -53,9 +51,9 @@ class AboutMeActivity : AppCompatActivity() {
         binding.aboutCredit.itemIconTintList = null
         binding.aboutCredit.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.about_dicoding_content -> browserIntent("https://www.dicoding.com/academies/14", this)
-                R.id.about_lottie -> browserIntent("https://lottiefiles.com/6637-github-logo", this)
-                R.id.about_freepik -> browserIntent("https://www.freepik.com/", this)
+                R.id.about_dicoding_content -> intentData.openBrowser("https://www.dicoding.com/academies/14")
+                R.id.about_lottie -> intentData.openBrowser("https://lottiefiles.com/6637-github-logo")
+                R.id.about_freepik -> intentData.openBrowser("https://www.freepik.com/")
             }
             true
         }

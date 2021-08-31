@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="layout_padding">20dp</dimen>
-    <dimen name="view_padding">12dp</dimen>
     <dimen name="subview_padding">8dp</dimen>
 </resources>

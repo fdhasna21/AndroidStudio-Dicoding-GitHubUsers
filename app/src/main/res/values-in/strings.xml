@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GitHub Users</string>
+    <string name="about_me">Tentang Saya</string>
+    <string name="profile_description">
+        Dikenal sebagai Nanda, saya lahir di Magelang pada 21 Agustus 1998. Saya adalah anak pertama dari tiga bersaudara yang telah menyelesaikan pendidikan di S1 Teknik Komputer Institut Teknologi Sepuluh Nopember Surabaya.
+        Saya memiliki minat di bidang teknologi digital, khususnya pada bagian IT Project Management, User-Oriented Product Development, dan Design System Analysis. Saat ini, saya sedang bereksplorasi tentang Mobile Programming menggunakan Android Studio.
+    </string>
+    <string name="profile_name">Fernanda Daymara Hasna</string>
+    <string name="profile_email">fernanda.daymara.hasna@gmail.com</string>
+    <string name="tab">\t\t\t\t\t\t</string>
+    <string name="profile_picture">Foto Profil</string>
+    <string name="biography">Biografi</string>
+    <string name="find_me">Temukan Saya</string>
+    <string name="credit">Referensi</string>
+    <string name="made_for_dicoding_submission_2021">Dibuat untuk Dicoding Submission 2021</string>
+    <string name="account_name">Nama Akun</string>
+    <string name="account_profile_picture">Foto Profil Akun</string>
+    <string name="account_username">Username Akun</string>
+    <string name="followers">Pengikut</string>
+    <string name="following">Diikuti</string>
+    <string name="company">Perusahaan</string>
+    <string name="location">Lokasi</string>
+    <string name="repositories">Repositori</string>
+    <string name="open_github_user">Buka Akun GitHub Pengguna</string>
+    <string name="email">Email</string>
+    <string name="github">Github</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="dicoding">Dicoding</string>
+    <string name="content_by_dicoding_academy">Konten oleh Dicoding Academy</string>
+    <string name="splash_screen_animation_by_vik4graphic">Animasi Splash Screen oleh vik4graphic</string>
+    <string name="icon_by_freepik">Ikon oleh Freepik</string>
+    <string name="share_user_account">Berbagi Akun Pengguna</string>
+    <string name="search">Pencarian</string>
+    <string name="starred">Favorit</string>
+    <string name="repository_description">Deskripsi Repositori</string>
+    <string name="repository_name">Nama Repositori</string>
+    <string name="language">Bahasa</string>
+    <string name="bio">Bio</string>
+    <string name="website">Website</string>
+    <string name="watchers">Pengamat</string>
+    <string name="settings">Pengaturan</string>
+</resources>

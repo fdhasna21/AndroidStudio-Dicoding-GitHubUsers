@@ -73,6 +73,23 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/detail_bio"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="@dimen/subview_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp"
+                android:paddingEnd="@dimen/subview_padding"
+                android:text="@string/bio"
+                android:maxLines="3"
+                app:drawableStartCompat="@drawable/ic_bio"
+                android:textColor="@color/white"
+                app:drawableTint="@color/white" />
+
+            <TextView
                 android:id="@+id/detail_company"
                 style="?attr/textAppearanceBody1"
                 android:layout_width="wrap_content"
@@ -80,7 +97,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:drawablePadding="@dimen/subview_padding"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:paddingVertical="4dp"
                 android:paddingEnd="@dimen/subview_padding"
                 android:text="@string/company"
@@ -97,7 +114,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:drawablePadding="@dimen/subview_padding"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:paddingVertical="4dp"
                 android:paddingEnd="@dimen/subview_padding"
                 android:text="@string/location"
@@ -105,6 +122,40 @@
                 app:drawableLeftCompat="@drawable/ic_location"
                 android:textColor="@color/white"
                 app:drawableTint="@color/white"/>
+
+            <TextView
+                android:id="@+id/detail_email"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="@dimen/subview_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp"
+                android:paddingEnd="@dimen/subview_padding"
+                android:text="@string/email"
+                android:maxLines="1"
+                app:drawableStartCompat="@drawable/ic_email"
+                android:textColor="@color/white"
+                app:drawableTint="@color/white" />
+
+            <TextView
+                android:id="@+id/detail_website"
+                style="?attr/textAppearanceBody1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="@dimen/subview_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp"
+                android:paddingEnd="@dimen/subview_padding"
+                android:text="@string/website"
+                android:maxLines="1"
+                app:drawableStartCompat="@drawable/ic_web"
+                android:textColor="@color/white"
+                app:drawableTint="@color/white" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -119,7 +170,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:drawablePadding="@dimen/subview_padding"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:paddingVertical="4dp"
                     android:paddingEnd="@dimen/subview_padding"
                     android:text="@string/followers"
@@ -144,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="@dimen/subview_padding"
                     android:text="@string/following"
@@ -170,7 +221,17 @@
     <include
         android:id="@+id/detail_bottomSheet"
         layout="@layout/bottomsheet_follow"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/bottom_sheet_behavior"/>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/detail_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="6dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
