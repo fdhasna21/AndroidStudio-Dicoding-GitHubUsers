@@ -39,7 +39,8 @@ class UserRowAdapter(val data:ArrayList<User>, val context: Context)
         return data.size
     }
 
-    fun addNewData(newData : ArrayList<User>){
+    fun addData(newData : ArrayList<User>){
+        data.clear()
         data.addAll(newData)
         notifyDataSetChanged()
     }

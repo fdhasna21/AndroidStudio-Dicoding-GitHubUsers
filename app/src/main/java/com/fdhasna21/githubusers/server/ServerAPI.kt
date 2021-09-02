@@ -2,6 +2,7 @@ package com.fdhasna21.githubusers.server
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.R
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.gson.GsonBuilder
@@ -16,7 +17,7 @@ class ServerAPI {
     var retrofit : Retrofit? = null
     var httpClient = OkHttpClient.Builder()
 
-    fun getServerAPI(progressIndicator: CircularProgressIndicator, activity: AppCompatActivity) : Retrofit?{
+    fun getServerAPI(progressIndicator: CircularProgressIndicator) : Retrofit?{
         if(retrofit == null){
             progressIndicator.visibility = View.VISIBLE
             httpClient.addInterceptor(Interceptor { chain ->
@@ -24,7 +25,34 @@ class ServerAPI {
 
                 val request = original.newBuilder()
                     .header("Accept", "application/vnd.github.v3+json")
-                    .header("Authorization", "client_id ${activity.resources.getString(R.string.client_id)}")
+                    .header("Authorization", "client_id ${BuildConfig.GITHUB_CLIENT_ID}")
+                    .method(original.method, original.body)
+                    .build()
+                chain.proceed(request)
+            })
+
+            val gson = GsonBuilder()
+                .setLenient()
+                .create()
+
+            val client = httpClient.build()
+            retrofit = Retrofit.Builder()
+                .client(client)
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+        }
+        return retrofit
+    }
+
+    fun getAPI():Retrofit?{
+        if(retrofit == null){
+            httpClient.addInterceptor(Interceptor { chain ->
+                val original: Request = chain.request()
+
+                val request = original.newBuilder()
+                    .header("Accept", "application/vnd.github.v3+json")
+                    .header("Authorization", "client_id ${BuildConfig.GITHUB_CLIENT_ID}")
                     .method(original.method, original.body)
                     .build()
                 chain.proceed(request)

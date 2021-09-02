@@ -211,7 +211,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         username = intent.getStringExtra(EXTRA_USER)!!
 
         val serverAPI = ServerAPI()
-        serverInterface = serverAPI.getServerAPI(binding.detailProgress, this)!!.create(ServerInterface::class.java)
+        serverInterface = serverAPI.getServerAPI(binding.detailProgress)!!.create(ServerInterface::class.java)
         binding.detailContent.visibility = View.INVISIBLE
         binding.detailProgress.visibility = View.VISIBLE
 

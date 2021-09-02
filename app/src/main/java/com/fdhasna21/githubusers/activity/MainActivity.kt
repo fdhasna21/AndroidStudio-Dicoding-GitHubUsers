@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,48 +17,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
-import com.fdhasna21.githubusers.activity.viewmodel.ServerViewModel
+import com.fdhasna21.githubusers.activity.viewmodel.MainActivityViewModel
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
-import com.fdhasna21.githubusers.dataclass.SearchUsers
-import com.fdhasna21.githubusers.dataclass.User
-import com.fdhasna21.githubusers.server.ServerAPI
-import com.fdhasna21.githubusers.server.ServerInterface
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var serverInterface: ServerInterface
+    private lateinit var viewModel: MainActivityViewModel
     private lateinit var rowAdapter: UserRowAdapter
     private lateinit var layoutManager : LinearLayoutManager
-    private var defaultLastID : Int = 0
-    private var searchPage : Int = 1
-    private var data : ArrayList<User> = arrayListOf()
     private var isLoading = false
 
     private fun getDataDefault(isLoadMore:Boolean){
         isLoading = true
         if(!isLoadMore){
             binding.mainProgress.visibility = View.VISIBLE
-            defaultLastID = 0
+            viewModel.defaultLastID = 0
         }
 
-        serverInterface.users(lastID = defaultLastID).enqueue(object : Callback<ArrayList<User>>{
-            override fun onResponse(call: Call<ArrayList<User>>, response: Response<ArrayList<User>>) {
-                if(response.isSuccessful){
-                    rowAdapter.addNewData(response.body()!!)
-                    defaultLastID = data[data.size-1].id!!
-                    isLoading = false
-                    binding.mainProgress.visibility = View.INVISIBLE
-                    binding.refreshRecyclerView.isRefreshing = false
-                }
-            }
-
-            override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, t.toString() , Toast.LENGTH_LONG).show()
+        viewModel.getDefaultData()
+        viewModel.defaultData.observe(this, {
+            if(it != null){
+                rowAdapter.addData(it)
+                isLoading = false
+                binding.mainProgress.visibility = View.INVISIBLE
+                binding.refreshRecyclerView.isRefreshing = false
+            } else {
+                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -67,24 +53,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         if(!isLoadMore){
             binding.mainProgress.visibility = View.VISIBLE
             rowAdapter.clearData()
-            searchPage = 1
+            viewModel.searchPage = 1
         }
 
-        serverInterface.search(keyword).enqueue(object : Callback<SearchUsers>{
-            override fun onResponse(call: Call<SearchUsers>, response: Response<SearchUsers>) {
-                if(response.isSuccessful){
-                    rowAdapter.addNewData(response.body()?.users!!)
-                    searchPage++
-                    isLoading = false
-                    binding.mainProgress.visibility = View.INVISIBLE
-                    binding.refreshRecyclerView.isRefreshing = false
-                }
+        viewModel.getSearchData(keyword)
+        viewModel.searchData.observe(this, {
+            if(it != null){
+                rowAdapter.addData(it)
+                isLoading = false
+                binding.mainProgress.visibility = View.INVISIBLE
+                binding.refreshRecyclerView.isRefreshing = false
             }
-
-            override fun onFailure(call: Call<SearchUsers>, t: Throwable) {
-                Toast.makeText(this@MainActivity, t.toString() , Toast.LENGTH_LONG).show()
-            }
-
         })
     }
 
@@ -98,7 +77,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
 
     private fun setupRecyclerView(){
         binding.refreshRecyclerView.setOnRefreshListener(this)
-        rowAdapter = UserRowAdapter(data, this@MainActivity)
+        rowAdapter = UserRowAdapter(arrayListOf(), this@MainActivity)
         layoutManager = LinearLayoutManager(this)
         getDataDefault(false)
 
@@ -107,7 +86,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         binding.recyclerView.addItemDecoration(object : DividerItemDecoration(this@MainActivity, VERTICAL) {})
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            var firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+//            var firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                super.onScrollStateChanged(recyclerView, newState)
 //                val currentVisibleItem = layoutManager.findFirstVisibleItemPosition()
@@ -134,15 +113,22 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         setupToolbar()
-        val serverAPI = ServerAPI()
-        serverInterface = serverAPI.getServerAPI(binding.mainProgress, this)!!.create(ServerInterface::class.java)
         setupRecyclerView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null){
+            val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -182,8 +168,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
 
     override fun onRefresh() {
         rowAdapter.clearData()
-        defaultLastID = 0
-        if(binding.searchView.query.toString().isBlank()){
+        viewModel.defaultLastID = 0
+        if(binding.searchView.query.toString().isEmpty()){
             getDataDefault(false)
         } else{
             getDataSearch(binding.searchView.query.toString(), false)
