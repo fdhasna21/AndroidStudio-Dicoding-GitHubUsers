@@ -40,7 +40,9 @@ class AboutMeActivity : AppCompatActivity() {
                     intentData.openEmail("fernanda.daymara.hasna@gmail.com")
                     true }
                 R.id.about_github -> {
-                    intentData.openBrowser("https://github.com/fdhasna21")
+                    val intent = Intent(this, UserDetailActivity::class.java)
+                    intent.putExtra(UserDetailActivity.EXTRA_USER, "fdhasna21")
+                    startActivity(intent)
                     true }
                 else -> false
             }

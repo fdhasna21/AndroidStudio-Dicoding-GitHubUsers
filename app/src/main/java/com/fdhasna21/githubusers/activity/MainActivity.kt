@@ -79,9 +79,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun setupToolbar(){
-        setSupportActionBar(binding.mainToolbar)
         supportActionBar?.title = getString(R.string.app_name)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         val searchManager : SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
