@@ -10,11 +10,12 @@ import com.fdhasna21.githubusers.DataUtils
 import com.fdhasna21.githubusers.IntentData
 import com.fdhasna21.githubusers.databinding.RowRecyclerRepositoryBinding
 import com.fdhasna21.githubusers.dataclass.Repository
+import com.fdhasna21.githubusers.dataclass.User
 
 class RepositoryRowAdapter(val data:ArrayList<Repository>, val context: Context)
     :RecyclerView.Adapter<RepositoryRowAdapter.ViewHolder>(){
 
-    class ViewHolder(val binding: RowRecyclerRepositoryBinding):RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: RowRecyclerRepositoryBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(RowRecyclerRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -54,4 +55,13 @@ class RepositoryRowAdapter(val data:ArrayList<Repository>, val context: Context)
         return data.size
     }
 
+    fun addNewData(newData : ArrayList<Repository>){
+        data.addAll(newData)
+        notifyDataSetChanged()
+    }
+
+    fun clearData(){
+        data.clear()
+        notifyDataSetChanged()
+    }
 }

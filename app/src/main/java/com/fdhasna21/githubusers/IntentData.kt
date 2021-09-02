@@ -3,7 +3,6 @@ package com.fdhasna21.githubusers
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import java.lang.String
 
 class IntentData(val context: Context){
     fun openBrowser(url: kotlin.String){
@@ -14,7 +13,7 @@ class IntentData(val context: Context){
         context.startActivity(intent)
     }
 
-    fun openEmail(email:kotlin.String){
+    fun openEmail(email:String){
         val intent = Intent()
         intent.action = Intent.ACTION_SENDTO
         intent.type = "text/plain"

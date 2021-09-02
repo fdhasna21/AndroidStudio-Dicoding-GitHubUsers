@@ -10,13 +10,15 @@ import retrofit2.http.Query
 
 interface ServerInterface {
     @GET("search/users")
-    fun search(@Query("q") keyword:String):Call<SearchUsers>
+    fun search(@Query("q") keyword:String,
+               @Query("per_page") per_page:Int=2,
+               @Query("page") page:Int=1):Call<SearchUsers>
 
     @GET("users/{username}") //an user
     fun user(@Path("username") username:String) : Call<User>
 
     @GET("users") //users -> per_page:Int=10, since:Int
-    fun users(@Query("per_page") per_page:Int=30,
+    fun users(@Query("per_page") per_page:Int=2,
               @Query("since") lastID:Int
     ):Call<ArrayList<User>>
 

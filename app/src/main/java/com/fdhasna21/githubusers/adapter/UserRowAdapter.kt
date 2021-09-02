@@ -14,7 +14,7 @@ import com.fdhasna21.githubusers.dataclass.User
 class UserRowAdapter(val data:ArrayList<User>, val context: Context)
     :RecyclerView.Adapter<UserRowAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: RowRecyclerUserBinding):RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: RowRecyclerUserBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(RowRecyclerUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -37,5 +37,15 @@ class UserRowAdapter(val data:ArrayList<User>, val context: Context)
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun addNewData(newData : ArrayList<User>){
+        data.addAll(newData)
+        notifyDataSetChanged()
+    }
+
+    fun clearData(){
+        data.clear()
+        notifyDataSetChanged()
     }
 }
