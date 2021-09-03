@@ -7,7 +7,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:focusableInTouchMode="true"
     android:fitsSystemWindows="true"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"
+    android:windowSoftInputMode="stateHidden|adjustResize">
 
     <FrameLayout
         android:id="@+id/main_search"
@@ -28,7 +29,8 @@
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
                 android:queryHint="@string/search"
-                android:queryBackground="@null"/>
+                android:queryBackground="@null"
+                android:imeOptions="flagNoExtractUi|flagNoFullscreen" />
         </androidx.cardview.widget.CardView>
     </FrameLayout>
 

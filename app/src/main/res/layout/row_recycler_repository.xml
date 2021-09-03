@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="12dp"
@@ -10,12 +11,18 @@
     android:id="@+id/row_repository"
     android:divider="@drawable/divider_view_padding"
     android:showDividers="middle"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="Overdraw">
 
     <LinearLayout
+        android:id="@+id/row_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/row_image"
@@ -41,67 +48,85 @@
         style="?attr/textAppearanceHeadline5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:maxLines="1"
         android:text="@string/repository_name"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@id/row_header"
+        app:layout_constraintRight_toRightOf="@id/row_header"
+        app:layout_constraintTop_toBottomOf="@id/row_header" />
 
     <TextView
         android:id="@+id/row_repoDesc"
         style="?attr/textAppearanceSubtitle1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:lineSpacingExtra="4dp"
         android:maxLines="3"
-        android:textSize="14sp"
         android:text="@string/repository_description"
-        android:layout_marginBottom="4dp"
-        android:lineSpacingExtra="4dp"/>
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@id/row_header"
+        app:layout_constraintRight_toRightOf="@id/row_header"
+        app:layout_constraintTop_toBottomOf="@id/row_repoName" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@id/row_header"
+        app:layout_constraintRight_toRightOf="@id/row_header"
+        app:layout_constraintTop_toBottomOf="@id/row_repoDesc">
+
         <TextView
             android:id="@+id/row_repoStar"
             style="?attr/textAppearanceSubtitle1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textSize="14sp"
-            android:text="@string/starred"
             android:drawablePadding="@dimen/subview_padding"
             android:gravity="left"
+            android:maxLines="1"
             android:paddingEnd="@dimen/subview_padding"
+            android:text="@string/starred"
+            android:textSize="14sp"
+            app:drawableLeftCompat="@drawable/ic_star"
             app:drawableTint="@color/yellow"
-            app:drawableLeftCompat="@drawable/ic_star" />
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/row_repoWatcher"
             style="?attr/textAppearanceSubtitle1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textSize="14sp"
-            android:text="@string/watchers"
             android:drawablePadding="@dimen/subview_padding"
             android:gravity="left"
+            android:maxLines="1"
             android:paddingEnd="@dimen/subview_padding"
+            android:text="@string/watchers"
+            android:textSize="14sp"
+            app:drawableLeftCompat="@drawable/ic_watch"
             app:drawableTint="@color/blue"
-            app:drawableLeftCompat="@drawable/ic_watch" />
+            tools:ignore="RtlHardcoded" />
 
         <TextView
             android:id="@+id/row_repoLanguage"
             style="?attr/textAppearanceSubtitle1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textSize="14sp"
-            android:text="@string/language"
             android:drawablePadding="@dimen/subview_padding"
             android:gravity="left"
-            android:paddingEnd="@dimen/subview_padding"
+            android:maxLines="1"
             android:paddingStart="@dimen/subview_padding"
+            android:paddingEnd="@dimen/subview_padding"
+            android:text="@string/language"
+            android:textSize="14sp"
             app:drawableLeftCompat="@drawable/ic_circle"
-            app:drawableTint="@color/purple"/>
+            app:drawableTint="@color/purple"
+            tools:ignore="RtlHardcoded" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

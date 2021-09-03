@@ -3,6 +3,7 @@ package com.fdhasna21.githubusers.activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -14,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.MainActivityViewModel
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     private lateinit var rowAdapter: UserRowAdapter
     private lateinit var layoutManager : LinearLayoutManager
     private var isLoading = false
+    private var isConfigChange = false
 
     private fun getDataDefault(isLoadMore:Boolean){
         isLoading = true
@@ -35,10 +36,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
             viewModel.defaultLastID = 0
         }
 
-        viewModel.getDefaultData()
-        viewModel.defaultData.observe(this, {
+        viewModel.setDefaultData()
+        viewModel.getDefaultData().observe(this, {
             if(it != null){
-                rowAdapter.addData(it)
+                if(it.isEmpty()){
+                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
+                }
                 isLoading = false
                 binding.mainProgress.visibility = View.INVISIBLE
                 binding.refreshRecyclerView.isRefreshing = false
@@ -56,13 +59,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
             viewModel.searchPage = 1
         }
 
-        viewModel.getSearchData(keyword)
-        viewModel.searchData.observe(this, {
+        viewModel.setSearchData(keyword)
+        viewModel.getSearchData().observe(this, {
             if(it != null){
-                rowAdapter.addData(it)
+                if(it.isEmpty()){
+                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
+                }
                 isLoading = false
                 binding.mainProgress.visibility = View.INVISIBLE
                 binding.refreshRecyclerView.isRefreshing = false
+            } else {
+                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -78,6 +85,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     private fun setupRecyclerView(){
         binding.refreshRecyclerView.setOnRefreshListener(this)
         rowAdapter = UserRowAdapter(arrayListOf(), this@MainActivity)
+        viewModel.setAdapter(rowAdapter)
         layoutManager = LinearLayoutManager(this)
         getDataDefault(false)
 
@@ -85,27 +93,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addItemDecoration(object : DividerItemDecoration(this@MainActivity, VERTICAL) {})
         binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-//            var firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                val currentVisibleItem = layoutManager.findFirstVisibleItemPosition()
-//                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-//                val visibleItemCount = layoutManager.childCount
-//                val totalItem = rowAdapter.itemCount
-//
-//                if((!isLoading && !binding.refreshRecyclerView.isRefreshing)
-//                    && (newState == RecyclerView.SCROLL_STATE_DRAGGING)){
-//                    if(visibleItemCount + currentVisibleItem >= totalItem){
-//                        //cek itu search/datadefault
-//                        getDataDefault(true)
-//                        Toast.makeText(this@MainActivity, "curr$currentVisibleItem, first${firstVisibleItem}, last$lastVisibleItem, total$totalItem, visibleitem$visibleItemCount", Toast.LENGTH_LONG).show()
-//                    }
-//                }
-//                firstVisibleItem = currentVisibleItem
-//            }
-            //dragging bawah ke atas. lastvisible+1 lebih besar dari totalitem. isLoadingnya false
-        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,8 +101,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        setupToolbar()
-        setupRecyclerView()
+        if(!isConfigChange){
+            setupToolbar()
+            setupRecyclerView()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -124,8 +113,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null){
-            val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (currentFocus != null && imm.isAcceptingText){
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
@@ -148,22 +137,33 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        viewModel.setConfiguration(newConfig.orientation)
+        viewModel.getConfiguration().observe(this, {
+            isConfigChange = (it != newConfig.orientation)
+        })
+        super.onConfigurationChanged(newConfig)
+    }
+
     override fun onQueryTextSubmit(query: String?): Boolean {
+        viewModel.setSearchKey(query!!)
+        binding.searchView.clearFocus()
         if(!TextUtils.isEmpty(query)){
-            getDataSearch(query!!, false)
+            getDataSearch(query, false)
         }else{
             getDataDefault(false)
         }
-        return false
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+        viewModel.setSearchKey(newText!!)
         if(!TextUtils.isEmpty(newText)){
-            getDataSearch(newText!!, false)
+            getDataSearch(newText, false)
         }else{
             getDataDefault(false)
         }
-        return false
+        return true
     }
 
     override fun onRefresh() {
@@ -177,4 +177,5 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     }
 
     //todo : onFailure bikin mekanisme kalau error gimana, swipe bawah buat nambah data yang di load
+    //todo : abis null, langsung error
 }

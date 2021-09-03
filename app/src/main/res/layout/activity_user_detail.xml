@@ -38,7 +38,7 @@
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_gravity="center"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginEnd="12dp"
                     android:layout_marginBottom="6dp"
                     android:contentDescription="@string/account_profile_picture"
                     android:scaleType="fitCenter"
@@ -87,7 +87,8 @@
                 android:maxLines="3"
                 app:drawableStartCompat="@drawable/ic_bio"
                 android:textColor="@color/white"
-                app:drawableTint="@color/white" />
+                app:drawableTint="@color/white"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/detail_company"
@@ -104,7 +105,8 @@
                 android:maxLines="2"
                 app:drawableStartCompat="@drawable/ic_company"
                 android:textColor="@color/white"
-                app:drawableTint="@color/white" />
+                app:drawableTint="@color/white"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/detail_location"
@@ -138,7 +140,8 @@
                 android:maxLines="1"
                 app:drawableStartCompat="@drawable/ic_email"
                 android:textColor="@color/white"
-                app:drawableTint="@color/white" />
+                app:drawableTint="@color/white"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/detail_website"
@@ -155,7 +158,8 @@
                 android:maxLines="1"
                 app:drawableStartCompat="@drawable/ic_web"
                 android:textColor="@color/white"
-                app:drawableTint="@color/white" />
+                app:drawableTint="@color/white"
+                tools:ignore="RtlSymmetry" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -177,7 +181,8 @@
                     android:maxLines="1"
                     app:drawableLeftCompat="@drawable/ic_person"
                     android:textColor="@color/white"
-                    app:drawableTint="@color/white"/>
+                    app:drawableTint="@color/white"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -186,7 +191,8 @@
                     android:paddingHorizontal="@dimen/subview_padding"
                     android:src="@drawable/ic_circle"
                     android:layout_gravity="center"
-                    app:tint="@color/white"/>
+                    app:tint="@color/white"
+                    android:contentDescription="@string/separator"/>
 
                 <TextView
                     android:id="@+id/detail_following"

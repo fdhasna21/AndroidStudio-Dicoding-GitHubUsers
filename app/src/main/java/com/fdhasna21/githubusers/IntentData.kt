@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 
 class IntentData(val context: Context){
-    fun openBrowser(url: kotlin.String){
+    fun openBrowser(url: String){
         val intent = Intent()
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
         intent.action = Intent.ACTION_VIEW

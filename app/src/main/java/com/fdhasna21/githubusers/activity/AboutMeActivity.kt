@@ -2,19 +2,39 @@ package com.fdhasna21.githubusers.activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.IntentData
 import com.fdhasna21.githubusers.R
+import com.fdhasna21.githubusers.activity.viewmodel.AboutMeActivityViewModel
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
 
 
 class AboutMeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutMeBinding
+    private lateinit var viewModel : AboutMeActivityViewModel
     private var intentData = IntentData(this)
+    private var isConfigChange = false
+
+    private fun setupToolbar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.title = getString(R.string.about_me)
+    }
+
+    private fun setupHeader(){
+        binding.aboutDescription.text = getString(R.string.tab)+getString(R.string.profile_description)
+        Glide.with(this)
+            .load(R.drawable.profile_photo)
+            .circleCrop()
+            .into(binding.profilePicture)
+    }
 
     private fun setupFindMe(){
         binding.aboutFindMe.itemIconTintList = null
@@ -26,7 +46,7 @@ class AboutMeActivity : AppCompatActivity() {
                         applicationContext.packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
                         intent.action = Intent.ACTION_VIEW
                         intent.type = "text/plain"
-                        intent.data = Uri.parse("https://wa.me/6281212719895")
+                        intent.data = Uri.parse(BuildConfig.CREATOR_WHATSAPP)
                         intent.setPackage("com.whatsapp")
                         startActivity(intent)
                     } catch (e : PackageManager.NameNotFoundException) {
@@ -34,10 +54,10 @@ class AboutMeActivity : AppCompatActivity() {
                     }
                     true }
                 R.id.about_dicoding -> {
-                    intentData.openBrowser("https://www.dicoding.com/users/fernandahasna")
+                    intentData.openBrowser(BuildConfig.CREATOR_DICODING)
                     true }
                 R.id.about_email ->{
-                    intentData.openEmail("fernanda.daymara.hasna@gmail.com")
+                    intentData.openEmail(BuildConfig.CREATOR_EMAIL)
                     true }
                 R.id.about_github -> {
                     val intent = Intent(this, UserDetailActivity::class.java)
@@ -66,22 +86,25 @@ class AboutMeActivity : AppCompatActivity() {
         binding = ActivityAboutMeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(false)
-        supportActionBar?.title = getString(R.string.about_me)
-
-        binding.aboutDescription.text = getString(R.string.tab)+getString(R.string.profile_description)
-        Glide.with(this)
-            .load(R.drawable.profile_photo)
-            .circleCrop()
-            .into(binding.profilePicture)
-
-        setupFindMe()
-        setupCredit()
+        viewModel = ViewModelProvider(this).get(AboutMeActivityViewModel::class.java)
+        if(!isConfigChange){
+            setupToolbar()
+            setupHeader()
+            setupFindMe()
+            setupCredit()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        viewModel.setConfiguration(newConfig.orientation)
+        viewModel.getConfiguration().observe(this, {
+            isConfigChange = (it != newConfig.orientation)
+        })
+        super.onConfigurationChanged(newConfig)
     }
 }

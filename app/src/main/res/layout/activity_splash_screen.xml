@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".activity.SplashScreenActivity"
     android:background="@color/dark_mode"
-    android:forceDarkAllowed="false">
+    android:forceDarkAllowed="false"
+    tools:targetApi="q"
+    tools:ignore="Overdraw">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
@@ -27,7 +29,7 @@
         app:lottie_rawRes="@raw/github_ss" />
 
     <TextView
-        android:text="Created by Fernanda Daymara Hasna"
+        android:text="@string/created_by_fernanda_daymara_hasna"
         android:gravity="center"
         style="?attr/textAppearanceBody2"
         android:layout_width="match_parent"

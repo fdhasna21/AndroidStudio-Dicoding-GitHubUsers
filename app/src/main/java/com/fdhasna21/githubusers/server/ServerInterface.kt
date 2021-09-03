@@ -11,26 +11,26 @@ import retrofit2.http.Query
 interface ServerInterface {
     @GET("search/users")
     fun search(@Query("q") keyword:String,
-               @Query("per_page") per_page:Int=2,
-               @Query("page") page:Int=1):Call<SearchUsers>
+               @Query("per_page") per_page:Int=15,
+               @Query("page") page:Int=1):Call<SearchUsers>?
 
     @GET("users/{username}") //an user
-    fun user(@Path("username") username:String) : Call<User>
+    fun user(@Path("username") username:String) : Call<User>?
 
     @GET("users") //users -> per_page:Int=10, since:Int
-    fun users(@Query("per_page") per_page:Int=2,
+    fun users(@Query("per_page") per_page:Int=15,
               @Query("since") lastID:Int
-    ):Call<ArrayList<User>>
+    ):Call<ArrayList<User>>?
 
     @GET("users/{username}/following")
-    fun following(@Path("username") username:String):Call<ArrayList<User>>
+    fun following(@Path("username") username:String):Call<ArrayList<User>>?
 
     @GET("users/{username}/followers")
-    fun followers(@Path("username") username:String):Call<ArrayList<User>>
+    fun followers(@Path("username") username:String):Call<ArrayList<User>>?
 
     @GET("users/{username}/repos")
-    fun repository(@Path("username") username: String):Call<ArrayList<Repository>>
+    fun repository(@Path("username") username: String):Call<ArrayList<Repository>>?
 
     @GET("users/{username}/starred")
-    fun starred(@Path("username") username: String):Call<ArrayList<Repository>>
+    fun starred(@Path("username") username: String):Call<ArrayList<Repository>>?
 }
