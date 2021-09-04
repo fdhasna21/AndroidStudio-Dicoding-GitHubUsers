@@ -1,8 +1,11 @@
 package com.fdhasna21.githubusers.activity.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.fdhasna21.githubusers.DataUtils
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
+import com.fdhasna21.githubusers.dataclass.ErrorType
 import com.fdhasna21.githubusers.dataclass.SearchUsers
 import com.fdhasna21.githubusers.dataclass.User
 import com.fdhasna21.githubusers.server.ServerAPI
@@ -14,87 +17,79 @@ import retrofit2.Response
 class MainActivityViewModel : ViewModel() {
     private var serverInterface : ServerInterface = ServerAPI().getServerAPI()!!.create(ServerInterface::class.java)
     private var activityConfig : MutableLiveData<Int> = MutableLiveData()
-    private var defaultList : MutableLiveData<ArrayList<User>> = MutableLiveData()
-    private var searchList : MutableLiveData<ArrayList<User>> = MutableLiveData()
-    private var searchKey : MutableLiveData<String> = MutableLiveData("")
+    private var dataList : MutableLiveData<ArrayList<User>> = MutableLiveData()
     private lateinit var rowAdapter : UserRowAdapter
-    var errorThrowable : String = ""
+    private var errorType : ErrorType = ErrorType.OTHERS
+    private var errorCode : Int? = 200
     var defaultLastID : Int = 0
     var searchPage : Int = 1
 
-    fun getDefaultData() : MutableLiveData<ArrayList<User>>{
-        return defaultList
-    }
-
-    fun getSearchData() : MutableLiveData<ArrayList<User>>{
-        return searchList
-    }
-
     fun setAdapter(adapter : UserRowAdapter){
         rowAdapter = adapter
-    }
-
-    fun getConfiguration() : MutableLiveData<Int> {
-        return activityConfig
     }
 
     fun setConfiguration(config : Int){
         activityConfig.value = config
     }
 
-    fun setSearchKey(query : String){
-        searchKey.value = query
-    }
+    fun getConfiguration() : MutableLiveData<Int> = activityConfig
 
-    fun getSearchKey() : String{
-        return searchKey.value.toString()
-    }
+    fun getDataList() : MutableLiveData<ArrayList<User>> = dataList
 
-    fun setDefaultData(){
-        serverInterface.users(lastID = defaultLastID)?.enqueue(object : Callback<ArrayList<User>> {
-            override fun onResponse(call: Call<ArrayList<User>>, response: Response<ArrayList<User>>) {
-                if(response.isSuccessful){
-                    val data : ArrayList<User> = response.body()!!
-                    rowAdapter.addData(data)
-                    defaultList.value = data
-                    defaultLastID = data[data.size-1].id!!
-                } else {
-                    val data : ArrayList<User> = arrayListOf()
-                    rowAdapter.addData(data)
-                    defaultList.value = arrayListOf()
-                    defaultLastID = 0
-                    errorThrowable = response.errorBody().toString()
-                }
-            }
+    fun getErrorType() = Pair(errorType, errorCode.toString())
 
-            override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
-                defaultList.value = null
-                errorThrowable = t.toString()
-            }
-        })
-    }
-
-    fun setSearchData(keyword:String){
+    fun searchData(keyword:String){
         serverInterface.search(keyword)?.enqueue(object : Callback<SearchUsers>{
             override fun onResponse(call: Call<SearchUsers>, response: Response<SearchUsers>) {
                 if(response.isSuccessful){
-                    val data : ArrayList<User> = response.body()!!.users!!
-                    rowAdapter.addData(data)
-                    searchList.value = data
+                    val rawData = response.body()!!
+                    lateinit var finalData : ArrayList<User>
+                    if(rawData.total == 0)
+                    {
+                        errorType = ErrorType.DATA_EMPTY
+                        finalData = arrayListOf()
+                    } else {
+                        finalData = rawData.users!!
+                    }
+                    dataList.value = finalData
+                    rowAdapter.addData(finalData)
                     searchPage++
                 } else {
-                    val data : ArrayList<User> = arrayListOf()
-                    rowAdapter.addData(data)
-                    searchList.value = arrayListOf()
-                    searchPage = 1
-                    errorThrowable = response.errorBody().toString()
+                    notWantedResponse(response.code(), "Search")
                 }
             }
 
             override fun onFailure(call: Call<SearchUsers>, t: Throwable) {
-                defaultList.value = null
-                errorThrowable = t.toString()
+                dataList.value = null
+                notWantedResponse(null, "Search")
             }
         })
+    }
+
+    fun defaultData(){
+        serverInterface.users(lastID = defaultLastID)?.enqueue(object : Callback<ArrayList<User>> {
+            override fun onResponse(call: Call<ArrayList<User>>, response: Response<ArrayList<User>>) {
+                if(response.isSuccessful){
+                    val data : ArrayList<User> = response.body()!!
+                    dataList.value = data
+                    rowAdapter.addData(data)
+                    defaultLastID = data[data.size-1].id!!
+                } else {
+                    notWantedResponse(response.code(), "Search")
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
+                dataList.value = null
+                notWantedResponse(null, "Search")
+            }
+        })
+    }
+
+    private fun notWantedResponse(code:Int?, flag:String){
+        dataList.value = null
+        errorType = DataUtils().checkErrorType(code)
+        errorCode = code
+        Log.i("mainActivity_$flag", "$code : $errorType")
     }
 }

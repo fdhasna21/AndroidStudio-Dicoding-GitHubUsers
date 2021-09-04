@@ -312,4 +312,6 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             R.string.following
         )
     }
+
+    //todo : error, refresh
 }

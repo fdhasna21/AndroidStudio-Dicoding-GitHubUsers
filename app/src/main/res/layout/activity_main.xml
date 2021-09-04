@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:background="@color/dark_mode">
+        android:background="?attr/colorPrimary">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,10 +40,10 @@
         android:layout_height="match_parent"
         android:layout_below="@id/main_search"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -56,4 +56,11 @@
         android:visibility="invisible"
         app:trackCornerRadius="4dp"
         app:trackThickness="6dp"/>
+
+    <include
+        android:id="@+id/main_error"
+        layout="@layout/layout_error_response"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

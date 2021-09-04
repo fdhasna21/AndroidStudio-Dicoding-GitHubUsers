@@ -6,8 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.fdhasna21.githubusers.dataclass.DataType
 import com.fdhasna21.githubusers.fragment.TabLayoutFragment
 
-class ViewPagerAdapter(activity : AppCompatActivity) : FragmentStateAdapter(activity) {
-    private var activity = activity
+class ViewPagerAdapter(private var activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     private var totalFragments: Int = 0
     private lateinit var dataFragment : ArrayList<ArrayList<*>>
     private var fragments : ArrayList<TabLayoutFragment> = arrayListOf()

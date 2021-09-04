@@ -32,9 +32,10 @@
             android:textSize="18sp"/>
 
         <TextView
+            android:id="@+id/about_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_email"
+            android:text="@string/email"
             android:textAlignment="center"
             style="?attr/textAppearanceSubtitle1"
             android:layout_marginTop="-4dp"/>

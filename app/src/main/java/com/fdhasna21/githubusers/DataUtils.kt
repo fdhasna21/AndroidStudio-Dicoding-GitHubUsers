@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
+import com.fdhasna21.githubusers.dataclass.ErrorType
 import kotlin.math.ln
 import kotlin.math.pow
 
@@ -31,5 +32,17 @@ class DataUtils {
         }
         view.draw(canvas)
         return output
+    }
+
+    fun checkErrorType(code:Int?) : ErrorType {
+        return when(code){
+            null -> ErrorType.LOST_CONNECTION
+            200 -> ErrorType.DATA_EMPTY
+            304 -> ErrorType.NOT_MODIFIED
+            401, 422 -> ErrorType.UNPROCESSABLE_ENTITY
+            403 -> ErrorType.FORBIDDEN
+            in 500..599 -> ErrorType.SERVER_ERROR
+            else -> ErrorType.OTHERS
+        }
     }
 }

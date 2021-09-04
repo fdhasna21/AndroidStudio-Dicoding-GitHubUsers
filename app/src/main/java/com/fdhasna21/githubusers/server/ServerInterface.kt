@@ -14,13 +14,13 @@ interface ServerInterface {
                @Query("per_page") per_page:Int=15,
                @Query("page") page:Int=1):Call<SearchUsers>?
 
-    @GET("users/{username}") //an user
-    fun user(@Path("username") username:String) : Call<User>?
-
-    @GET("users") //users -> per_page:Int=10, since:Int
+    @GET("users")
     fun users(@Query("per_page") per_page:Int=15,
               @Query("since") lastID:Int
     ):Call<ArrayList<User>>?
+
+    @GET("users/{username}") //an user
+    fun user(@Path("username") username:String) : Call<User>?
 
     @GET("users/{username}/following")
     fun following(@Path("username") username:String):Call<ArrayList<User>>?

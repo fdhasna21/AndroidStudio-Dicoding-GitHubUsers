@@ -44,9 +44,4 @@ class UserRowAdapter(val data:ArrayList<User>, val context: Context)
         data.addAll(newData)
         notifyDataSetChanged()
     }
-
-    fun clearData(){
-        data.clear()
-        notifyDataSetChanged()
-    }
 }

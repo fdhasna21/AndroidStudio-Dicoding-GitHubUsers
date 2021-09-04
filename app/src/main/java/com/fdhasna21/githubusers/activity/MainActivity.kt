@@ -10,8 +10,8 @@ import android.text.TextUtils
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +20,7 @@ import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.MainActivityViewModel
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
+import com.fdhasna21.githubusers.dataclass.User
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: ActivityMainBinding
@@ -29,54 +30,43 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     private var isLoading = false
     private var isConfigChange = false
 
+    private fun setResponse(it : ArrayList<User>?){
+        if(it == null){
+            val (errorType, errorCode) = viewModel.getErrorType()
+            val error : ArrayList<Int> = errorType.setError(this)
+            binding.mainError.layoutError.visibility = View.VISIBLE
+            binding.mainError.errorImage.setImageDrawable(AppCompatResources.getDrawable(this, error[0]))
+            binding.mainError.errorMessage.text = listOf(getString(error[1]), errorCode).joinToString(" \n Code:")
+        } else {
+            binding.mainError.layoutError.visibility = View.GONE
+        }
+        isLoading = false
+        binding.mainProgress.visibility = View.INVISIBLE
+        binding.refreshRecyclerView.isRefreshing = false
+    }
+
     private fun getDataDefault(isLoadMore:Boolean){
         isLoading = true
+        binding.mainProgress.visibility = View.VISIBLE
         if(!isLoadMore){
-            binding.mainProgress.visibility = View.VISIBLE
             viewModel.defaultLastID = 0
         }
-
-        viewModel.setDefaultData()
-        viewModel.getDefaultData().observe(this, {
-            if(it != null){
-                if(it.isEmpty()){
-                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
-                }
-                isLoading = false
-                binding.mainProgress.visibility = View.INVISIBLE
-                binding.refreshRecyclerView.isRefreshing = false
-            } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.defaultData()
+        viewModel.getDataList().observe(this, { setResponse(it) })
     }
 
     private fun getDataSearch(keyword:String, isLoadMore: Boolean){
         isLoading = true
+        binding.mainProgress.visibility = View.VISIBLE
         if(!isLoadMore){
-            binding.mainProgress.visibility = View.VISIBLE
-            rowAdapter.clearData()
             viewModel.searchPage = 1
         }
-
-        viewModel.setSearchData(keyword)
-        viewModel.getSearchData().observe(this, {
-            if(it != null){
-                if(it.isEmpty()){
-                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
-                }
-                isLoading = false
-                binding.mainProgress.visibility = View.INVISIBLE
-                binding.refreshRecyclerView.isRefreshing = false
-            } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.searchData(keyword)
+        viewModel.getDataList().observe(this, { setResponse(it) })
     }
 
     private fun setupToolbar(){
         supportActionBar?.title = getString(R.string.app_name)
-
         val searchManager : SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         binding.searchView.setOnQueryTextListener(this)
@@ -146,10 +136,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        viewModel.setSearchKey(query!!)
         binding.searchView.clearFocus()
         if(!TextUtils.isEmpty(query)){
-            getDataSearch(query, false)
+            getDataSearch(query!!, false)
         }else{
             getDataDefault(false)
         }
@@ -157,9 +146,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        viewModel.setSearchKey(newText!!)
         if(!TextUtils.isEmpty(newText)){
-            getDataSearch(newText, false)
+            getDataSearch(newText!!, false)
         }else{
             getDataDefault(false)
         }
@@ -167,7 +155,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     }
 
     override fun onRefresh() {
-        rowAdapter.clearData()
         viewModel.defaultLastID = 0
         if(binding.searchView.query.toString().isEmpty()){
             getDataDefault(false)
@@ -175,7 +162,4 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
             getDataSearch(binding.searchView.query.toString(), false)
         }
     }
-
-    //todo : onFailure bikin mekanisme kalau error gimana, swipe bawah buat nambah data yang di load
-    //todo : abis null, langsung error
 }

@@ -29,7 +29,8 @@ class AboutMeActivity : AppCompatActivity() {
     }
 
     private fun setupHeader(){
-        binding.aboutDescription.text = getString(R.string.tab)+getString(R.string.profile_description)
+        binding.aboutEmail.text = BuildConfig.CREATOR_EMAIL
+        binding.aboutDescription.text = listOf(getString(R.string.tab), getString(R.string.profile_description)).joinToString(" ")
         Glide.with(this)
             .load(R.drawable.profile_photo)
             .circleCrop()
@@ -73,8 +74,9 @@ class AboutMeActivity : AppCompatActivity() {
         binding.aboutCredit.itemIconTintList = null
         binding.aboutCredit.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.about_dicoding_content -> intentData.openBrowser("https://www.dicoding.com/academies/14")
+                R.id.about_github_content -> intentData.openBrowser("https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api")
                 R.id.about_lottie -> intentData.openBrowser("https://lottiefiles.com/6637-github-logo")
+                R.id.about_pixeltrue -> intentData.openBrowser("https://www.pixeltrue.com/free-packs/error-state")
                 R.id.about_freepik -> intentData.openBrowser("https://www.freepik.com/")
             }
             true
