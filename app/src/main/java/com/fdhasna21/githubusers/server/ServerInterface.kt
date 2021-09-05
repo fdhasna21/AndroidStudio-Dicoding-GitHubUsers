@@ -1,8 +1,8 @@
 package com.fdhasna21.githubusers.server
 
-import com.fdhasna21.githubusers.dataclass.Repository
-import com.fdhasna21.githubusers.dataclass.SearchUsers
-import com.fdhasna21.githubusers.dataclass.User
+import com.fdhasna21.githubusers.resolver.dataclass.Repository
+import com.fdhasna21.githubusers.resolver.dataclass.SearchUsers
+import com.fdhasna21.githubusers.resolver.dataclass.User
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

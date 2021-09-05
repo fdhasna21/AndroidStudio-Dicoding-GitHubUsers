@@ -3,11 +3,12 @@ package com.fdhasna21.githubusers.activity.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdhasna21.githubusers.DataUtils
+import com.fdhasna21.githubusers.resolver.DataUtils
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
-import com.fdhasna21.githubusers.dataclass.ErrorType
-import com.fdhasna21.githubusers.dataclass.SearchUsers
-import com.fdhasna21.githubusers.dataclass.User
+import com.fdhasna21.githubusers.resolver.dataclass.ErrorResponse
+import com.fdhasna21.githubusers.resolver.enumclass.ErrorType
+import com.fdhasna21.githubusers.resolver.dataclass.SearchUsers
+import com.fdhasna21.githubusers.resolver.dataclass.User
 import com.fdhasna21.githubusers.server.ServerAPI
 import com.fdhasna21.githubusers.server.ServerInterface
 import retrofit2.Call
@@ -19,8 +20,7 @@ class MainActivityViewModel : ViewModel() {
     private var activityConfig : MutableLiveData<Int> = MutableLiveData()
     private var dataList : MutableLiveData<ArrayList<User>> = MutableLiveData()
     private lateinit var rowAdapter : UserRowAdapter
-    private var errorType : ErrorType = ErrorType.OTHERS
-    private var errorCode : Int? = 200
+    var errorResponse : ErrorResponse = ErrorResponse()
     var defaultLastID : Int = 0
     var searchPage : Int = 1
 
@@ -36,8 +36,6 @@ class MainActivityViewModel : ViewModel() {
 
     fun getDataList() : MutableLiveData<ArrayList<User>> = dataList
 
-    fun getErrorType() = Pair(errorType, errorCode.toString())
-
     fun searchData(keyword:String){
         serverInterface.search(keyword)?.enqueue(object : Callback<SearchUsers>{
             override fun onResponse(call: Call<SearchUsers>, response: Response<SearchUsers>) {
@@ -46,7 +44,8 @@ class MainActivityViewModel : ViewModel() {
                     lateinit var finalData : ArrayList<User>
                     if(rawData.total == 0)
                     {
-                        errorType = ErrorType.DATA_EMPTY
+                        errorResponse.type = ErrorType.DATA_EMPTY
+                        errorResponse.code = response.code()
                         finalData = arrayListOf()
                     } else {
                         finalData = rawData.users!!
@@ -60,7 +59,6 @@ class MainActivityViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<SearchUsers>, t: Throwable) {
-                dataList.value = null
                 notWantedResponse(null, "Search")
             }
         })
@@ -75,21 +73,23 @@ class MainActivityViewModel : ViewModel() {
                     rowAdapter.addData(data)
                     defaultLastID = data[data.size-1].id!!
                 } else {
-                    notWantedResponse(response.code(), "Search")
+                    notWantedResponse(response.code(), "Default")
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
-                dataList.value = null
-                notWantedResponse(null, "Search")
+                notWantedResponse(null, "Default")
             }
         })
     }
 
     private fun notWantedResponse(code:Int?, flag:String){
+        errorResponse = ErrorResponse(
+            type = DataUtils().checkErrorType(code),
+            flag = flag,
+            code = code
+        )
+        Log.i("mainActivity_${errorResponse.flag}", "${errorResponse.type}")
         dataList.value = null
-        errorType = DataUtils().checkErrorType(code)
-        errorCode = code
-        Log.i("mainActivity_$flag", "$code : $errorType")
     }
 }

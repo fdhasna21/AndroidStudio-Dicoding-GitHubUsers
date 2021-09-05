@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
-import com.fdhasna21.githubusers.IntentData
+import com.fdhasna21.githubusers.resolver.IntentData
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.AboutMeActivityViewModel
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding

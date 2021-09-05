@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.dataclass
+package com.fdhasna21.githubusers.resolver.dataclass
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

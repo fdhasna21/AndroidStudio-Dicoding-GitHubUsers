@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.activity.UserDetailActivity
 import com.fdhasna21.githubusers.databinding.RowRecyclerUserBinding
-import com.fdhasna21.githubusers.dataclass.User
-
+import com.fdhasna21.githubusers.resolver.dataclass.User
 
 class UserRowAdapter(val data:ArrayList<User>, val context: Context)
     :RecyclerView.Adapter<UserRowAdapter.ViewHolder>() {

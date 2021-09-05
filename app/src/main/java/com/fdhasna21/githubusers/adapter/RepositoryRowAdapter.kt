@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.fdhasna21.githubusers.DataUtils
-import com.fdhasna21.githubusers.IntentData
+import com.fdhasna21.githubusers.resolver.DataUtils
+import com.fdhasna21.githubusers.resolver.IntentData
 import com.fdhasna21.githubusers.databinding.RowRecyclerRepositoryBinding
-import com.fdhasna21.githubusers.dataclass.Repository
+import com.fdhasna21.githubusers.resolver.dataclass.Repository
 
 class RepositoryRowAdapter(val data:ArrayList<Repository>, val context: Context)
     :RecyclerView.Adapter<RepositoryRowAdapter.ViewHolder>(){
@@ -54,14 +54,4 @@ class RepositoryRowAdapter(val data:ArrayList<Repository>, val context: Context)
         return data.size
     }
 
-    fun addData(newData : ArrayList<Repository>){
-        data.clear()
-        data.addAll(newData)
-        notifyDataSetChanged()
-    }
-
-    fun clearData(){
-        data.clear()
-        notifyDataSetChanged()
-    }
 }

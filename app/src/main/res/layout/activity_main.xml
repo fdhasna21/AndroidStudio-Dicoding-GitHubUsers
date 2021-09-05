@@ -46,20 +46,9 @@
             android:layout_height="wrap_content" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/main_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        app:trackCornerRadius="4dp"
-        app:trackThickness="6dp"/>
-
     <include
-        android:id="@+id/main_error"
-        layout="@layout/layout_error_response"
+        android:id="@+id/main_response"
+        layout="@layout/layout_retrofit_response"
         android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

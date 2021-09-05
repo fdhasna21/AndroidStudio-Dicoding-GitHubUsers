@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers
+package com.fdhasna21.githubusers.resolver
 
 import android.content.Context
 import android.content.Intent

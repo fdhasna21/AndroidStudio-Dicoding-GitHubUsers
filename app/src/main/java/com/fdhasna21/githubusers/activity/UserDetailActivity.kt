@@ -4,27 +4,29 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
-import com.fdhasna21.githubusers.DataUtils
-import com.fdhasna21.githubusers.IntentData
+import com.fdhasna21.githubusers.resolver.DataUtils
+import com.fdhasna21.githubusers.resolver.IntentData
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.UserDetailActivityViewModel
 import com.fdhasna21.githubusers.adapter.ViewPagerAdapter
 import com.fdhasna21.githubusers.databinding.ActivityUserDetailBinding
-import com.fdhasna21.githubusers.dataclass.DataType
-import com.fdhasna21.githubusers.dataclass.Repository
-import com.fdhasna21.githubusers.dataclass.User
+import com.fdhasna21.githubusers.resolver.enumclass.DataType
+import com.fdhasna21.githubusers.resolver.dataclass.Repository
+import com.fdhasna21.githubusers.resolver.dataclass.User
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.io.File
 import java.io.FileNotFoundException
@@ -37,7 +39,6 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     private var intentData = IntentData(this)
     private var isConfigChange = false
-
     private var repository : ArrayList<Repository> = arrayListOf()
     private var starred : ArrayList<Repository> = arrayListOf()
     private var followers : ArrayList<User> = arrayListOf()
@@ -63,11 +64,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             binding.detailWebsite,         //8
             binding.detailEmail            //9
         )
-        binding.detailProgress.visibility = View.VISIBLE
+        binding.detailResponse.progressCircular.visibility = View.VISIBLE
         viewModel.detailList.observe(this, { output ->
             if(output != null){
+                setupTabLayout()
+                setupBottomSheet()
                 binding.detailContent.visibility = View.VISIBLE
-                binding.detailProgress.visibility = View.INVISIBLE
+                binding.detailResponse.progressCircular.visibility = View.INVISIBLE
                 views.forEachIndexed { idx: Int, it: View? ->
                     if (idx == 0) {
                         Glide.with(this@UserDetailActivity)
@@ -97,7 +100,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
             } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
+                val error : ArrayList<Int> = viewModel.errorDetail.type?.setError(this@UserDetailActivity)!!
+                binding.detailResponse.layoutError.visibility = View.VISIBLE
+                binding.detailResponse.errorImage.setImageDrawable(AppCompatResources.getDrawable(this, error[0]))
+                binding.detailResponse.errorMessage.text = listOf(getString(error[1]), viewModel.errorDetail.code).joinToString(". Code:")
             }
         })
     }
@@ -109,28 +115,47 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             tab.text = resources.getString(REPO_TAB_TITLES[position])
         }.attach()
 
-        viewModel.repositoryList.observe(this, {
-            if(it != null){
-                if(it.isEmpty()){
-                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
-                }
-                repository.addAll(it)
-                tabLayoutAdapter.updateAdapter()
+        viewModel.getRepositoryData()
+        viewModel.repositoryList.observe(this@UserDetailActivity, {
+            if(it == null || it.isEmpty()){
+                val error : ArrayList<Int> = viewModel.errorRepo.type?.setError(this@UserDetailActivity)!!
+                tabLayoutAdapter.setFragmentError(0, true,
+                    drawableID = error[0],
+                    messageID = error[1],
+                    code = viewModel.errorRepo.code)
             } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
+                repository.addAll(it)
+                tabLayoutAdapter.updateAdapter(0)
+                tabLayoutAdapter.setFragmentError(0, false)
             }
         })
 
-        viewModel.starredList.observe(this, {
-            if(it != null){
-                if(it.isEmpty()){
-                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
-                }
-                starred.addAll(it)
-                tabLayoutAdapter.updateAdapter()
+        viewModel.starredList.observe(this@UserDetailActivity, {
+            if(it == null || it.isEmpty()){
+                Log.i("userDetailActivity", "setupTabLayout: ${viewModel.errorStarred}")
+                val error : ArrayList<Int> = viewModel.errorStarred.type?.setError(this@UserDetailActivity)!!
+                tabLayoutAdapter.setFragmentError(1, true,
+                    drawableID = error[0],
+                    messageID = error[1],
+                    code = viewModel.errorStarred.code)
             } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
+                starred.addAll(it)
+                tabLayoutAdapter.updateAdapter(1)
+                tabLayoutAdapter.setFragmentError(1, false)
             }
+        })
+
+        binding.detailTabRepo.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab!!.position){
+                    0 -> viewModel.getRepositoryData()
+                    1 -> viewModel.getStarredData()
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
@@ -147,28 +172,46 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             tab.text = resources.getString(FOLLOW_TAB_TITLES[position])
         }.attach()
 
-        viewModel.followersList.observe(this, {
-            if(it != null){
-                if(it.isEmpty()){
-                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
-                }
-                followers.addAll(it)
-                bottomSheetAdapter.updateAdapter()
+        viewModel.getFollowersData()
+        viewModel.followersList.observe(this@UserDetailActivity, {
+            if(it == null || it.isEmpty()){
+                val error : ArrayList<Int> = viewModel.errorFollowers.type?.setError(this@UserDetailActivity)!!
+                bottomSheetAdapter.setFragmentError(0, true,
+                    drawableID = error[0],
+                    messageID = error[1],
+                    code = viewModel.errorFollowers.code)
             } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
+                followers.addAll(it)
+                bottomSheetAdapter.updateAdapter(0)
+                bottomSheetAdapter.setFragmentError(0, false)
             }
         })
 
-        viewModel.followingList.observe(this, {
-            if(it != null){
-                if(it.isEmpty()){
-                    Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show()
-                }
-                following.addAll(it)
-                bottomSheetAdapter.updateAdapter()
+        viewModel.followingList.observe(this@UserDetailActivity, {
+            if(it == null || it.isEmpty()){
+                val error : ArrayList<Int> = viewModel.errorFollowing.type?.setError(this@UserDetailActivity)!!
+                bottomSheetAdapter.setFragmentError(1, true,
+                    drawableID = error[0],
+                    messageID = error[1],
+                    code = viewModel.errorFollowing.code)
             } else {
-                Toast.makeText(this, viewModel.errorThrowable, Toast.LENGTH_SHORT).show()
+                following.addAll(it)
+                bottomSheetAdapter.updateAdapter(1)
+                bottomSheetAdapter.setFragmentError(1, false)
             }
+        })
+
+        binding.detailBottomSheet.followTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab!!.position){
+                    0 -> viewModel.getFollowersData()
+                    1 -> viewModel.getFollowingData()
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
@@ -180,13 +223,11 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         viewModel = ViewModelProvider(this).get(UserDetailActivityViewModel::class.java)
         if(!isConfigChange){
             binding.detailContent.visibility = View.INVISIBLE
-            binding.detailProgress.visibility = View.VISIBLE
+            binding.detailResponse.progressCircular.visibility = View.VISIBLE
             viewModel.username = intent.getStringExtra(EXTRA_USER)!!
-            viewModel.getUserDetail()
+            viewModel.getDetailData()
             setupToolbar()
             setupHeader()
-            setupBottomSheet()
-            setupTabLayout()
         }
     }
 
@@ -290,6 +331,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
                 binding.detailContent.visibility = View.INVISIBLE
                 binding.detailViewPager.visibility = View.INVISIBLE
                 binding.detailBottomSheet.followViewPager.currentItem = FOLLOW_TAB_TITLES.indexOf(stringResource)
+                binding.detailBottomSheet.followTabLayout.getTabAt(
+                    if(stringResource == R.string.following) 1
+                    else 0
+                )?.select()
             }
             false -> {
                 supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
@@ -312,6 +357,4 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             R.string.following
         )
     }
-
-    //todo : error, refresh
 }

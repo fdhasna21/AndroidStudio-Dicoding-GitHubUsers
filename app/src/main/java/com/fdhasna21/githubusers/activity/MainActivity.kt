@@ -20,7 +20,7 @@ import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.MainActivityViewModel
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
-import com.fdhasna21.githubusers.dataclass.User
+import com.fdhasna21.githubusers.resolver.dataclass.User
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: ActivityMainBinding
@@ -31,36 +31,33 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     private var isConfigChange = false
 
     private fun setResponse(it : ArrayList<User>?){
-        if(it == null){
-            val (errorType, errorCode) = viewModel.getErrorType()
-            val error : ArrayList<Int> = errorType.setError(this)
-            binding.mainError.layoutError.visibility = View.VISIBLE
-            binding.mainError.errorImage.setImageDrawable(AppCompatResources.getDrawable(this, error[0]))
-            binding.mainError.errorMessage.text = listOf(getString(error[1]), errorCode).joinToString(" \n Code:")
+        if(it == null || it.isEmpty()){
+            val error : ArrayList<Int> = viewModel.errorResponse.type?.setError(this)!!
+            binding.mainResponse.layoutError.visibility = View.VISIBLE
+            binding.mainResponse.errorImage.setImageDrawable(AppCompatResources.getDrawable(this, error[0]))
+            binding.mainResponse.errorMessage.text = listOf(getString(error[1]), viewModel.errorResponse.code).joinToString(". Code:")
+            binding.recyclerView.visibility = View.INVISIBLE
         } else {
-            binding.mainError.layoutError.visibility = View.GONE
+            binding.mainResponse.layoutError.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
         }
         isLoading = false
-        binding.mainProgress.visibility = View.INVISIBLE
+        binding.mainResponse.progressCircular.visibility = View.INVISIBLE
         binding.refreshRecyclerView.isRefreshing = false
     }
 
-    private fun getDataDefault(isLoadMore:Boolean){
+    private fun getDataDefault(){
         isLoading = true
-        binding.mainProgress.visibility = View.VISIBLE
-        if(!isLoadMore){
-            viewModel.defaultLastID = 0
-        }
+        binding.mainResponse.progressCircular.visibility = View.VISIBLE
+        viewModel.defaultLastID = 0
         viewModel.defaultData()
         viewModel.getDataList().observe(this, { setResponse(it) })
     }
 
-    private fun getDataSearch(keyword:String, isLoadMore: Boolean){
+    private fun getDataSearch(keyword:String){
         isLoading = true
-        binding.mainProgress.visibility = View.VISIBLE
-        if(!isLoadMore){
-            viewModel.searchPage = 1
-        }
+        binding.mainResponse.progressCircular.visibility = View.VISIBLE
+        viewModel.searchPage = 1
         viewModel.searchData(keyword)
         viewModel.getDataList().observe(this, { setResponse(it) })
     }
@@ -77,7 +74,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         rowAdapter = UserRowAdapter(arrayListOf(), this@MainActivity)
         viewModel.setAdapter(rowAdapter)
         layoutManager = LinearLayoutManager(this)
-        getDataDefault(false)
+        getDataDefault()
 
         binding.recyclerView.adapter = rowAdapter
         binding.recyclerView.layoutManager = layoutManager
@@ -138,28 +135,27 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     override fun onQueryTextSubmit(query: String?): Boolean {
         binding.searchView.clearFocus()
         if(!TextUtils.isEmpty(query)){
-            getDataSearch(query!!, false)
+            getDataSearch(query!!)
         }else{
-            getDataDefault(false)
+            getDataDefault()
         }
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         if(!TextUtils.isEmpty(newText)){
-            getDataSearch(newText!!, false)
+            getDataSearch(newText!!)
         }else{
-            getDataDefault(false)
+            getDataDefault()
         }
         return true
     }
 
     override fun onRefresh() {
-        viewModel.defaultLastID = 0
         if(binding.searchView.query.toString().isEmpty()){
-            getDataDefault(false)
+            getDataDefault()
         } else{
-            getDataSearch(binding.searchView.query.toString(), false)
+            getDataSearch(binding.searchView.query.toString())
         }
     }
 }
