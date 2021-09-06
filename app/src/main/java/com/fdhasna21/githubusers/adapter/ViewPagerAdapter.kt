@@ -25,13 +25,11 @@ class ViewPagerAdapter(private var activity: AppCompatActivity) : FragmentStateA
 
     override fun createFragment(position: Int): Fragment {
         val fragment = TabLayoutFragment(dataType.getAdapter(dataFragment[position], activity))
-        Log.i("userDetailActivity", "createFragment: $fragments")
         fragments.add(fragment)
         return fragment
     }
 
     private fun getFragment(tab: Int) : TabLayoutFragment?{
-//        Log.i("userDetailActivity", "getFragment: tab$tab size${fragments.size}")
         return when {
             tab < fragments.size -> fragments[tab]
             tab == fragments.size -> fragments[tab-1]
@@ -39,16 +37,11 @@ class ViewPagerAdapter(private var activity: AppCompatActivity) : FragmentStateA
         }
     }
 
-    private fun getAdapter(tab:Int) : RecyclerView.Adapter<*>?{
-        return getFragment(tab)?.getAdapter()
-    }
-
     fun updateAdapter(tab:Int){
         getFragment(tab)?.setUpdateData()
     }
 
     fun setFragmentError(tab:Int, visible:Boolean, drawableID:Int=0, messageID:Int=0, code:Int?=null){
-        Log.i("userDetailActivity", "setFragmentError: fr ${getFragment(tab)}")
         getFragment(tab)?.let {
             if(visible){
                 it.setError(drawableID, messageID, code)

@@ -16,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivityViewModel : ViewModel() {
-    private var serverInterface : ServerInterface = ServerAPI().getServerAPI()!!.create(ServerInterface::class.java)
+    private var serverInterface : ServerInterface = ServerAPI().getServerAPI().create(ServerInterface::class.java)
     private var activityConfig : MutableLiveData<Int> = MutableLiveData()
     private var dataList : MutableLiveData<ArrayList<User>> = MutableLiveData()
     private lateinit var rowAdapter : UserRowAdapter

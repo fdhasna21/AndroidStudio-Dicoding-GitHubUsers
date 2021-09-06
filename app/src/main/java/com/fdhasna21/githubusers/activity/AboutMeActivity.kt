@@ -15,7 +15,6 @@ import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.AboutMeActivityViewModel
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
 
-
 class AboutMeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutMeBinding
     private lateinit var viewModel : AboutMeActivityViewModel

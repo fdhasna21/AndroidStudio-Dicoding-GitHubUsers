@@ -66,11 +66,12 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         )
         binding.detailResponse.progressCircular.visibility = View.VISIBLE
         viewModel.detailList.observe(this, { output ->
+            binding.detailResponse.progressCircular.visibility = View.INVISIBLE
             if(output != null){
+                binding.detailViewPager.visibility = View.VISIBLE
+                binding.detailContent.visibility = View.VISIBLE
                 setupTabLayout()
                 setupBottomSheet()
-                binding.detailContent.visibility = View.VISIBLE
-                binding.detailResponse.progressCircular.visibility = View.INVISIBLE
                 views.forEachIndexed { idx: Int, it: View? ->
                     if (idx == 0) {
                         Glide.with(this@UserDetailActivity)
@@ -222,12 +223,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel = ViewModelProvider(this).get(UserDetailActivityViewModel::class.java)
         if(!isConfigChange){
+            viewModel.username = intent.getStringExtra(EXTRA_USER)!!
+            binding.detailViewPager.visibility = View.INVISIBLE
             binding.detailContent.visibility = View.INVISIBLE
             binding.detailResponse.progressCircular.visibility = View.VISIBLE
-            viewModel.username = intent.getStringExtra(EXTRA_USER)!!
-            viewModel.getDetailData()
             setupToolbar()
             setupHeader()
+            viewModel.getDetailData()
         }
     }
 
@@ -241,14 +243,14 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
             R.id.menu_share -> {
                 try {
                     val file = File(this.externalCacheDir, "${viewModel.username}.png")
-                    val fout = FileOutputStream(file)
+                    val fileOutput = FileOutputStream(file)
                     DataUtils().getBitmapFromView(binding.detailShareable).compress(
                         Bitmap.CompressFormat.PNG,
                         100,
-                        fout
+                        fileOutput
                     )
-                    fout.flush()
-                    fout.close()
+                    fileOutput.flush()
+                    fileOutput.close()
                     file.setReadable(true, false)
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

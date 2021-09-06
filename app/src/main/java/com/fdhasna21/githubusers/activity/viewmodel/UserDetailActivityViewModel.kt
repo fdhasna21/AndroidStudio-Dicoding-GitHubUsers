@@ -15,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UserDetailActivityViewModel : ViewModel() {
-    private var serverInterface : ServerInterface = ServerAPI().getServerAPI()!!.create(ServerInterface::class.java)
+    private var serverInterface : ServerInterface = ServerAPI().getServerAPI().create(ServerInterface::class.java)
     private var activityConfig : MutableLiveData<Int> = MutableLiveData()
     var detailList : MutableLiveData<User> = MutableLiveData()
     var repositoryList : MutableLiveData<ArrayList<Repository>> = MutableLiveData()

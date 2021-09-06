@@ -12,7 +12,7 @@ class ServerAPI {
     private var retrofit : Retrofit? = null
     private var httpClient = OkHttpClient.Builder()
 
-    fun getServerAPI() : Retrofit?{
+    fun getServerAPI() : Retrofit{
         if(retrofit == null){
             httpClient.addInterceptor(Interceptor { chain ->
                 val original: Request = chain.request()
@@ -36,6 +36,6 @@ class ServerAPI {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
         }
-        return retrofit
+        return retrofit!!
     }
 }
