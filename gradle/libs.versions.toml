@@ -1,4 +1,6 @@
 [versions]
+androidGradlePlugin = "8.0.1"
+kotlinGradlePlugin = "1.7.20"
 ktx = "1.12.0"
 appcompat = "1.6.1"
 swipeRefreshLayout = "1.1.0"
@@ -25,6 +27,8 @@ androidx-constraintlyt = { group = "androidx.constraintlayout", name = "constrai
 androidx-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewmodel" }
 androidx-legacy = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacy" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
 test-junit = { group = "junit", name = "junit", version.ref = "testjunit"}
 androidx-test-junit = { group = "androidx.test.ext", name ="junit", version.ref = "testjunitext" }
 androidx-test-espresso = { group = "androidx.test.espresso", name ="espresso-core", version.ref = "testespresso" }
