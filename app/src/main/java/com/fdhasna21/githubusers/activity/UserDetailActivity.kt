@@ -24,6 +24,8 @@ import com.fdhasna21.githubusers.databinding.ActivityUserDetailBinding
 import com.fdhasna21.githubusers.resolver.enumclass.DataType
 import com.fdhasna21.githubusers.resolver.dataclass.Repository
 import com.fdhasna21.githubusers.resolver.dataclass.User
+import com.fdhasna21.githubusers.server.ServerAPI
+import com.fdhasna21.githubusers.server.ServerInterface
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
@@ -33,6 +35,9 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
+/**
+ * Updated by Fernanda Hasna on 24/09/2024.
+ */
 class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserDetailBinding
     private lateinit var viewModel: UserDetailActivityViewModel
@@ -222,6 +227,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(UserDetailActivityViewModel::class.java)
+        viewModel.setServerInterface(ServerAPI(this).getServerAPI().create(ServerInterface::class.java))
         if(!isConfigChange){
             viewModel.username = intent.getStringExtra(EXTRA_USER)!!
             binding.detailViewPager.visibility = View.INVISIBLE

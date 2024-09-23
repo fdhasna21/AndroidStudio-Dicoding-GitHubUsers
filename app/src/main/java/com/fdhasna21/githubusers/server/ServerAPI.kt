@@ -1,5 +1,9 @@
 package com.fdhasna21.githubusers.server
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.chuckerteam.chucker.api.RetentionManager
 import com.fdhasna21.githubusers.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -11,9 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
- * Updated by Fernanda Hasna on 23/09/2024.
+ * Updated by Fernanda Hasna on 24/09/2024.
  */
-class ServerAPI {
+class ServerAPI(context : Context) {
     private var retrofit : Retrofit? = null
 
     fun getServerAPI() : Retrofit{
@@ -49,12 +53,23 @@ class ServerAPI {
         chain.proceed(request)
     }
 
+    private val chuckerInterceptor = ChuckerInterceptor.Builder(context)
+        .collector(
+            ChuckerCollector(
+            context = context,
+            showNotification = true,
+            retentionPeriod = RetentionManager.Period.ONE_HOUR))
+        .maxContentLength(250_000L)
+        .redactHeaders("Auth-Token", "Bearer")
+        .build()
+
     private fun okHttpClient(
         interceptor: Interceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(chuckerInterceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .writeTimeout(120, TimeUnit.SECONDS)
             .connectTimeout(120, TimeUnit.SECONDS)

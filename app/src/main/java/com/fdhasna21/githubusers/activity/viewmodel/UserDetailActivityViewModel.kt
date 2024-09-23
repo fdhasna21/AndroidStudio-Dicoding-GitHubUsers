@@ -14,8 +14,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Updated by Fernanda Hasna on 24/09/2024.
+ */
 class UserDetailActivityViewModel : ViewModel() {
-    private var serverInterface : ServerInterface = ServerAPI().getServerAPI().create(ServerInterface::class.java)
+    private lateinit var serverInterface : ServerInterface
     private var activityConfig : MutableLiveData<Int> = MutableLiveData()
     var detailList : MutableLiveData<User> = MutableLiveData()
     var repositoryList : MutableLiveData<ArrayList<Repository>> = MutableLiveData()
@@ -28,6 +31,10 @@ class UserDetailActivityViewModel : ViewModel() {
     var errorFollowers : ErrorResponse = ErrorResponse()
     var errorFollowing : ErrorResponse = ErrorResponse()
     var username : String = ""
+
+    fun setServerInterface(serverInterface: ServerInterface){
+        this.serverInterface = serverInterface
+    }
 
     fun setConfiguration(config : Int){
         activityConfig.value = config

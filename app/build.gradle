@@ -79,4 +79,6 @@ dependencies {
 
     implementation(libs.bumptech.glide)
     implementation(libs.airbnb.lottie)
+    debugImplementation(libs.chucker.library)
+    releaseImplementation(libs.chucker.library.no.op)
 }

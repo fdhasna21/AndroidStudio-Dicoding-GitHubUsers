@@ -21,7 +21,12 @@ import com.fdhasna21.githubusers.activity.viewmodel.MainActivityViewModel
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
 import com.fdhasna21.githubusers.resolver.dataclass.User
+import com.fdhasna21.githubusers.server.ServerAPI
+import com.fdhasna21.githubusers.server.ServerInterface
 
+/**
+ * Updated by Fernanda Hasna on 24/09/2024.
+ */
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
@@ -29,6 +34,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
     private lateinit var layoutManager : LinearLayoutManager
     private var isLoading = false
     private var isConfigChange = false
+    private lateinit var serverInterface : ServerInterface
 
     private fun setResponse(it : ArrayList<User>?){
         if(it == null || it.isEmpty()){
@@ -88,6 +94,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel.setServerInterface(ServerAPI(this).getServerAPI().create(ServerInterface::class.java))
         if(!isConfigChange){
             setupToolbar()
             setupRecyclerView()

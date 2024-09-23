@@ -15,14 +15,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Updated by Fernanda Hasna on 24/09/2024.
+ */
 class MainActivityViewModel : ViewModel() {
-    private var serverInterface : ServerInterface = ServerAPI().getServerAPI().create(ServerInterface::class.java)
+    private lateinit var serverInterface : ServerInterface
     private var activityConfig : MutableLiveData<Int> = MutableLiveData()
     private var dataList : MutableLiveData<ArrayList<User>> = MutableLiveData()
     private lateinit var rowAdapter : UserRowAdapter
     var errorResponse : ErrorResponse = ErrorResponse()
     var defaultLastID : Int = 0
     var searchPage : Int = 1
+
+    fun setServerInterface(serverInterface: ServerInterface){
+        this.serverInterface = serverInterface
+    }
 
     fun setAdapter(adapter : UserRowAdapter){
         rowAdapter = adapter
