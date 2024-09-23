@@ -5,15 +5,20 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
-import com.fdhasna21.githubusers.resolver.IntentData
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.activity.viewmodel.AboutMeActivityViewModel
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
+import com.fdhasna21.githubusers.resolver.IntentData
+
+/**
+ * Updated by Fernanda Hasna on 23/09/2024.
+ */
 
 class AboutMeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutMeBinding
@@ -41,16 +46,15 @@ class AboutMeActivity : AppCompatActivity() {
         binding.aboutFindMe.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.about_whatsapp -> {
-                    try{
-                        val intent = Intent()
-                        applicationContext.packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA)
-                        intent.action = Intent.ACTION_VIEW
-                        intent.type = "text/plain"
-                        intent.data = Uri.parse(BuildConfig.CREATOR_WHATSAPP)
-                        intent.setPackage("com.whatsapp")
-                        startActivity(intent)
-                    } catch (e : PackageManager.NameNotFoundException) {
-                        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
+                    val url = "https://api.whatsapp.com/send?phone=${BuildConfig.CREATOR_WHATSAPP}"
+                    try {
+                        applicationContext.packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                        applicationContext.startActivity(Intent(Intent.ACTION_VIEW).apply {
+                            data = Uri.parse(url)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        })
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        applicationContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                     }
                     true }
                 R.id.about_dicoding -> {
