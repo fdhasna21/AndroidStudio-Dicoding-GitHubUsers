@@ -32,6 +32,7 @@ androidx-test-espresso = { group = "androidx.test.espresso", name ="espresso-cor
 retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 retrofit2-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
 okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 android-recyclerview = { group = "com.android.support", name = "recyclerview-v7", version.ref = "recyclerview" }
 bumptech-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
