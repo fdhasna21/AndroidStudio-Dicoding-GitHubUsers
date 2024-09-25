@@ -1,10 +1,10 @@
-package com.fdhasna21.githubusers.resolver
+package com.fdhasna21.githubusers.utility
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
-import com.fdhasna21.githubusers.resolver.enumclass.ErrorType
+import com.fdhasna21.githubusers.utility.type.ErrorType
 import kotlin.math.ln
 import kotlin.math.pow
 

@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.resolver.enumclass
+package com.fdhasna21.githubusers.utility.type
 
 import android.content.Context
 import com.fdhasna21.githubusers.R

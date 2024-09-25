@@ -1,12 +1,16 @@
 package com.fdhasna21.githubusers.adapter
 
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.fdhasna21.githubusers.resolver.enumclass.DataType
-import com.fdhasna21.githubusers.fragment.TabLayoutFragment
+import com.fdhasna21.githubusers.activity.fragment.TabLayoutFragment
+import com.fdhasna21.githubusers.utility.type.DataType
+
+/**
+ * Updated by Fernanda Hasna on 26/09/2024.
+ */
 
 class ViewPagerAdapter(private var activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     private var totalFragments: Int = 0
@@ -37,17 +41,41 @@ class ViewPagerAdapter(private var activity: AppCompatActivity) : FragmentStateA
         }
     }
 
-    fun updateAdapter(tab:Int){
+    private fun updateAdapter(tab:Int){
         getFragment(tab)?.setUpdateData()
     }
 
-    fun setFragmentError(tab:Int, visible:Boolean, drawableID:Int=0, messageID:Int=0, code:Int?=null){
+    private fun setFragmentError(tab:Int, visible:Boolean, drawableID:Int=0, messageID:Int=0, code:Int?=null){
         getFragment(tab)?.let {
             if(visible){
                 it.setError(drawableID, messageID, code)
             } else {
                 it.setNotError()
             }
+        }
+    }
+
+    fun <T> updateData(tab: Int, newData: List<T>) {
+        @Suppress("UNCHECKED_CAST")
+        val dataList = dataFragment[tab] as ArrayList<T>
+        dataList.clear()
+        dataList.addAll(newData)
+        updateAdapter(tab)
+        setFragmentError(tab, false)
+    }
+}
+
+fun <T> ViewPagerAdapter.observeData(
+    lifecycleOwner: LifecycleOwner,
+    liveData: LiveData<ArrayList<T>>,
+    tabIndex: Int,
+    errorHandler: (() -> Unit)? = null
+) {
+    liveData.observe(lifecycleOwner) { data ->
+        if (data == null || data.isEmpty()) {
+            errorHandler?.invoke()
+        } else {
+            updateData(tabIndex, data)
         }
     }
 }

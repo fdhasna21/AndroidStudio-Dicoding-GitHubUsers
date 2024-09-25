@@ -1,11 +1,11 @@
-package com.fdhasna21.githubusers.resolver.dataclass
+package com.fdhasna21.githubusers.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class User(
+data class UserResponse(
     @SerializedName("login")        val username:String?="",
     @SerializedName("avatar_url")   val photo_profile:String?="",
     @SerializedName("blog")         val website:String?="",
@@ -18,4 +18,3 @@ data class User(
     val bio:String?="",
     val id:Int?=0
     ) : Parcelable
-

@@ -2,15 +2,21 @@ package com.fdhasna21.githubusers.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.activity.UserDetailActivity
 import com.fdhasna21.githubusers.databinding.RowRecyclerUserBinding
-import com.fdhasna21.githubusers.resolver.dataclass.User
+import com.fdhasna21.githubusers.model.UserResponse
+import com.fdhasna21.githubusers.utility.Key
 
-class UserRowAdapter(val data:ArrayList<User>, val context: Context)
+/**
+ * Updated by Fernanda Hasna on 26/09/2024.
+ */
+
+class UserRowAdapter(var data:ArrayList<UserResponse>, val context: Context)
     :RecyclerView.Adapter<UserRowAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: RowRecyclerUserBinding):RecyclerView.ViewHolder(binding.root)
@@ -24,7 +30,7 @@ class UserRowAdapter(val data:ArrayList<User>, val context: Context)
         holder.binding.rowUsername.text = item.username
         holder.binding.rowUser.setOnClickListener {
             val intent = Intent(context, UserDetailActivity::class.java)
-            intent.putExtra(UserDetailActivity.EXTRA_USER, item.username)
+            intent.putExtra(Key.INTENT.USERNAME, item.username)
             context.startActivity(intent)
         }
 
@@ -38,7 +44,7 @@ class UserRowAdapter(val data:ArrayList<User>, val context: Context)
         return data.size
     }
 
-    fun addData(newData : ArrayList<User>){
+    fun updateData(newData: ArrayList<UserResponse>) {
         data.clear()
         data.addAll(newData)
         notifyDataSetChanged()

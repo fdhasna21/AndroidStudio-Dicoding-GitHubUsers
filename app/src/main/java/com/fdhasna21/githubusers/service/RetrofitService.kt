@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.server
+package com.fdhasna21.githubusers.service
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -15,33 +15,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
- * Updated by Fernanda Hasna on 24/09/2024.
+ * Updated by Fernanda Hasna on 26/09/2024.
  */
-class ServerAPI(context : Context) {
-    private var retrofit : Retrofit? = null
+class RestClient(context : Context) {
+    fun getRetrofit() : Retrofit {
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
 
-    fun getServerAPI() : Retrofit{
-        if(retrofit == null){
-            val gson = GsonBuilder()
-                .setLenient()
-                .create()
-
-            retrofit = Retrofit.Builder()
-                .client(okHttpClient(interceptor, httpLogging))
-                .baseUrl(BuildConfig.GITHUB_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-        }
-        return retrofit!!
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(BuildConfig.GITHUB_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
     }
 
-    private val httpLogging: HttpLoggingInterceptor
-        get() {
-            val httpLoggingInterceptor = HttpLoggingInterceptor()
-            httpLoggingInterceptor.level =
-                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-            return httpLoggingInterceptor
-        }
+    private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+    }
 
     private val interceptor = Interceptor { chain ->
         val original: Request = chain.request()
@@ -63,11 +54,7 @@ class ServerAPI(context : Context) {
         .redactHeaders("Auth-Token", "Bearer")
         .build()
 
-    private fun okHttpClient(
-        interceptor: Interceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
+    private val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .addInterceptor(chuckerInterceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
@@ -76,5 +63,4 @@ class ServerAPI(context : Context) {
             .readTimeout(120, TimeUnit.SECONDS)
             .cache(null)
             .build()
-    }
 }

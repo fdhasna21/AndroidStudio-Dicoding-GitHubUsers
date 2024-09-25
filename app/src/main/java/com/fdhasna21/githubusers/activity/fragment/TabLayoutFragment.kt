@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.fragment
+package com.fdhasna21.githubusers.activity.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

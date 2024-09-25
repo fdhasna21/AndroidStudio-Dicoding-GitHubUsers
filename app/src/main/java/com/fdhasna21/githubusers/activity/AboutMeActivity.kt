@@ -2,29 +2,41 @@ package com.fdhasna21.githubusers.activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.net.Uri
-import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.R
-import com.fdhasna21.githubusers.activity.viewmodel.AboutMeActivityViewModel
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
-import com.fdhasna21.githubusers.resolver.IntentData
+import com.fdhasna21.githubusers.repository.BaseRepository
+import com.fdhasna21.githubusers.repository.GeneralRepositoryImp
+import com.fdhasna21.githubusers.repository.UserRepositoryImp
+import com.fdhasna21.githubusers.utility.IntentUtils
+import com.fdhasna21.githubusers.utility.Key
+import com.fdhasna21.githubusers.viewmodel.BaseViewModel
+import com.fdhasna21.githubusers.viewmodel.GeneralActivityViewModel
+import com.fdhasna21.githubusers.viewmodel.UserDetailActivityViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * Updated by Fernanda Hasna on 23/09/2024.
+ * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-class AboutMeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAboutMeBinding
-    private lateinit var viewModel : AboutMeActivityViewModel
-    private var intentData = IntentData(this)
-    private var isConfigChange = false
+class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityViewModel, GeneralRepositoryImp>(
+    ActivityAboutMeBinding::inflate,
+    GeneralActivityViewModel::class.java
+) {
+
+    override val viewModel: GeneralActivityViewModel by viewModel()
+    override val repository: GeneralRepositoryImp by inject()
+
+    override fun setupUIWhenConfigChange() {
+        setupToolbar()
+        setupHeader()
+        setupFindMe()
+        setupCredit()
+        super.setupUIWhenConfigChange()
+    }
 
     private fun setupToolbar(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -58,14 +70,14 @@ class AboutMeActivity : AppCompatActivity() {
                     }
                     true }
                 R.id.about_dicoding -> {
-                    intentData.openBrowser(BuildConfig.CREATOR_DICODING)
+                    intentUtils.openBrowser(BuildConfig.CREATOR_DICODING)
                     true }
                 R.id.about_email ->{
-                    intentData.openEmail(BuildConfig.CREATOR_EMAIL)
+                    intentUtils.openEmail(BuildConfig.CREATOR_EMAIL)
                     true }
                 R.id.about_github -> {
                     val intent = Intent(this, UserDetailActivity::class.java)
-                    intent.putExtra(UserDetailActivity.EXTRA_USER, "fdhasna21")
+                    intent.putExtra(Key.INTENT.USERNAME, "fdhasna21")
                     startActivity(intent)
                     true }
                 else -> false
@@ -77,39 +89,17 @@ class AboutMeActivity : AppCompatActivity() {
         binding.aboutCredit.itemIconTintList = null
         binding.aboutCredit.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.about_github_content -> intentData.openBrowser("https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api")
-                R.id.about_lottie -> intentData.openBrowser("https://lottiefiles.com/6637-github-logo")
-                R.id.about_pixeltrue -> intentData.openBrowser("https://www.pixeltrue.com/free-packs/error-state")
-                R.id.about_freepik -> intentData.openBrowser("https://www.freepik.com/")
+                R.id.about_github_content -> intentUtils.openBrowser("https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api")
+                R.id.about_lottie -> intentUtils.openBrowser("https://lottiefiles.com/6637-github-logo")
+                R.id.about_pixeltrue -> intentUtils.openBrowser("https://www.pixeltrue.com/free-packs/error-state")
+                R.id.about_freepik -> intentUtils.openBrowser("https://www.freepik.com/")
             }
             true
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAboutMeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this).get(AboutMeActivityViewModel::class.java)
-        if(!isConfigChange){
-            setupToolbar()
-            setupHeader()
-            setupFindMe()
-            setupCredit()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        viewModel.setConfiguration(newConfig.orientation)
-        viewModel.getConfiguration().observe(this, {
-            isConfigChange = (it != newConfig.orientation)
-        })
-        super.onConfigurationChanged(newConfig)
     }
 }

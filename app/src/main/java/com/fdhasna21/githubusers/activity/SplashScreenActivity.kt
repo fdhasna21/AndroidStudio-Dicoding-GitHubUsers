@@ -1,17 +1,26 @@
 package com.fdhasna21.githubusers.activity
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.fdhasna21.githubusers.databinding.ActivitySplashScreenBinding
+import com.fdhasna21.githubusers.repository.BaseRepository
+import com.fdhasna21.githubusers.repository.GeneralRepositoryImp
+import com.fdhasna21.githubusers.viewmodel.BaseViewModel
+import com.fdhasna21.githubusers.viewmodel.GeneralActivityViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashScreenActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySplashScreenBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+/**
+ * Updated by Fernanda Hasna on 26/09/2024.
+ */
 
+class SplashScreenActivity : BaseActivity<ActivitySplashScreenBinding, GeneralActivityViewModel, GeneralRepositoryImp>(
+    ActivitySplashScreenBinding::inflate,
+    GeneralActivityViewModel::class.java
+) {
+
+    override val viewModel: GeneralActivityViewModel by viewModel()
+    override val repository: GeneralRepositoryImp by inject()
+    override fun setupUIWithoutConfigChange() {
         val timer = object : Thread() {
             override fun run() {
                 try {

@@ -6,101 +6,115 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.Settings
-import android.text.TextUtils
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
-import com.fdhasna21.githubusers.activity.viewmodel.MainActivityViewModel
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
-import com.fdhasna21.githubusers.resolver.dataclass.User
-import com.fdhasna21.githubusers.server.ServerAPI
-import com.fdhasna21.githubusers.server.ServerInterface
+import com.fdhasna21.githubusers.repository.UserRepositoryImp
+import com.fdhasna21.githubusers.viewmodel.MainActivityViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * Updated by Fernanda Hasna on 24/09/2024.
+ * Updated by Fernanda Hasna on 26/09/2024.
  */
-class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainActivityViewModel
+class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel, UserRepositoryImp>(
+    ActivityMainBinding::inflate,
+    MainActivityViewModel::class.java
+), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+
+    override val viewModel: MainActivityViewModel by viewModel()
+    override val repository: UserRepositoryImp by inject()
+
     private lateinit var rowAdapter: UserRowAdapter
     private lateinit var layoutManager : LinearLayoutManager
     private var isLoading = false
-    private var isConfigChange = false
-    private lateinit var serverInterface : ServerInterface
+    override fun setupData() {
+        getAllUsers(true)
+    }
 
-    private fun setResponse(it : ArrayList<User>?){
-        if(it == null || it.isEmpty()){
-            val error : ArrayList<Int> = viewModel.errorResponse.type?.setError(this)!!
-            binding.mainResponse.layoutError.visibility = View.VISIBLE
-            binding.mainResponse.errorImage.setImageDrawable(AppCompatResources.getDrawable(this, error[0]))
-            binding.mainResponse.errorMessage.text = listOf(getString(error[1]), viewModel.errorResponse.code).joinToString(". Code:")
-            binding.recyclerView.visibility = View.INVISIBLE
-        } else {
-            binding.mainResponse.layoutError.visibility = View.GONE
-            binding.recyclerView.visibility = View.VISIBLE
+    override fun setupUIWhenConfigChange() {
+        setupToolbar()
+        setupRecyclerView()
+        super.setupUIWhenConfigChange()
+    }
+    override fun setupUIWithoutConfigChange() {
+        viewModel.allUsers.observe(this){
+            if (it == null || it.isEmpty()) {
+//                val error: ArrayList<Int> = viewModel.errorResponse.type?.setError(this)!!
+//                binding.mainResponse.layoutError.visibility = View.VISIBLE
+//                binding.mainResponse.errorImage.setImageDrawable(
+//                    AppCompatResources.getDrawable(
+//                        this,
+//                        error[0]
+//                    )
+//                )
+//                binding.mainResponse.errorMessage.text = listOf(
+//                    getString(error[1]),
+//                    viewModel.errorResponse.code
+//                ).joinToString(". Code:")
+                binding.recyclerView.visibility = View.INVISIBLE
+            } else {
+                binding.mainResponse.layoutError.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+                rowAdapter.updateData(it)
+            }
+            isLoading = false
+            binding.mainResponse.progressCircular.visibility = View.INVISIBLE
+            binding.refreshRecyclerView.isRefreshing = false
         }
-        isLoading = false
-        binding.mainResponse.progressCircular.visibility = View.INVISIBLE
-        binding.refreshRecyclerView.isRefreshing = false
-    }
-
-    private fun getDataDefault(){
-        isLoading = true
-        binding.mainResponse.progressCircular.visibility = View.VISIBLE
-        viewModel.defaultLastID = 0
-        viewModel.defaultData()
-        viewModel.getDataList().observe(this, { setResponse(it) })
-    }
-
-    private fun getDataSearch(keyword:String){
-        isLoading = true
-        binding.mainResponse.progressCircular.visibility = View.VISIBLE
-        viewModel.searchPage = 1
-        viewModel.searchData(keyword)
-        viewModel.getDataList().observe(this, { setResponse(it) })
     }
 
     private fun setupToolbar(){
         supportActionBar?.title = getString(R.string.app_name)
         val searchManager : SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        binding.searchView.setOnQueryTextListener(this)
+        binding.searchView.setOnQueryTextListener(this@MainActivity)
     }
 
     private fun setupRecyclerView(){
-        binding.refreshRecyclerView.setOnRefreshListener(this)
-        rowAdapter = UserRowAdapter(arrayListOf(), this@MainActivity)
-        viewModel.setAdapter(rowAdapter)
-        layoutManager = LinearLayoutManager(this)
-        getDataDefault()
+        binding.apply {
+            refreshRecyclerView.setOnRefreshListener(this@MainActivity)
+            rowAdapter = UserRowAdapter(arrayListOf(), this@MainActivity)
+            layoutManager = LinearLayoutManager(this@MainActivity)
 
-        binding.recyclerView.adapter = rowAdapter
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.addItemDecoration(object : DividerItemDecoration(this@MainActivity, VERTICAL) {})
-        binding.recyclerView.setHasFixedSize(true)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        viewModel.setServerInterface(ServerAPI(this).getServerAPI().create(ServerInterface::class.java))
-        if(!isConfigChange){
-            setupToolbar()
-            setupRecyclerView()
+            recyclerView.apply {
+                layoutManager = this@MainActivity.layoutManager
+                adapter = rowAdapter
+                addItemDecoration(object : DividerItemDecoration(this@MainActivity, VERTICAL) {})
+                setHasFixedSize(true)
+            }
         }
     }
 
+    private fun getAllUsers(isReset:Boolean = false){
+        isLoading = true
+        binding.mainResponse.progressCircular.visibility = View.VISIBLE
+        if(isReset){
+            viewModel.resetUsers()
+        }
+        viewModel.getUsersFromRepository()
+    }
+
+    private fun getAllUsersByKeywords(keyword : String?){
+        isLoading = true
+        binding.mainResponse.progressCircular.visibility = View.VISIBLE
+        if(keyword.isNullOrEmpty()){
+            viewModel.getUsersFromRepository()
+        } else {
+            viewModel.setKeyword(keyword)
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -133,36 +147,28 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeR
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         viewModel.setConfiguration(newConfig.orientation)
-        viewModel.getConfiguration().observe(this, {
+        viewModel.activityConfig.observe(this) {
             isConfigChange = (it != newConfig.orientation)
-        })
+        }
         super.onConfigurationChanged(newConfig)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         binding.searchView.clearFocus()
-        if(!TextUtils.isEmpty(query)){
-            getDataSearch(query!!)
-        }else{
-            getDataDefault()
-        }
+        getAllUsersByKeywords(query ?: "")
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        if(!TextUtils.isEmpty(newText)){
-            getDataSearch(newText!!)
-        }else{
-            getDataDefault()
-        }
+        getAllUsersByKeywords(newText ?: "")
         return true
     }
 
     override fun onRefresh() {
         if(binding.searchView.query.toString().isEmpty()){
-            getDataDefault()
+            getAllUsers(true)
         } else{
-            getDataSearch(binding.searchView.query.toString())
+            getAllUsersByKeywords(binding.searchView.query.toString())
         }
     }
 }

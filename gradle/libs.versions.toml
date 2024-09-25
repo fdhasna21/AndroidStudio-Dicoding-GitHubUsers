@@ -18,6 +18,8 @@ recyclerview = "28.0.0"
 glide = "4.12.0"
 lottie = "4.1.0"
 chucker = "4.0.0"
+koin = "3.4.0"
+room = "2.6.1"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -42,5 +44,8 @@ bumptech-glide = { group = "com.github.bumptech.glide", name = "glide", version.
 airbnb-lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 chucker-library = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-library-no-op = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
 
 [plugins]

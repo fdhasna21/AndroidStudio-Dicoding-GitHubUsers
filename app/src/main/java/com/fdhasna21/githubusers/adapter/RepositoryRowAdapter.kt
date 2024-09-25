@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.fdhasna21.githubusers.resolver.DataUtils
-import com.fdhasna21.githubusers.resolver.IntentData
 import com.fdhasna21.githubusers.databinding.RowRecyclerRepositoryBinding
-import com.fdhasna21.githubusers.resolver.dataclass.Repository
+import com.fdhasna21.githubusers.model.RepoResponse
+import com.fdhasna21.githubusers.utility.DataUtils
+import com.fdhasna21.githubusers.utility.IntentUtils
 
-class RepositoryRowAdapter(val data:ArrayList<Repository>, val context: Context)
+/**
+ * Updated by Fernanda Hasna on 26/09/2024.
+ */
+
+class RepositoryRowAdapter(val data:ArrayList<RepoResponse>, val context: Context)
     :RecyclerView.Adapter<RepositoryRowAdapter.ViewHolder>(){
 
     inner class ViewHolder(val binding: RowRecyclerRepositoryBinding):RecyclerView.ViewHolder(binding.root)
@@ -40,7 +44,7 @@ class RepositoryRowAdapter(val data:ArrayList<Repository>, val context: Context)
             .into(holder.binding.rowImage)
 
         holder.binding.rowRepository.setOnClickListener {
-            IntentData(context).openBrowser("https://github.com/${item.owner!!.username}/${item.repo_name}")
+            IntentUtils(context).openBrowser("https://github.com/${item.owner!!.username}/${item.repo_name}")
         }
 
         view.forEach {

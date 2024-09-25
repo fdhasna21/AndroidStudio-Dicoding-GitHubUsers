@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.androidx.constraintlyt)
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.legacy)
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
 
     implementation(libs.android.material)
     implementation(libs.android.recyclerview)
@@ -81,4 +83,6 @@ dependencies {
     implementation(libs.airbnb.lottie)
     debugImplementation(libs.chucker.library)
     releaseImplementation(libs.chucker.library.no.op)
+
+    implementation(libs.koin.android)
 }

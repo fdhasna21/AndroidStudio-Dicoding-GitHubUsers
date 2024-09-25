@@ -1,10 +1,10 @@
-package com.fdhasna21.githubusers.resolver
+package com.fdhasna21.githubusers.utility
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-class IntentData(val context: Context){
+class IntentUtils(val context: Context){
     fun openBrowser(url: String){
         val intent = Intent()
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
