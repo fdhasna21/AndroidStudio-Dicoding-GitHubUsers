@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.service
+package com.fdhasna21.githubusers.service.api
 
 import com.fdhasna21.githubusers.model.AllUsersResponse
 import com.fdhasna21.githubusers.model.RepoResponse

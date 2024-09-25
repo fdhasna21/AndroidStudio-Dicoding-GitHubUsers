@@ -3,8 +3,8 @@ package com.fdhasna21.githubusers.repository
 import android.content.Context
 import android.widget.Toast
 import com.fdhasna21.githubusers.model.DbHandlerResult
-import com.fdhasna21.githubusers.service.BaseAPI
 import com.fdhasna21.githubusers.service.RestClient
+import com.fdhasna21.githubusers.service.api.BaseAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.IOException

@@ -5,7 +5,7 @@ import com.fdhasna21.githubusers.model.AllUsersResponse
 import com.fdhasna21.githubusers.model.DbHandlerResult
 import com.fdhasna21.githubusers.model.RepoResponse
 import com.fdhasna21.githubusers.model.UserResponse
-import com.fdhasna21.githubusers.service.UserAPI
+import com.fdhasna21.githubusers.service.api.UserAPI
 
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
