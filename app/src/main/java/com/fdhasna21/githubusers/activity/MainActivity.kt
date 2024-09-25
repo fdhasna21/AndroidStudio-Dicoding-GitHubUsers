@@ -4,15 +4,12 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -130,6 +127,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel, Us
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.menu_history -> {
+                startActivity(
+                    Intent(
+                        this,
+                        HistoryActivity::class.java
+                    )
+                )
+            }
             R.id.menu_about -> {
                 startActivity(
                     Intent(

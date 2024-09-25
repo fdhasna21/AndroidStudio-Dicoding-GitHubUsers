@@ -40,4 +40,5 @@
     <string name="error_unprocessable">Maaf, ada kesalahan dalam program kami. Silahkan hubungi creator</string>
     <string name="error_forbidden">Permintaanmu telah melebihi limit GitHub. Silahkan coba lagi nanti</string>
     <string name="illustration_by_pixel_true">Ilustrasi oleh Pixel True</string>
+    <string name="history">Riwayat</string>
 </resources>

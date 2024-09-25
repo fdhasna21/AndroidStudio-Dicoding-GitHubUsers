@@ -40,4 +40,5 @@
     <string name="error_others">Ups, something bad happened</string>
     <string name="error_unprocessable">Sorry, something error with our code. Please contact our creator</string>
     <string name="illustration_by_pixel_true">Illustration by Pixel True</string>
+    <string name="history">History</string>
 </resources>
