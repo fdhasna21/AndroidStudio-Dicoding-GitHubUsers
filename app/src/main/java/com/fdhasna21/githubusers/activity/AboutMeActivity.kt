@@ -7,14 +7,9 @@ import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
-import com.fdhasna21.githubusers.repository.BaseRepository
 import com.fdhasna21.githubusers.repository.GeneralRepositoryImp
-import com.fdhasna21.githubusers.repository.UserRepositoryImp
-import com.fdhasna21.githubusers.utility.IntentUtils
 import com.fdhasna21.githubusers.utility.Key
-import com.fdhasna21.githubusers.viewmodel.BaseViewModel
 import com.fdhasna21.githubusers.viewmodel.GeneralActivityViewModel
-import com.fdhasna21.githubusers.viewmodel.UserDetailActivityViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,9 +64,9 @@ class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityView
                         applicationContext.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                     }
                     true }
-                R.id.about_dicoding -> {
-                    intentUtils.openBrowser(BuildConfig.CREATOR_DICODING)
-                    true }
+//                R.id.about_dicoding -> {
+//                    intentUtils.openBrowser(BuildConfig.CREATOR_GITHUB)
+//                    true }
                 R.id.about_email ->{
                     intentUtils.openEmail(BuildConfig.CREATOR_EMAIL)
                     true }

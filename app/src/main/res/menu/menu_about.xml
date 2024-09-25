@@ -16,8 +16,8 @@
         android:icon="@drawable/ic_github"
         android:iconTint="@color/black"/>
 
-    <item
-        android:id="@+id/about_dicoding"
-        android:title="@string/dicoding"
-        android:icon="@drawable/ic_dicoding" />
+<!--    <item-->
+<!--        android:id="@+id/about_dicoding"-->
+<!--        android:title="@string/dicoding"-->
+<!--        android:icon="@drawable/ic_dicoding" />-->
 </menu>
