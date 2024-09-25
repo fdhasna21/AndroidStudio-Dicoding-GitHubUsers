@@ -39,7 +39,7 @@ class RepositoryRowAdapter(val data:ArrayList<RepoResponse>, val context: Contex
         holder.binding.rowRepoWatcher.text = DataUtils().withSuffix(item.watcher_count!!)
 
         Glide.with(context)
-            .load(item.owner?.photo_profile)
+            .load(item.owner?.photoProfile)
             .circleCrop()
             .into(holder.binding.rowImage)
 

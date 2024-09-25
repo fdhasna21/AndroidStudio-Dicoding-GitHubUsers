@@ -102,7 +102,7 @@ class UserDetailActivity : BaseActivity<ActivityUserDetailBinding, UserDetailAct
                 views.forEachIndexed { idx: Int, view: View ->
                     if (idx == 0) {
                         Glide.with(this@UserDetailActivity)
-                            .load(it.photo_profile)
+                            .load(it.photoProfile)
                             .circleCrop()
                             .into(binding.detailImage)
                     } else {

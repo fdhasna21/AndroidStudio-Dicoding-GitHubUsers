@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UserResponse(
     @SerializedName("login")        val username:String?="",
-    @SerializedName("avatar_url")   val photo_profile:String?="",
+    @SerializedName("avatar_url")   val photoProfile:String?="",
     @SerializedName("blog")         val website:String?="",
     val following:Long?=0,
     val followers:Long?=0,

@@ -34,7 +34,7 @@ class UserRowAdapter(var data:ArrayList<UserResponse>, val context: Context)
         }
 
         Glide.with(context)
-            .load(item.photo_profile)
+            .load(item.photoProfile)
             .circleCrop()
             .into(holder.binding.rowImage)
     }
