@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.model
+package com.fdhasna21.githubusers.model.response
 
 /**
  * Created by Fernanda Hasna on 24/09/2024.

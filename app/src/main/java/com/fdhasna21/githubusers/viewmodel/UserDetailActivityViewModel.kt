@@ -2,8 +2,8 @@ package com.fdhasna21.githubusers.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fdhasna21.githubusers.model.RepoResponse
-import com.fdhasna21.githubusers.model.UserResponse
+import com.fdhasna21.githubusers.model.response.RepoResponse
+import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
 
 /**

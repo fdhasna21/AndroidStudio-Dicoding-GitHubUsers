@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.fdhasna21.githubusers.adapter.RepositoryRowAdapter
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
-import com.fdhasna21.githubusers.model.RepoResponse
-import com.fdhasna21.githubusers.model.UserResponse
+import com.fdhasna21.githubusers.model.response.RepoResponse
+import com.fdhasna21.githubusers.model.response.UserResponse
 
 enum class DataType {
     USER {

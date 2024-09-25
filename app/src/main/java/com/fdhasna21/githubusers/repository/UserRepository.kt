@@ -1,10 +1,10 @@
 package com.fdhasna21.githubusers.repository
 
 import android.content.Context
-import com.fdhasna21.githubusers.model.AllUsersResponse
-import com.fdhasna21.githubusers.model.DbHandlerResult
-import com.fdhasna21.githubusers.model.RepoResponse
-import com.fdhasna21.githubusers.model.UserResponse
+import com.fdhasna21.githubusers.model.response.AllUsersResponse
+import com.fdhasna21.githubusers.model.response.DbHandlerResult
+import com.fdhasna21.githubusers.model.response.RepoResponse
+import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.service.api.UserAPI
 
 /**

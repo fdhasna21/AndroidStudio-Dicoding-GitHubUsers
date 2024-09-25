@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.databinding.RowRecyclerRepositoryBinding
-import com.fdhasna21.githubusers.model.RepoResponse
+import com.fdhasna21.githubusers.model.response.RepoResponse
 import com.fdhasna21.githubusers.utility.DataUtils
 import com.fdhasna21.githubusers.utility.IntentUtils
 

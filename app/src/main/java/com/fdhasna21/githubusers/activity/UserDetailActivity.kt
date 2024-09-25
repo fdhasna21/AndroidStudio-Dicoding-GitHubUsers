@@ -1,10 +1,8 @@
 package com.fdhasna21.githubusers.activity
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,18 +10,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.FileProvider
-import androidx.core.view.marginTop
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.ViewPagerAdapter
 import com.fdhasna21.githubusers.adapter.observeData
 import com.fdhasna21.githubusers.databinding.ActivityUserDetailBinding
-import com.fdhasna21.githubusers.model.RepoResponse
-import com.fdhasna21.githubusers.model.UserResponse
+import com.fdhasna21.githubusers.model.response.RepoResponse
+import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
 import com.fdhasna21.githubusers.utility.DataUtils
-import com.fdhasna21.githubusers.utility.IntentUtils
 import com.fdhasna21.githubusers.utility.Key
 import com.fdhasna21.githubusers.utility.type.DataType
 import com.fdhasna21.githubusers.utility.type.dpToPx

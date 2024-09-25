@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.model
+package com.fdhasna21.githubusers.model.response
 
 import com.fdhasna21.githubusers.utility.type.ErrorType
 
