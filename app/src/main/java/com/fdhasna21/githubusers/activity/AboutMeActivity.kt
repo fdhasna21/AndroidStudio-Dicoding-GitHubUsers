@@ -15,6 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 26/09/2024.
  */
 
 class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityViewModel, GeneralRepositoryImp>(
@@ -75,6 +76,10 @@ class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityView
                     intent.putExtra(Key.INTENT.USERNAME, "fdhasna21")
                     startActivity(intent)
                     true }
+                R.id.about_linkedin -> {
+                    intentUtils.openBrowser(BuildConfig.CREATOR_LINKEDIN)
+                    true
+                }
                 else -> false
             }
         }
@@ -84,10 +89,10 @@ class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityView
         binding.aboutCredit.itemIconTintList = null
         binding.aboutCredit.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.about_github_content -> intentUtils.openBrowser("https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api")
-                R.id.about_lottie -> intentUtils.openBrowser("https://lottiefiles.com/6637-github-logo")
-                R.id.about_pixeltrue -> intentUtils.openBrowser("https://www.pixeltrue.com/free-packs/error-state")
-                R.id.about_freepik -> intentUtils.openBrowser("https://www.freepik.com/")
+                R.id.about_github_content -> intentUtils.openBrowser(Key.INTENT_DATA.GITHUB_CONTENT)
+                R.id.about_lottie -> intentUtils.openBrowser(Key.INTENT_DATA.LOTTIE_ANIMATION)
+                R.id.about_pixeltrue -> intentUtils.openBrowser(Key.INTENT_DATA.PIXEL_TRUE)
+                R.id.about_freepik -> intentUtils.openBrowser(Key.INTENT_DATA.FREEPIK)
             }
             true
         }

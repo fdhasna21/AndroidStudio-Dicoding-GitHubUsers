@@ -2,14 +2,14 @@
 <resources>
     <string name="about_me">Tentang Saya</string>
     <string name="profile_description">
-        Dikenal sebagai Nanda, saya lahir di Magelang pada 21 Agustus 1998. Saya adalah anak pertama dari tiga bersaudara yang telah menyelesaikan pendidikan di S1 Teknik Komputer Institut Teknologi Sepuluh Nopember Surabaya.
-        Saya memiliki minat di bidang teknologi digital, khususnya pada bagian IT Project Management, User-Oriented Product Development, dan Design System Analysis. Saat ini, saya sedang bereksplorasi tentang Mobile Programming menggunakan Android Studio.
+        Dikenal sebagai Nanda, saya lahir di Magelang pada 21 Agustus 1998. Saya telah menyelesaikan pendidikan di S1 Teknik Komputer Institut Teknologi Sepuluh Nopember Surabaya.
+        Saya tertarik dengan bidang teknologi digital, khususnya pada bagian IT Project Management, User-Oriented Product Development, dan Design System Analysis. Saat ini, saya sedang bereksplorasi tentang Mobile Programming menggunakan Android Studio. Sejak November 2021, saya menjadi Application Developer di PT. Multipolar Technology Tbk dan bertanggung jawab sebagai Android Developer yang memegang berbagai projek perbankan seperti Mobile Banking, SMS Banking, dan Laku Pandai.
     </string>
     <string name="profile_picture">Foto Profil</string>
     <string name="biography">Biografi</string>
     <string name="find_me">Temukan Saya</string>
     <string name="credit">Referensi</string>
-    <string name="made_for_dicoding_submission_2021">Dibuat untuk Dicoding Submission 2021</string>
+    <string name="made_for">Dibuat di September 2024</string>
     <string name="account_name">Nama Akun</string>
     <string name="account_profile_picture">Foto Profil Akun</string>
     <string name="account_username">Username Akun</string>

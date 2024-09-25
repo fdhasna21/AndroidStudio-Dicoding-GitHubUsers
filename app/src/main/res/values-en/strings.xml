@@ -2,14 +2,14 @@
 <resources>
     <string name="about_me">About Me</string>
     <string name="profile_description">
-        As known as Nanda, I was born in Magelang on August 21, 1998. I am the first of three children who have completed education at Computer Engineering FTEIC Institut Teknologi Sepuluh Nopember Surabaya.
-        I am interested in the field of digital technology, especially in the fields of IT Project Management, User-Oriented Product Development, and Design System Analysis. Currently, I am exploring Mobile Programming with Android Studio.
+        As known as Nanda, I was born in Magelang on August 21, 1998. I completed my education at Computer Engineering Institut Teknologi Sepuluh Nopember Surabaya.
+        I am interested in the field of digital technology, especially in the fields of IT Project Management, User-Oriented Product Development, and Design System Analysis. Currently, I am exploring Mobile Programming with Android Studio. Since November 2021, I am being Application Developer at PT. Multipolar Technology Tbk and be responsible as an Android Mobile Programming with various banking projects such as Mobile Banking, SMS Banking, and Laku Pandai.
     </string>
     <string name="profile_picture">Profile Picture</string>
     <string name="biography">Biography</string>
     <string name="find_me">Find Me</string>
     <string name="credit">Credit</string>
-    <string name="made_for_dicoding_submission_2021">Made for Dicoding Submission 2021</string>
+    <string name="made_for">Made in September 2024</string>
     <string name="account_name">Account Name</string>
     <string name="account_profile_picture">Account Profile Picture</string>
     <string name="account_username">Account Username</string>
