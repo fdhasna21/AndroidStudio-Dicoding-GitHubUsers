@@ -3,6 +3,7 @@ package com.fdhasna21.githubusers.service.api
 import com.fdhasna21.githubusers.model.response.AllUsersResponse
 import com.fdhasna21.githubusers.model.response.RepoResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
+import com.fdhasna21.githubusers.service.BaseAPI
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -37,8 +38,4 @@ interface UserAPI : BaseAPI {
 
     @GET("users/{username}/starred")
     fun getUserStars(@Path("username") username: String):Call<ArrayList<RepoResponse>>
-}
-
-interface BaseAPI {
-
 }

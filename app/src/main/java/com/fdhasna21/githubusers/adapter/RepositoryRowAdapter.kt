@@ -15,7 +15,11 @@ import com.fdhasna21.githubusers.utility.IntentUtils
  * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-class RepositoryRowAdapter(val data:ArrayList<RepoResponse>, val context: Context)
+class RepositoryRowAdapter(
+    val context: Context,
+    val data:ArrayList<RepoResponse>,
+    private var onClickListener : (() -> Unit)? = null,
+    private var onLongClickListener : (() -> Unit)? = null)
     :RecyclerView.Adapter<RepositoryRowAdapter.ViewHolder>(){
 
     inner class ViewHolder(val binding: RowRecyclerRepositoryBinding):RecyclerView.ViewHolder(binding.root)
@@ -44,7 +48,15 @@ class RepositoryRowAdapter(val data:ArrayList<RepoResponse>, val context: Contex
             .into(holder.binding.rowImage)
 
         holder.binding.rowRepository.setOnClickListener {
+            onClickListener?.invoke()
             IntentUtils(context).openBrowser("https://github.com/${item.owner!!.username}/${item.repo_name}")
+        }
+
+        onLongClickListener?.let { listener ->
+            holder.binding.rowRepository.setOnLongClickListener {
+                listener.invoke()
+                true
+            }
         }
 
         view.forEach {

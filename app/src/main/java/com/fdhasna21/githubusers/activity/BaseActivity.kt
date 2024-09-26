@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.fdhasna21.githubusers.repository.BaseRepository
 import com.fdhasna21.githubusers.utility.IntentUtils
 import com.fdhasna21.githubusers.viewmodel.BaseViewModel
 
@@ -13,12 +12,11 @@ import com.fdhasna21.githubusers.viewmodel.BaseViewModel
  * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-abstract class BaseActivity<VB: ViewBinding, VM: BaseViewModel, R: BaseRepository>(
+abstract class BaseActivity<VB: ViewBinding, VM: BaseViewModel>(
     private val inflate: (LayoutInflater) -> VB,
     private val viewModelClass: Class<VM>
 ) : AppCompatActivity() {
     lateinit var binding: VB
-    protected abstract val repository: R
     protected abstract val viewModel: VM
 
     var isConfigChange = false

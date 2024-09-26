@@ -1,10 +1,14 @@
 package com.fdhasna21.githubusers.repository
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
-import com.fdhasna21.githubusers.model.response.DbHandlerResult
-import com.fdhasna21.githubusers.service.RestClient
-import com.fdhasna21.githubusers.service.api.BaseAPI
+import com.fdhasna21.githubusers.model.DataResult
+import com.fdhasna21.githubusers.service.BaseAPI
+import com.fdhasna21.githubusers.service.BaseDao
+import com.fdhasna21.githubusers.service.RetrofitService
+import com.fdhasna21.githubusers.service.RoomService
+import com.fdhasna21.githubusers.utility.type.TAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.IOException
@@ -16,51 +20,64 @@ import retrofit2.Response
  * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-abstract class BaseRepository {
+abstract class BaseRepository<API: BaseAPI?, DAO: BaseDao<*>?> {
     abstract val context : Context
-    abstract val apiService : BaseAPI
+    abstract val apiService : API?
+    abstract val daoService : DAO?
 
-    inline fun <reified api> serverAPI() : api {
-        return RestClient(context)
+    inline fun <reified api : API> serverAPI() : api {
+        return RetrofitService(context)
             .getRetrofit()
             .create(api::class.java)
     }
 
+    val roomDb: RoomService by lazy {
+        RoomService.getDatabase(context)
+    }
+
     inline fun <T> remoteDbHandler(
         crossinline apiCall: () -> Call<T>,
-        crossinline onSuccess: (DbHandlerResult.Success<T>) -> Unit,
+        crossinline onSuccess: (DataResult.Success<T>) -> Unit,
     ) {
         apiCall().enqueue(object : Callback<T>{
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 if(response.isSuccessful){
                     response.body()?.let {
-                        onSuccess(DbHandlerResult.Success(it))
-                    } ?: onFailed(DbHandlerResult.Error<T>(IOException("Empty Response Body")))
+                        onSuccess(DataResult.Success(it))
+                    } ?: onFailed(DataResult.Error<T>(IOException("Empty Response Body")))
                 } else {
-                    onFailed(DbHandlerResult.Error<T>(IOException("Error Code: ${response.code()}")))
+                    onFailed(DataResult.Error<T>(IOException("Error Code: ${response.code()}")))
                 }
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                onFailed(DbHandlerResult.Error<T>(IOException("Network Failure: ${t.message}")))
+                onFailed(DataResult.Error<T>(IOException("Network Failure: ${t.message}")))
             }
 
         })
     }
 
-    inline suspend fun <T> localDbHandler(
-        crossinline databaseCall: suspend () -> T
-    ) : DbHandlerResult<T> {
-        return withContext(Dispatchers.IO) {
+    suspend inline fun <T> localDbHandler(
+        crossinline databaseCall: suspend () -> T,
+        crossinline onSuccess: (T) -> Unit
+    ) {
+        when (val result = withContext(Dispatchers.IO) {
             try {
-                DbHandlerResult.Success(databaseCall())
-            } catch (exception: Exception) {
-                DbHandlerResult.Error(Exception("Database Error: ${exception.message}"))
+                DataResult.Success(databaseCall())
+            } catch (e: Exception) {
+                Log.e(TAG,"Error while accessing database", e )
+                DataResult.Error(Exception("Database Error: ${e.message}"))
             }
+        }) {
+            is DataResult.Success -> {
+                Log.d(TAG, "room success \n ${result.data.toString()}")
+                onSuccess(result.data)
+            }
+            is DataResult.Error -> onFailed(result)
         }
     }
 
-    fun <T> onFailed(error: DbHandlerResult.Error<T>){
+    fun <T> onFailed(error: DataResult.Error<T>){
         Toast.makeText(context, error.exception.message, Toast.LENGTH_SHORT).show()
     }
 }

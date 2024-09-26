@@ -9,16 +9,16 @@ import com.fdhasna21.githubusers.model.response.UserResponse
 
 enum class DataType {
     USER {
-        override fun getAdapter(data: ArrayList<*>, context: Context): RecyclerView.Adapter<*> {
-            return UserRowAdapter(data as ArrayList<UserResponse>, context)
+        override fun getAdapter(context: Context, data: ArrayList<*>): RecyclerView.Adapter<*> {
+            return UserRowAdapter(context, data as ArrayList<UserResponse>)
         }
 
     },
     REPOSITORY {
-        override fun getAdapter(data: ArrayList<*>, context: Context): RecyclerView.Adapter<*> {
-            return RepositoryRowAdapter(data as ArrayList<RepoResponse>, context)
+        override fun getAdapter(context: Context, data: ArrayList<*>): RecyclerView.Adapter<*> {
+            return RepositoryRowAdapter(context, data as ArrayList<RepoResponse>)
         }
     };
 
-    abstract fun getAdapter(data:ArrayList<*>, context: Context) : RecyclerView.Adapter<*>
+    abstract fun getAdapter(context: Context, data:ArrayList<*>) : RecyclerView.Adapter<*>
 }

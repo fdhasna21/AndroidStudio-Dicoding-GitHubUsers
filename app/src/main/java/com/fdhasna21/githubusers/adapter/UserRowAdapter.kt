@@ -15,7 +15,11 @@ import com.fdhasna21.githubusers.utility.Key
  * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-class UserRowAdapter(var data:ArrayList<UserResponse>, val context: Context)
+class UserRowAdapter(
+    val context: Context,
+    var data:ArrayList<UserResponse>,
+    private var onClickListener : ((username: String) -> Unit)? = null,
+    private var onLongClickListener : ((username: String) -> Unit)? = null)
     :RecyclerView.Adapter<UserRowAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: RowRecyclerUserBinding):RecyclerView.ViewHolder(binding.root)
@@ -27,10 +31,22 @@ class UserRowAdapter(var data:ArrayList<UserResponse>, val context: Context)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
         holder.binding.rowUsername.text = item.username
-        holder.binding.rowUser.setOnClickListener {
-            val intent = Intent(context, UserDetailActivity::class.java)
-            intent.putExtra(Key.INTENT.USERNAME, item.username)
-            context.startActivity(intent)
+        item.username?.let {username ->
+            holder.binding.rowUser.setOnClickListener {
+                onClickListener?.invoke(username)
+
+                val intent = Intent(context, UserDetailActivity::class.java)
+                intent.putExtra(Key.INTENT.USERNAME, username)
+                context.startActivity(intent)
+            }
+
+            onLongClickListener?.let { listener ->
+                holder.binding.rowUser.setOnLongClickListener {
+                    listener.invoke(username)
+                    true
+                }
+            }
+
         }
 
         Glide.with(context)

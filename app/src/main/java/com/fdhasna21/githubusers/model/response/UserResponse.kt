@@ -1,10 +1,10 @@
 package com.fdhasna21.githubusers.model.response
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
+/**
+ * Updated by Fernanda Hasna on 26/09/2024.
+ */
 data class UserResponse(
     @SerializedName("login")        val username:String?="",
     @SerializedName("avatar_url")   val photoProfile:String?="",
@@ -17,4 +17,4 @@ data class UserResponse(
     val email:String?="",
     val bio:String?="",
     val id:Int?=0
-    ) : Parcelable
+) : BaseResponse()

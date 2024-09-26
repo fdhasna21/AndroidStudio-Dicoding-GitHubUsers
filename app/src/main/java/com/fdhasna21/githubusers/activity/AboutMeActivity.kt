@@ -7,10 +7,8 @@ import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.databinding.ActivityAboutMeBinding
-import com.fdhasna21.githubusers.repository.GeneralRepositoryImp
 import com.fdhasna21.githubusers.utility.Key
 import com.fdhasna21.githubusers.viewmodel.GeneralActivityViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -18,13 +16,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityViewModel, GeneralRepositoryImp>(
+class AboutMeActivity : BaseActivity<ActivityAboutMeBinding, GeneralActivityViewModel>(
     ActivityAboutMeBinding::inflate,
     GeneralActivityViewModel::class.java
 ) {
 
     override val viewModel: GeneralActivityViewModel by viewModel()
-    override val repository: GeneralRepositoryImp by inject()
 
     override fun setupUIWhenConfigChange() {
         setupToolbar()

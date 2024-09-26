@@ -18,7 +18,6 @@ import com.fdhasna21.githubusers.adapter.observeData
 import com.fdhasna21.githubusers.databinding.ActivityUserDetailBinding
 import com.fdhasna21.githubusers.model.response.RepoResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
-import com.fdhasna21.githubusers.repository.UserRepositoryImp
 import com.fdhasna21.githubusers.utility.DataUtils
 import com.fdhasna21.githubusers.utility.Key
 import com.fdhasna21.githubusers.utility.type.DataType
@@ -28,7 +27,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileNotFoundException
@@ -39,12 +37,11 @@ import java.io.IOException
  * Updated by Fernanda Hasna on 26/09/2024.
  */
 
-class UserDetailActivity : BaseActivity<ActivityUserDetailBinding, UserDetailActivityViewModel, UserRepositoryImp>(
+class UserDetailActivity : BaseActivity<ActivityUserDetailBinding, UserDetailActivityViewModel>(
     ActivityUserDetailBinding::inflate,
     UserDetailActivityViewModel::class.java
 ) {
     override val viewModel: UserDetailActivityViewModel by viewModel()
-    override val repository: UserRepositoryImp by inject()
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     override fun setupData() {

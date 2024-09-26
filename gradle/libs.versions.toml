@@ -5,7 +5,7 @@ ktx = "1.12.0"
 appcompat = "1.6.1"
 swipeRefreshLayout = "1.1.0"
 constraintLayout = "2.1.0"
-viewmodel = "2.3.1"
+viewmodel = "2.5.1"
 legacy = "1.0.0"
 material = "1.11.0"
 testjunit = "4.13.2"
@@ -14,12 +14,13 @@ testespresso = "3.4.0"
 retrofit2 = "2.9.0"
 okhttp3 = "5.0.0-alpha.2"
 gson = "2.8.6"
-recyclerview = "28.0.0"
+recyclerview = "1.3.0"
 glide = "4.12.0"
 lottie = "4.1.0"
 chucker = "4.0.0"
 koin = "3.4.0"
-room = "2.6.1"
+room = "2.5.0"
+ksp = "1.7.20-1.0.6"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -39,12 +40,13 @@ retrofit2-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-android-recyclerview = { group = "com.android.support", name = "recyclerview-v7", version.ref = "recyclerview" }
+android-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 bumptech-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 airbnb-lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 chucker-library = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-library-no-op = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+androidx-room = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room"}
 

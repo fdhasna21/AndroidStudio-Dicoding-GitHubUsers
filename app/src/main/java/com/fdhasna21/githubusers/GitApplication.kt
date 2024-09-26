@@ -2,8 +2,10 @@ package com.fdhasna21.githubusers
 
 import android.app.Application
 import com.fdhasna21.githubusers.repository.GeneralRepositoryImp
+import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
 import com.fdhasna21.githubusers.viewmodel.GeneralActivityViewModel
+import com.fdhasna21.githubusers.viewmodel.HistoryViewModel
 import com.fdhasna21.githubusers.viewmodel.MainActivityViewModel
 import com.fdhasna21.githubusers.viewmodel.UserDetailActivityViewModel
 import org.koin.android.ext.koin.androidContext
@@ -21,10 +23,12 @@ class GitApplication : Application() {
     val appModule = module {
         single { GeneralRepositoryImp(get()) }
         single { UserRepositoryImp(get()) }
+        single { HistoryRepositoryImp(get()) }
 
         viewModel { GeneralActivityViewModel(get()) }
-        viewModel { MainActivityViewModel(get()) }
+        viewModel { MainActivityViewModel(get(), get()) }
         viewModel { UserDetailActivityViewModel(get()) }
+        viewModel { HistoryViewModel(get())}
     }
 
     override fun onCreate() {

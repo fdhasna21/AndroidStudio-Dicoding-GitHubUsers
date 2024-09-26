@@ -28,7 +28,7 @@ class ViewPagerAdapter(private var activity: AppCompatActivity) : FragmentStateA
     override fun getItemCount(): Int = totalFragments
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = TabLayoutFragment(dataType.getAdapter(dataFragment[position], activity))
+        val fragment = TabLayoutFragment(dataType.getAdapter(activity, dataFragment[position]))
         fragments.add(fragment)
         return fragment
     }

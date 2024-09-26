@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -17,21 +18,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
-import com.fdhasna21.githubusers.repository.UserRepositoryImp
+import com.fdhasna21.githubusers.utility.type.TAG
 import com.fdhasna21.githubusers.viewmodel.MainActivityViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
-class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel, UserRepositoryImp>(
+class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
     ActivityMainBinding::inflate,
     MainActivityViewModel::class.java
 ), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 
     override val viewModel: MainActivityViewModel by viewModel()
-    override val repository: UserRepositoryImp by inject()
 
     private lateinit var rowAdapter: UserRowAdapter
     private lateinit var layoutManager : LinearLayoutManager
@@ -82,7 +81,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel, Us
     private fun setupRecyclerView(){
         binding.apply {
             refreshRecyclerView.setOnRefreshListener(this@MainActivity)
-            rowAdapter = UserRowAdapter(arrayListOf(), this@MainActivity)
+            rowAdapter = UserRowAdapter( this@MainActivity, arrayListOf(),
+                onClickListener = {
+                    username ->
+                    Log.d(TAG, "add $username")
+                    viewModel.insertHistoryToRepository(username)
+                }
+            )
             layoutManager = LinearLayoutManager(this@MainActivity)
 
             recyclerView.apply {

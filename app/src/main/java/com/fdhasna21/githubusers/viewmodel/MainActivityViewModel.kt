@@ -1,14 +1,23 @@
 package com.fdhasna21.githubusers.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.model.response.UserResponse
+import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
+import com.fdhasna21.githubusers.utility.type.TAG
+import kotlinx.coroutines.launch
 
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
-class MainActivityViewModel(private val repository: UserRepositoryImp) : BaseViewModel() {
+class MainActivityViewModel(
+    private val userRepository: UserRepositoryImp,
+    private val historyRepository: HistoryRepositoryImp
+) : BaseViewModel() {
 
     private var _allUsers : MutableLiveData<ArrayList<UserResponse>> =
         MutableLiveData<ArrayList<UserResponse>>(arrayListOf())
@@ -34,8 +43,8 @@ class MainActivityViewModel(private val repository: UserRepositoryImp) : BaseVie
         )
     }
 
-    fun getUsersByKeywordFromRepository(keyword:String, lastPage:Int){
-        repository.getUsersByKeyword(
+    private fun getUsersByKeywordFromRepository(keyword:String, lastPage:Int){
+        userRepository.getUsersByKeyword(
             key = keyword,
             page = lastPage,
             onSuccess = { result ->
@@ -51,7 +60,7 @@ class MainActivityViewModel(private val repository: UserRepositoryImp) : BaseVie
 
     fun getUsersFromRepository(){
         val lastID = lastID.value ?: 0
-        repository.getUsers(
+        userRepository.getUsers(
             lastID = lastID,
             onSuccess = { result ->
                 result.data.let { users ->
@@ -60,6 +69,17 @@ class MainActivityViewModel(private val repository: UserRepositoryImp) : BaseVie
                     _lastID.value = users[users.size-1].id ?: 0
                 }
             })
+    }
+
+    fun insertHistoryToRepository(username:String){
+        viewModelScope.launch {
+            historyRepository.insertHistory(
+                history = HistoryDb(username = username, photoProfile = ""),
+                onSuccess = {
+                    Log.d(TAG, "$username added to history.")
+                }
+            )
+        }
     }
 
     fun resetUsers(){

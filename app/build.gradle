@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'com.google.devtools.ksp' version libs.versions.ksp
 }
 
 def propFile = new File('credential.properties')
@@ -63,8 +64,9 @@ dependencies {
     implementation(libs.androidx.constraintlyt)
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.legacy)
+    implementation(libs.androidx.room)
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.android.material)
     implementation(libs.android.recyclerview)

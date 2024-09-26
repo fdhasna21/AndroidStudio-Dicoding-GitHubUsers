@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
-class RestClient(context : Context) {
+class RetrofitService(context : Context) {
     fun getRetrofit() : Retrofit {
         val gson = GsonBuilder()
             .setLenient()
@@ -64,3 +64,5 @@ class RestClient(context : Context) {
             .cache(null)
             .build()
 }
+
+interface BaseAPI{}
