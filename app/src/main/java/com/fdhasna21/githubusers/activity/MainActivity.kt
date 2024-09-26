@@ -3,7 +3,6 @@ package com.fdhasna21.githubusers.activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
@@ -123,14 +122,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (currentFocus != null && imm.isAcceptingText){
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_history -> {
@@ -156,12 +147,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        viewModel.setConfiguration(newConfig.orientation)
-        viewModel.activityConfig.observe(this) {
-            isConfigChange = (it != newConfig.orientation)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (currentFocus != null && imm.isAcceptingText){
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
-        super.onConfigurationChanged(newConfig)
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

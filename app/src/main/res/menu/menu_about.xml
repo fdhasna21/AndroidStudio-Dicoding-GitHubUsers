@@ -5,7 +5,6 @@
         android:title="@string/linkedin"
         android:icon="@drawable/ic_linkedin"/>
 
-
     <item
         android:id="@+id/about_email"
         android:title="@string/email"

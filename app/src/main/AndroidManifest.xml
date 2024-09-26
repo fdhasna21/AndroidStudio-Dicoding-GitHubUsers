@@ -53,12 +53,6 @@
             android:name=".activity.AboutMeActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.SENDTO" /> -->
-            <!-- <data android:scheme="mailto" /> -->
-            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-            <!-- </intent-filter> -->
         </activity>
 
         <provider

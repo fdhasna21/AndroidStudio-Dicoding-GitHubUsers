@@ -51,4 +51,10 @@
     <string name="error_forbidden">Your request has exceeded from GitHub rate limit. Please try again later</string>
     <string name="illustration_by_pixel_true">Illustration by Pixel True</string>
     <string name="history">History</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="warning">Warning</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="warning_delete_history">Are you sure you want to delete all your histories?</string>
+    <string name="delete_history">Delete history</string>
 </resources>

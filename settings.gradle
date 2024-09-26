@@ -1,10 +1,19 @@
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+// settings.gradle
+pluginManagement {
     repositories {
         google()
         mavenCentral()
-        mavenCentral() // Warning: this repository is going to shut down soon
+        gradlePluginPortal() // Required for plugins
     }
 }
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS) // You can set FAIL_ON_PROJECT_REPOS for stricter enforcement
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 rootProject.name = "GitHubUsers"
 include ':app'

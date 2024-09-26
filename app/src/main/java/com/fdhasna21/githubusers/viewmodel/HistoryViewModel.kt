@@ -28,4 +28,12 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
             )
         }
     }
+
+    fun deleteAllHistories(){
+        viewModelScope.launch {
+            repository.deleteAllHistories {
+                getAllHistoriesFromRepository()
+            }
+        }
+    }
 }

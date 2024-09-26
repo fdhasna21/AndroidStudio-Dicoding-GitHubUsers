@@ -41,4 +41,9 @@
     <string name="error_forbidden">Permintaanmu telah melebihi limit GitHub. Silahkan coba lagi nanti</string>
     <string name="illustration_by_pixel_true">Ilustrasi oleh Pixel True</string>
     <string name="history">Riwayat</string>
+    <string name="cancel">Batal</string>
+    <string name="warning">Peringatan</string>
+    <string name="confirmation">Konfirmasi</string>
+    <string name="warning_delete_history">Anda yakin ingin menghapus seluruh riwayat Anda?</string>
+    <string name="delete_history">Hapus riwayat</string>
 </resources>

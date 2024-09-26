@@ -41,4 +41,9 @@
     <string name="error_unprocessable">Sorry, something error with our code. Please contact our creator</string>
     <string name="illustration_by_pixel_true">Illustration by Pixel True</string>
     <string name="history">History</string>
+    <string name="cancel">Cancel</string>
+    <string name="warning">Warning</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="warning_delete_history">Are you sure you want to delete all your histories?</string>
+    <string name="delete_history">Delete history</string>
 </resources>
