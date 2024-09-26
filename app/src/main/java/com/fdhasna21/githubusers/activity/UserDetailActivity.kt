@@ -3,6 +3,7 @@ package com.fdhasna21.githubusers.activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +12,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.ViewPagerAdapter
@@ -99,9 +102,24 @@ class UserDetailActivity : BaseActivity<ActivityUserDetailBinding, UserDetailAct
                 views.forEachIndexed { idx: Int, view: View ->
                     if (idx == 0) {
                         Glide.with(this@UserDetailActivity)
+                            .asBitmap()
                             .load(it.photoProfile)
                             .circleCrop()
-                            .into(binding.detailImage)
+                            .into(object : CustomTarget<Bitmap>(){
+                                override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap>?
+                                ) {
+                                    binding.detailImage.setImageBitmap(resource)
+                                    it.username?.let { username ->
+                                        viewModel.updateHistoryFromRepository(
+                                            DataUtils().saveImageToCache(this@UserDetailActivity, resource, username)
+                                        )
+                                    }
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {}
+                            })
                     } else {
                         if (idx > 3) {
                             view.setOnClickListener { detailView ->
@@ -154,8 +172,6 @@ class UserDetailActivity : BaseActivity<ActivityUserDetailBinding, UserDetailAct
                             view.visibility = View.GONE
                         }
                     }
-
-
                 }
             }
         }

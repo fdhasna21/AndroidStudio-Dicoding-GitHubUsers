@@ -99,4 +99,9 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
         onBackPressed()
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        setupData()
+    }
 }

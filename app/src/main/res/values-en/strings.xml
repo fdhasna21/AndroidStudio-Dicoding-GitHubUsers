@@ -46,4 +46,5 @@
     <string name="confirmation">Confirmation</string>
     <string name="warning_delete_history">Are you sure you want to delete all your histories?</string>
     <string name="delete_history">Delete history</string>
+    <string name="timestamp">Timestamp</string>
 </resources>

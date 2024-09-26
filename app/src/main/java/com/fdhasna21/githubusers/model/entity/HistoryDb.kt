@@ -1,6 +1,5 @@
 package com.fdhasna21.githubusers.model.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -18,18 +17,18 @@ import com.fdhasna21.githubusers.service.RoomService
 )
 data class HistoryDb (
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    override val id: Long = 0,
     val userId: Int,
     val username: String,
     val photoProfile: String,
-    @ColumnInfo(defaultValue = RoomService.COLUMN_TIMESTAMP)
-    val timestamp: Long = System.currentTimeMillis()
-)
+    override val timestamp: Long = System.currentTimeMillis()
+) : BaseDb(id, timestamp)
 
 fun HistoryDb.toUserResponse() : UserResponse{
     return UserResponse(
         username = this.username,
         id = this.userId,
-        imangeCachePath = this.photoProfile
+        imageCachePath = this.photoProfile,
+        timestampAsString = this.timestamp.convertAsStringTimestamp()
     )
 }

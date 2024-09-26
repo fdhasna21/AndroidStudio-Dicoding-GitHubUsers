@@ -18,5 +18,6 @@ data class UserResponse(
     val email:String?="",
     val bio:String?="",
     val id:Int?=0,
-    var imangeCachePath:String?=null
+    var imageCachePath:String?=null,
+    var timestampAsString:String?=null
 ) : BaseResponse()

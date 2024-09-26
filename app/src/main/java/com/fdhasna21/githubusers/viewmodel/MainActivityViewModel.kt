@@ -72,13 +72,13 @@ class MainActivityViewModel(
             })
     }
 
-    fun insertHistoryToRepository(user: UserResponse){
+    fun insertOrUpdateHistoryToRepository(user: UserResponse){
         user.id?.let {
             viewModelScope.launch {
                 val username = user.username ?: ""
-                val userPict = user.imangeCachePath ?: ""
-                historyRepository.insertHistory(
-                    history = HistoryDb(username = username, userId = it, photoProfile = userPict),
+                val userPict = user.imageCachePath ?: ""
+                historyRepository.insertOrUpdateHistory(
+                    history = HistoryDb(username = username, userId = it, photoProfile = userPict, timestamp = System.currentTimeMillis()),
                     onSuccess = {
                         Log.d(TAG, "$username added to history.")
                     }

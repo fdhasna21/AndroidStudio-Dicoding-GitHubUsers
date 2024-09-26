@@ -85,7 +85,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
                 onClickListener = { user ->
 
                     Log.d(TAG, "add ${user.username}")
-                    viewModel.insertHistoryToRepository(user)
+                    viewModel.insertOrUpdateHistoryToRepository(user)
                 }
             )
             layoutManager = LinearLayoutManager(this@MainActivity)

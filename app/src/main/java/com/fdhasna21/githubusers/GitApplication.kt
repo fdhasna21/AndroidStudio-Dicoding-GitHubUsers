@@ -27,7 +27,7 @@ class GitApplication : Application() {
 
         viewModel { GeneralActivityViewModel(get()) }
         viewModel { MainActivityViewModel(get(), get()) }
-        viewModel { UserDetailActivityViewModel(get()) }
+        viewModel { UserDetailActivityViewModel(get(), get()) }
         viewModel { HistoryViewModel(get())}
     }
 

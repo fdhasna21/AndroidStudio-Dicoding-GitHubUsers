@@ -1,15 +1,24 @@
 package com.fdhasna21.githubusers.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.model.response.RepoResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
+import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
+import com.fdhasna21.githubusers.utility.type.TAG
+import kotlinx.coroutines.launch
 
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
-class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : BaseViewModel() {
+class UserDetailActivityViewModel(
+    private val userRepository: UserRepositoryImp,
+    private val historyRepository: HistoryRepositoryImp
+) : BaseViewModel() {
 
     private var _userDetail : MutableLiveData<UserResponse> =
         MutableLiveData<UserResponse>()
@@ -41,7 +50,7 @@ class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : B
 
     private fun getUserDetail(){
         _username.value?.let { username ->
-            repository.getUserDetail(
+            userRepository.getUserDetail(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
@@ -54,7 +63,7 @@ class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : B
 
     fun getFollowingsFromRepository(){
         _username.value?.let { username ->
-            repository.getUserFollowings(
+            userRepository.getUserFollowings(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
@@ -67,7 +76,7 @@ class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : B
 
     fun getFollowersFromRepository(){
         _username.value?.let { username ->
-            repository.getUserFollowers(
+            userRepository.getUserFollowers(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
@@ -80,7 +89,7 @@ class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : B
 
     fun getReposFromRepository(){
         _username.value?.let { username ->
-            repository.getUserRepos(
+            userRepository.getUserRepos(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
@@ -93,7 +102,7 @@ class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : B
 
     fun getStarsFromRepository(){
         _username.value?.let { username ->
-            repository.getUserStars(
+            userRepository.getUserStars(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
@@ -101,6 +110,26 @@ class UserDetailActivityViewModel(private val repository: UserRepositoryImp) : B
                     }
                 }
             )
+        }
+    }
+
+    fun updateHistoryFromRepository(userPictCachePath: String){
+        userDetail.value?.let { user ->
+            user.id?.let{
+                viewModelScope.launch {
+                    val username = user.username ?: ""
+                    val newTimestamp = System.currentTimeMillis()
+                    val updated = HistoryDb(username = username, userId = it, photoProfile = userPictCachePath, timestamp = newTimestamp)
+//                    Log.d(TAG, "updateHistoryFromRepository: $newTimestamp")
+//                    Log.d(TAG, "updateHistoryFromRepository: $updated")
+                    historyRepository.updateHistory(
+                        history = updated,
+                        onSuccess = {
+                            Log.d(TAG, "$username updated to history.")
+                        }
+                    )
+                }
+            }
         }
     }
 }

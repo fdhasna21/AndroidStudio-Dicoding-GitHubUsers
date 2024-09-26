@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.google.gson)
 
     implementation(libs.bumptech.glide)
+    ksp(libs.bumptech.glide)
     implementation(libs.airbnb.lottie)
     debugImplementation(libs.chucker.library)
     releaseImplementation(libs.chucker.library.no.op)

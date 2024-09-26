@@ -3,6 +3,7 @@ package com.fdhasna21.githubusers.adapter
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -37,7 +38,7 @@ class UserRowAdapter(
                 holder.binding.rowUser.setOnClickListener {
                     if(onClickListener != null) {
                         val cachePath = DataUtils().saveImageToCache(context, holder.binding.rowImage, username)
-                        item.imangeCachePath = cachePath
+                        item.imageCachePath = cachePath
                         onClickListener?.invoke(item)
                     }
 
@@ -62,11 +63,16 @@ class UserRowAdapter(
                 .into(holder.binding.rowImage)
         }
 
-        item.imangeCachePath?.let{
+        item.imageCachePath?.let{
             Glide.with(context)
                 .load(DataUtils().loadImageFromCache(it))
                 .circleCrop()
                 .into(holder.binding.rowImage)
+        }
+
+        item.timestampAsString?.let{
+            holder.binding.rowTimestamp.text = it
+            holder.binding.rowTimestamp.visibility = View.VISIBLE
         }
     }
 
