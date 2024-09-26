@@ -4,16 +4,21 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fdhasna21.githubusers.R
+import com.fdhasna21.githubusers.adapter.UserItemSwipeCallback
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityHistoryBinding
+import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.utility.DialogUtils
 import com.fdhasna21.githubusers.viewmodel.HistoryViewModel
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
@@ -76,6 +81,16 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
                 addItemDecoration(object : DividerItemDecoration(this@HistoryActivity, VERTICAL) {})
                 setHasFixedSize(true)
             }
+
+            val itemTouchHelper = ItemTouchHelper(object : UserItemSwipeCallback(rowAdapter){
+                override fun onItemSwipeListener(user: UserResponse, position: Int) {
+                    Snackbar.make(recyclerView, "Deleted ${user.username}", Snackbar.LENGTH_LONG)
+                         .setAction("UNDO") {
+                             rowAdapter.restoreItem(user, position)
+                         }.show()
+                }
+            })
+            itemTouchHelper.attachToRecyclerView(recyclerView)
         }
     }
 

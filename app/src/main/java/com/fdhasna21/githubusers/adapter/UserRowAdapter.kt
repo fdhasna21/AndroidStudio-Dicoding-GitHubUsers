@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.activity.UserDetailActivity
@@ -15,6 +16,7 @@ import com.fdhasna21.githubusers.utility.Key
 
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 class UserRowAdapter(
@@ -84,5 +86,34 @@ class UserRowAdapter(
         data.clear()
         data.addAll(newData)
         notifyDataSetChanged()
+    }
+
+    fun removeItem(position: Int) {
+        data.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun restoreItem(user: UserResponse, position: Int) {
+        data.add(position, user)
+        notifyItemInserted(position)
+    }
+}
+
+abstract class UserItemSwipeCallback(
+    private val adapter: UserRowAdapter
+) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+    abstract fun onItemSwipeListener(user: UserResponse, position: Int)
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        return false
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        val position = viewHolder.adapterPosition
+        adapter.removeItem(position)
+        onItemSwipeListener(adapter.data[position], position)
     }
 }
