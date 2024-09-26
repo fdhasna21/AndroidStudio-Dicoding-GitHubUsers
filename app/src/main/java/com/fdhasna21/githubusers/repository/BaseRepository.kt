@@ -70,7 +70,7 @@ abstract class BaseRepository<API: BaseAPI?, DAO: BaseDao<*>?> {
             }
         }) {
             is DataResult.Success -> {
-                Log.d(TAG, "room success \n ${result.data.toString()}")
+                Log.d(TAG, "room success : ${result.data.toString()}")
                 onSuccess(result.data)
             }
             is DataResult.Error -> onFailed(result)

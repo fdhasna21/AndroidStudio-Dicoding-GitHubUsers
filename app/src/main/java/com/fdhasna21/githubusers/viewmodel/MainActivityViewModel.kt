@@ -74,7 +74,7 @@ class MainActivityViewModel(
     fun insertHistoryToRepository(username:String){
         viewModelScope.launch {
             historyRepository.insertHistory(
-                history = HistoryDb(username = username, photoProfile = ""),
+                history = HistoryDb(username = username, userId = 0, photoProfile = ""),
                 onSuccess = {
                     Log.d(TAG, "$username added to history.")
                 }

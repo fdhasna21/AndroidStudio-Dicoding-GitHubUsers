@@ -83,9 +83,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
             refreshRecyclerView.setOnRefreshListener(this@MainActivity)
             rowAdapter = UserRowAdapter( this@MainActivity, arrayListOf(),
                 onClickListener = {
-                    username ->
-                    Log.d(TAG, "add $username")
-                    viewModel.insertHistoryToRepository(username)
+                    user ->
+                    Log.d(TAG, "add ${user.username}")
+                    viewModel.insertHistoryToRepository(user.username ?: "")
                 }
             )
             layoutManager = LinearLayoutManager(this@MainActivity)

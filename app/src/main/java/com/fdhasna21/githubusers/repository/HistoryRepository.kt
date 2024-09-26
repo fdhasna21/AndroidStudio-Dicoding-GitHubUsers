@@ -22,6 +22,13 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
         )
     }
 
+    override suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit) {
+        localDbHandler(
+            databaseCall = { daoService.getHistoryByUserId(userId) },
+            onSuccess = onSuccess
+        )
+    }
+
     override suspend fun insertHistory(history: HistoryDb, onSuccess: () -> Unit) {
         localDbHandler(
             databaseCall = { daoService.insertHistory(history) },
@@ -46,6 +53,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
 interface HistoryRepository {
     suspend fun getAllHistories(onSuccess: (List<HistoryDb>) -> Unit)
+    suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit)
     suspend fun insertHistory(history: HistoryDb, onSuccess: () -> Unit)
     suspend fun deleteHistory(history: HistoryDb, onSuccess: () -> Unit)
     suspend fun deleteAllHistories(onSuccess: () -> Unit)

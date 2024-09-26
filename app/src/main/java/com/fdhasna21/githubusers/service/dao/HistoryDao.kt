@@ -15,8 +15,11 @@ import com.fdhasna21.githubusers.service.RoomService
 
 @Dao
 interface HistoryDao : BaseDao<HistoryDb> {
-    @Query("SELECT * FROM ${RoomService.TB_HISTORY} ORDER BY ${RoomService.ID} DESC")
+    @Query("SELECT * FROM ${RoomService.TB_HISTORY} ORDER BY ${RoomService.TIMESTAMP} DESC")
     suspend fun getAllHistories(): List<HistoryDb>
+
+    @Query("SELECT * FROM ${RoomService.TB_HISTORY} WHERE userId = :userId LIMIT 1")
+    suspend fun getHistoryByUserId(userId: Int): HistoryDb?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertHistory(history: HistoryDb)

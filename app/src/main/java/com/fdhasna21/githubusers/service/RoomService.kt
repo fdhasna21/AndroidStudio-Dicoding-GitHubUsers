@@ -23,8 +23,10 @@ abstract class RoomService : RoomDatabase(){
     companion object {
         const val DB_GIT = "db_git"
         const val TB_HISTORY = "tb_history"
-        const val ID = "id"
-        const val TIMESTAMP = "CURRENT_TIMESTAMP"
+
+        const val COLUMN_TIMESTAMP = "CURRENT_TIMESTAMP"
+        const val USER_ID = "userId"
+        const val TIMESTAMP = "timestamp"
 
         @Volatile
         private var INSTANCE: RoomService? = null
