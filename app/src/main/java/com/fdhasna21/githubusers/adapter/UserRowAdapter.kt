@@ -113,7 +113,7 @@ abstract class UserItemSwipeCallback(
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
-        adapter.removeItem(position)
         onItemSwipeListener(adapter.data[position], position)
+        adapter.removeItem(position)
     }
 }

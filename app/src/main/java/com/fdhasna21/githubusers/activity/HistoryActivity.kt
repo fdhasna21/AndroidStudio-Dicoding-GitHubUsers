@@ -6,6 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.UserItemSwipeCallback
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
@@ -24,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
     ActivityHistoryBinding::inflate,
     HistoryViewModel::class.java
-) {
+), SwipeRefreshLayout.OnRefreshListener {
 
     override val viewModel: HistoryViewModel by viewModel()
 
@@ -61,6 +62,7 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
                 binding.recyclerView.visibility = View.VISIBLE
                 rowAdapter.updateData(it)
             }
+            binding.refreshRecyclerView.isRefreshing = false
         }
     }
 
@@ -72,6 +74,7 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
 
     private fun setupRecyclerView(){
         binding.apply {
+            refreshRecyclerView.setOnRefreshListener(this@HistoryActivity)
             rowAdapter = UserRowAdapter(this@HistoryActivity, arrayListOf())
             layoutManager = LinearLayoutManager(this@HistoryActivity)
 
@@ -117,6 +120,10 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
 
     override fun onResume() {
         super.onResume()
+        setupData()
+    }
+
+    override fun onRefresh() {
         setupData()
     }
 }
