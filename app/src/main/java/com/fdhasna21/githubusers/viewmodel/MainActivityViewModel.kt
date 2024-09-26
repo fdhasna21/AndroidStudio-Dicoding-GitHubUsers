@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
+
 class MainActivityViewModel(
     private val userRepository: UserRepositoryImp,
     private val historyRepository: HistoryRepositoryImp
@@ -71,14 +72,18 @@ class MainActivityViewModel(
             })
     }
 
-    fun insertHistoryToRepository(username:String){
-        viewModelScope.launch {
-            historyRepository.insertHistory(
-                history = HistoryDb(username = username, userId = 0, photoProfile = ""),
-                onSuccess = {
-                    Log.d(TAG, "$username added to history.")
-                }
-            )
+    fun insertHistoryToRepository(user: UserResponse){
+        user.id?.let {
+            viewModelScope.launch {
+                val username = user.username ?: ""
+                val userPict = user.imangeCachePath ?: ""
+                historyRepository.insertHistory(
+                    history = HistoryDb(username = username, userId = it, photoProfile = userPict),
+                    onSuccess = {
+                        Log.d(TAG, "$username added to history.")
+                    }
+                )
+            }
         }
     }
 

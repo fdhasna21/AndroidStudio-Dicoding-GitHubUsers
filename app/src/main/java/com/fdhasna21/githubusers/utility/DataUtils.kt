@@ -1,12 +1,23 @@
 package com.fdhasna21.githubusers.utility
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.view.View
+import android.widget.ImageView
+import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.utility.type.ErrorType
+import java.io.File
+import java.io.FileOutputStream
 import kotlin.math.ln
 import kotlin.math.pow
+
+/**
+ * Updated by Fernanda Hasna on 26/09/2024.
+ */
 
 class DataUtils {
     fun withSuffix(count: Long): String {
@@ -43,6 +54,46 @@ class DataUtils {
             403 -> ErrorType.FORBIDDEN
             in 500..599 -> ErrorType.SERVER_ERROR
             else -> ErrorType.OTHERS
+        }
+    }
+
+    fun saveImageToCache(context: Context, bitmap: Bitmap, imageName: String): String {
+        val cacheDir = context.cacheDir
+        val imageFile = File(cacheDir, context.getString(R.string.app_name).replace(".","")+"-$imageName.jpg")
+
+        FileOutputStream(imageFile).use { out ->
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out) // Adjust format and quality as needed
+        }
+
+        return imageFile.absolutePath // Return the file path
+    }
+
+    fun saveImageToCache(context: Context, imageView: ImageView, imageName: String): String {
+        val cacheDir = context.cacheDir
+        val imageFile = File(cacheDir, context.getString(R.string.app_name).replace(".","")+"-$imageName.jpg")
+
+        FileOutputStream(imageFile).use { out ->
+            getBitmapFromImageView(imageView)?.compress(Bitmap.CompressFormat.JPEG, 100, out) // Adjust format and quality as needed
+        }
+
+        return imageFile.absolutePath // Return the file path
+    }
+
+    fun loadImageFromCache(path: String): Bitmap? {
+        return BitmapFactory.decodeFile(path)
+    }
+
+    fun getBitmapFromImageView(imageView: ImageView): Bitmap? {
+        val drawable = imageView.drawable
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap // Return the existing bitmap
+        } else {
+            // If drawable is not a BitmapDrawable, create a bitmap from the view
+            val bitmap = Bitmap.createBitmap(imageView.width, imageView.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            imageView.layout(0, 0, imageView.width, imageView.height)
+            imageView.draw(canvas)
+            return bitmap
         }
     }
 }

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.fdhasna21.githubusers.activity.UserDetailActivity
 import com.fdhasna21.githubusers.databinding.RowRecyclerUserBinding
 import com.fdhasna21.githubusers.model.response.UserResponse
+import com.fdhasna21.githubusers.utility.DataUtils
 import com.fdhasna21.githubusers.utility.Key
 
 /**
@@ -34,7 +35,11 @@ class UserRowAdapter(
         item.id?.let {
             item.username?.let { username ->
                 holder.binding.rowUser.setOnClickListener {
-                    onClickListener?.invoke(item)
+                    if(onClickListener != null) {
+                        val cachePath = DataUtils().saveImageToCache(context, holder.binding.rowImage, username)
+                        item.imangeCachePath = cachePath
+                        onClickListener?.invoke(item)
+                    }
 
                     val intent = Intent(context, UserDetailActivity::class.java)
                     intent.putExtra(Key.INTENT.USERNAME, username)
@@ -50,10 +55,19 @@ class UserRowAdapter(
             }
         }
 
-        Glide.with(context)
-            .load(item.photoProfile)
-            .circleCrop()
-            .into(holder.binding.rowImage)
+        item.photoProfile?.let {
+            Glide.with(context)
+                .load(it)
+                .circleCrop()
+                .into(holder.binding.rowImage)
+        }
+
+        item.imangeCachePath?.let{
+            Glide.with(context)
+                .load(DataUtils().loadImageFromCache(it))
+                .circleCrop()
+                .into(holder.binding.rowImage)
+        }
     }
 
     override fun getItemCount(): Int {

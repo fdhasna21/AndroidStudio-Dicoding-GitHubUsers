@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
+
 data class UserResponse(
     @SerializedName("login")        val username:String?="",
     @SerializedName("avatar_url")   val photoProfile:String?="",
@@ -16,5 +17,6 @@ data class UserResponse(
     val company:String?="",
     val email:String?="",
     val bio:String?="",
-    val id:Int?=0
+    val id:Int?=0,
+    var imangeCachePath:String?=null
 ) : BaseResponse()

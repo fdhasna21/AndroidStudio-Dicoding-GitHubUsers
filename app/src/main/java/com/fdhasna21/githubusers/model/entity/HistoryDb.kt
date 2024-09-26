@@ -9,6 +9,7 @@ import com.fdhasna21.githubusers.service.RoomService
 
 /**
  * Created by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 26/09/2024.
  */
 
 @Entity(
@@ -27,6 +28,8 @@ data class HistoryDb (
 
 fun HistoryDb.toUserResponse() : UserResponse{
     return UserResponse(
-        username = this.username
+        username = this.username,
+        id = this.userId,
+        imangeCachePath = this.photoProfile
     )
 }

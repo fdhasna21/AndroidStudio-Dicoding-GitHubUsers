@@ -25,6 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * Updated by Fernanda Hasna on 26/09/2024.
  */
+
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
     ActivityMainBinding::inflate,
     MainActivityViewModel::class.java
@@ -82,10 +83,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
         binding.apply {
             refreshRecyclerView.setOnRefreshListener(this@MainActivity)
             rowAdapter = UserRowAdapter( this@MainActivity, arrayListOf(),
-                onClickListener = {
-                    user ->
+                onClickListener = { user ->
+
                     Log.d(TAG, "add ${user.username}")
-                    viewModel.insertHistoryToRepository(user.username ?: "")
+                    viewModel.insertHistoryToRepository(user)
                 }
             )
             layoutManager = LinearLayoutManager(this@MainActivity)
