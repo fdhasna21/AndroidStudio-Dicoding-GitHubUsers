@@ -1,11 +1,13 @@
 package com.fdhasna21.githubusers.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.fdhasna21.githubusers.model.entity.toUserResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
+import com.fdhasna21.githubusers.utility.type.TAG
 import com.fdhasna21.githubusers.utility.type.convertToArrayList
 import kotlinx.coroutines.launch
 
@@ -29,10 +31,23 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
         }
     }
 
-    fun deleteAllHistories(){
+    fun deleteAllHistoriesFromRepository(){
         viewModelScope.launch {
             repository.deleteAllHistories {
                 getAllHistoriesFromRepository()
+            }
+        }
+    }
+
+    fun deleteHistoryFromRepository(user: UserResponse){
+        user.id?.let{
+            viewModelScope.launch {
+                repository.deleteHistory(
+                    userId = it,
+                    onSuccess = {
+                        Log.d(TAG, "deleted ${user.username}")
+                    }
+                )
             }
         }
     }

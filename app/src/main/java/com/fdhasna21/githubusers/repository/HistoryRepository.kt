@@ -43,9 +43,9 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
         )
     }
 
-    override suspend fun deleteHistory(history: HistoryDb, onSuccess: () -> Unit) {
+    override suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit) {
         localDbHandler(
-            databaseCall = { daoService.deleteHistory(history) },
+            databaseCall = { daoService.deleteHistory(userId) },
             onSuccess = { onSuccess() }
         )
     }
@@ -63,6 +63,6 @@ interface HistoryRepository {
     suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit)
     suspend fun insertOrUpdateHistory(history: HistoryDb, onSuccess: () -> Unit)
     suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit)
-    suspend fun deleteHistory(history: HistoryDb, onSuccess: () -> Unit)
+    suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit)
     suspend fun deleteAllHistories(onSuccess: () -> Unit)
 }

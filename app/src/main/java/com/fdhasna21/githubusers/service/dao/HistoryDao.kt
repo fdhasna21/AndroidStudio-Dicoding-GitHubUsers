@@ -1,7 +1,6 @@
 package com.fdhasna21.githubusers.service.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,6 +11,7 @@ import com.fdhasna21.githubusers.service.RoomService
 
 /**
  * Created by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 @Dao
@@ -28,8 +28,8 @@ interface HistoryDao : BaseDao<HistoryDb> {
     @Update
     suspend fun updateHistory(history: HistoryDb)
 
-    @Delete
-    suspend fun deleteHistory(history: HistoryDb)
+    @Query("DELETE FROM ${RoomService.TB_HISTORY} WHERE userId = :userId")
+    suspend fun deleteHistory(userId:Int)
 
     @Query("DELETE FROM ${RoomService.TB_HISTORY}")
     suspend fun deleteAllHistories()

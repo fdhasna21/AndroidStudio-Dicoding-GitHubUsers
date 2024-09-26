@@ -14,7 +14,6 @@ import com.fdhasna21.githubusers.databinding.ActivityHistoryBinding
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.utility.DialogUtils
 import com.fdhasna21.githubusers.viewmodel.HistoryViewModel
-import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -87,10 +86,7 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
 
             val itemTouchHelper = ItemTouchHelper(object : UserItemSwipeCallback(rowAdapter){
                 override fun onItemSwipeListener(user: UserResponse, position: Int) {
-                    Snackbar.make(recyclerView, "Deleted ${user.username}", Snackbar.LENGTH_LONG)
-                         .setAction("UNDO") {
-                             rowAdapter.restoreItem(user, position)
-                         }.show()
+                    viewModel.deleteHistoryFromRepository(user)
                 }
             })
             itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -106,7 +102,7 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
         when (item.itemId) {
             R.id.history_delete -> {
                 DialogUtils.showConfirmationDialog(this, getString(R.string.warning_delete_history)){
-                    _, _ -> viewModel.deleteAllHistories()
+                    _, _ -> viewModel.deleteAllHistoriesFromRepository()
                 }
             }
         }
