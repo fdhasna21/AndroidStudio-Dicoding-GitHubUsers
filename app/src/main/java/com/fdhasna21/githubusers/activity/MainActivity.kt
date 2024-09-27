@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -17,12 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
-import com.fdhasna21.githubusers.utility.type.TAG
 import com.fdhasna21.githubusers.viewmodel.MainActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
@@ -83,8 +81,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
             refreshRecyclerView.setOnRefreshListener(this@MainActivity)
             rowAdapter = UserRowAdapter( this@MainActivity, arrayListOf(),
                 onClickListener = { user ->
-
-                    Log.d(TAG, "add ${user.username}")
                     viewModel.insertOrUpdateHistoryToRepository(user)
                 }
             )

@@ -3,7 +3,7 @@ package com.fdhasna21.githubusers.model.response
 import com.google.gson.annotations.SerializedName
 
 /**
- * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 data class UserResponse(
@@ -19,5 +19,6 @@ data class UserResponse(
     val bio:String?="",
     val id:Int?=0,
     var imageCachePath:String?=null,
-    var timestampAsString:String?=null
+    var timestampAsString:String?=null,
+    var timestampAsLong: Long?=null
 ) : BaseResponse()

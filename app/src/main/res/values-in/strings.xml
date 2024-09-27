@@ -46,4 +46,7 @@
     <string name="confirmation">Konfirmasi</string>
     <string name="warning_delete_history">Anda yakin ingin menghapus seluruh riwayat Anda?</string>
     <string name="delete_history">Hapus riwayat</string>
+    <string name="timestamp">Waktu</string>
+    <string name="undo">Batal</string>
+    <string name="success_deleted">%1$s berhasil dihapus.</string>
 </resources>

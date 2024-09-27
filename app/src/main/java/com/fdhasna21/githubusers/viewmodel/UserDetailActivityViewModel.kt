@@ -13,8 +13,9 @@ import com.fdhasna21.githubusers.utility.type.TAG
 import kotlinx.coroutines.launch
 
 /**
- * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
+
 class UserDetailActivityViewModel(
     private val userRepository: UserRepositoryImp,
     private val historyRepository: HistoryRepositoryImp
@@ -120,8 +121,6 @@ class UserDetailActivityViewModel(
                     val username = user.username ?: ""
                     val newTimestamp = System.currentTimeMillis()
                     val updated = HistoryDb(username = username, userId = it, photoProfile = userPictCachePath, timestamp = newTimestamp)
-//                    Log.d(TAG, "updateHistoryFromRepository: $newTimestamp")
-//                    Log.d(TAG, "updateHistoryFromRepository: $updated")
                     historyRepository.updateHistory(
                         history = updated,
                         onSuccess = {

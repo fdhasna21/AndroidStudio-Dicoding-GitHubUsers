@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.model.entity.toUserResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Created by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewModel(){
@@ -46,6 +48,22 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
                     userId = it,
                     onSuccess = {
                         Log.d(TAG, "deleted ${user.username}")
+                    }
+                )
+            }
+        }
+    }
+
+    fun restoreHistoryToRepository(user: UserResponse){
+        user.id?.let {
+            viewModelScope.launch {
+                val username = user.username ?: ""
+                val userPict = user.imageCachePath ?: ""
+                val userTimestamp = user.timestampAsLong ?: 0
+                repository.insertOrUpdateHistory(
+                    history = HistoryDb(username = username, userId = it, photoProfile = userPict, timestamp = userTimestamp),
+                    onSuccess = {
+                        Log.d(TAG, "$username added to history.")
                     }
                 )
             }
