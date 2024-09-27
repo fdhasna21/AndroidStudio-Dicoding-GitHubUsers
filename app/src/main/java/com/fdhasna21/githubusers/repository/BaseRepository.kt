@@ -58,6 +58,7 @@ abstract class BaseRepository<API: BaseAPI?, DAO: BaseDao<*>?> {
     }
 
     suspend inline fun <T> localDbHandler(
+        process: String,
         crossinline databaseCall: suspend () -> T,
         crossinline onSuccess: (T) -> Unit
     ) {
@@ -70,7 +71,7 @@ abstract class BaseRepository<API: BaseAPI?, DAO: BaseDao<*>?> {
             }
         }) {
             is DataResult.Success -> {
-                Log.d(TAG, "room success : ${result.data.toString()}")
+                Log.d(TAG, "$process success : ${result.data.toString()}")
                 onSuccess(result.data)
             }
             is DataResult.Error -> onFailed(result)

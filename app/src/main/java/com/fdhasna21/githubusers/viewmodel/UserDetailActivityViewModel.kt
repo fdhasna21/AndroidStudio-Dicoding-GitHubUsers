@@ -1,6 +1,5 @@
 package com.fdhasna21.githubusers.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,7 +8,6 @@ import com.fdhasna21.githubusers.model.response.RepoResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
-import com.fdhasna21.githubusers.utility.type.TAG
 import kotlinx.coroutines.launch
 
 /**
@@ -124,7 +122,6 @@ class UserDetailActivityViewModel(
                     historyRepository.updateHistory(
                         history = updated,
                         onSuccess = {
-                            Log.d(TAG, "$username updated to history.")
                         }
                     )
                 }

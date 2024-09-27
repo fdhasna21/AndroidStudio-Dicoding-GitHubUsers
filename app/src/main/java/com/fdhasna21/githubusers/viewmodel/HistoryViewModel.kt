@@ -1,6 +1,5 @@
 package com.fdhasna21.githubusers.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,7 +7,6 @@ import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.model.entity.toUserResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
-import com.fdhasna21.githubusers.utility.type.TAG
 import com.fdhasna21.githubusers.utility.type.convertToArrayList
 import kotlinx.coroutines.launch
 
@@ -47,7 +45,7 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
                 repository.deleteHistory(
                     userId = it,
                     onSuccess = {
-                        Log.d(TAG, "deleted ${user.username}")
+                        getAllHistoriesFromRepository()
                     }
                 )
             }
@@ -63,7 +61,7 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
                 repository.insertOrUpdateHistory(
                     history = HistoryDb(username = username, userId = it, photoProfile = userPict, timestamp = userTimestamp),
                     onSuccess = {
-                        Log.d(TAG, "$username added to history.")
+                        getAllHistoriesFromRepository()
                     }
                 )
             }

@@ -1,6 +1,5 @@
 package com.fdhasna21.githubusers.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,11 +7,10 @@ import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
 import com.fdhasna21.githubusers.repository.UserRepositoryImp
-import com.fdhasna21.githubusers.utility.type.TAG
 import kotlinx.coroutines.launch
 
 /**
- * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 class MainActivityViewModel(
@@ -80,7 +78,6 @@ class MainActivityViewModel(
                 historyRepository.insertOrUpdateHistory(
                     history = HistoryDb(username = username, userId = it, photoProfile = userPict, timestamp = System.currentTimeMillis()),
                     onSuccess = {
-                        Log.d(TAG, "$username added to history.")
                     }
                 )
             }

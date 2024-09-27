@@ -18,6 +18,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun getAllHistories(onSuccess: (List<HistoryDb>) -> Unit) {
         localDbHandler(
+            process = "getAllHistories",
             databaseCall = { daoService.getAllHistories() },
             onSuccess = onSuccess
         )
@@ -25,6 +26,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit) {
         localDbHandler(
+            process = "getHistoryByUserId",
             databaseCall = { daoService.getHistoryByUserId(userId) },
             onSuccess = onSuccess
         )
@@ -32,6 +34,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun insertOrUpdateHistory(history: HistoryDb, onSuccess: () -> Unit) {
         localDbHandler(
+            process = "insertOrUpdateHistory",
             databaseCall = { daoService.insertOrUpdateHistory(history) },
             onSuccess = { onSuccess() }
         )
@@ -39,6 +42,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit) {
         localDbHandler(
+            process = "updateHistory",
             databaseCall = {
                 daoService.updateHistory(
                     userId = history.userId,
@@ -52,6 +56,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit) {
         localDbHandler(
+            process = "deleteHistory",
             databaseCall = { daoService.deleteHistory(userId) },
             onSuccess = { onSuccess() }
         )
@@ -59,6 +64,7 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun deleteAllHistories(onSuccess: () -> Unit) {
         localDbHandler(
+            process = "deleteAllHistories",
             databaseCall = { daoService.deleteAllHistories() },
             onSuccess = { onSuccess() }
         )
