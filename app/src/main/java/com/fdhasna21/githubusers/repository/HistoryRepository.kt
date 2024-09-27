@@ -8,6 +8,7 @@ import com.fdhasna21.githubusers.service.dao.HistoryDao
 
 /**
  * Created by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 27/09/2024.
  */
 
 class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseAPI, HistoryDao>(), HistoryRepository
@@ -38,7 +39,13 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
 
     override suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit) {
         localDbHandler(
-            databaseCall = { daoService.updateHistory(history) },
+            databaseCall = {
+                daoService.updateHistory(
+                    userId = history.userId,
+                    username = history.username,
+                    timestamp = history.timestamp,
+                    photoProfile = history.photoProfile
+                ) },
             onSuccess = { onSuccess() }
         )
     }

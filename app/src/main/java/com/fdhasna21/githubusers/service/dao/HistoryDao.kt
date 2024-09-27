@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.service.BaseDao
 import com.fdhasna21.githubusers.service.RoomService
@@ -25,8 +24,19 @@ interface HistoryDao : BaseDao<HistoryDb> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateHistory(history: HistoryDb)
 
-    @Update
-    suspend fun updateHistory(history: HistoryDb)
+    @Query("""
+        UPDATE ${RoomService.TB_HISTORY}
+        SET username = :username,
+            photoProfile = :photoProfile,
+            timestamp = :timestamp
+        WHERE userId = :userId
+    """)
+    suspend fun updateHistory(
+        userId: Int,
+        username: String,
+        photoProfile: String,
+        timestamp: Long = System.currentTimeMillis()
+    )
 
     @Query("DELETE FROM ${RoomService.TB_HISTORY} WHERE userId = :userId")
     suspend fun deleteHistory(userId:Int)
