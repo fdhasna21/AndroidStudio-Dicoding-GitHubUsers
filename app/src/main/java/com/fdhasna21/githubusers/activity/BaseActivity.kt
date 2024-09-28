@@ -9,7 +9,7 @@ import com.fdhasna21.githubusers.utility.IntentUtils
 import com.fdhasna21.githubusers.viewmodel.BaseViewModel
 
 /**
- * Updated by Fernanda Hasna on 26/09/2024.
+ * Updated by Fernanda Hasna on 28/09/2024.
  */
 
 abstract class BaseActivity<VB: ViewBinding, VM: BaseViewModel>(
@@ -21,6 +21,7 @@ abstract class BaseActivity<VB: ViewBinding, VM: BaseViewModel>(
 
     var isConfigChange = false
     lateinit var intentUtils : IntentUtils
+//    var isLoading = false
 
     open fun setupUIWhenConfigChange(){
         setupData()

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.githubusers.R
 import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityMainBinding
+import com.fdhasna21.githubusers.utility.type.ErrorType
 import com.fdhasna21.githubusers.viewmodel.MainActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,7 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
 
     private lateinit var rowAdapter: UserRowAdapter
     private lateinit var layoutManager : LinearLayoutManager
-    private var isLoading = false
     override fun setupData() {
         getAllUsers(true)
     }
@@ -43,29 +44,36 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
         super.setupUIWhenConfigChange()
     }
     override fun setupUIWithoutConfigChange() {
+        viewModel.isLoading.observe(this){
+            when(it){
+                true -> {
+                    binding.mainResponse.progressCircular.visibility = View.VISIBLE
+                }
+                false -> {
+                    binding.mainResponse.progressCircular.visibility = View.INVISIBLE
+                    binding.refreshRecyclerView.isRefreshing = false
+                }
+            }
+        }
         viewModel.allUsers.observe(this){
             if (it == null || it.isEmpty()) {
-//                val error: ArrayList<Int> = viewModel.errorResponse.type?.setError(this)!!
-//                binding.mainResponse.layoutError.visibility = View.VISIBLE
-//                binding.mainResponse.errorImage.setImageDrawable(
-//                    AppCompatResources.getDrawable(
-//                        this,
-//                        error[0]
-//                    )
-//                )
-//                binding.mainResponse.errorMessage.text = listOf(
-//                    getString(error[1]),
-//                    viewModel.errorResponse.code
-//                ).joinToString(". Code:")
-                binding.recyclerView.visibility = View.INVISIBLE
+//                if(viewModel.isLoading.value == false){
+                    val error: ArrayList<Int> = ErrorType.DATA_EMPTY.setError(this)
+                    binding.mainResponse.layoutError.visibility = View.VISIBLE
+                    binding.mainResponse.errorImage.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this,
+                            error[0]
+                        )
+                    )
+                    binding.mainResponse.errorMessage.text = getString(error[1])
+                    binding.recyclerView.visibility = View.INVISIBLE
+//                }
             } else {
                 binding.mainResponse.layoutError.visibility = View.GONE
                 binding.recyclerView.visibility = View.VISIBLE
                 rowAdapter.updateData(it)
             }
-            isLoading = false
-            binding.mainResponse.progressCircular.visibility = View.INVISIBLE
-            binding.refreshRecyclerView.isRefreshing = false
         }
     }
 
@@ -96,8 +104,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
     }
 
     private fun getAllUsers(isReset:Boolean = false){
-        isLoading = true
-        binding.mainResponse.progressCircular.visibility = View.VISIBLE
         if(isReset){
             viewModel.resetUsers()
         }
@@ -105,8 +111,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>(
     }
 
     private fun getAllUsersByKeywords(keyword : String?){
-        isLoading = true
-        binding.mainResponse.progressCircular.visibility = View.VISIBLE
         if(keyword.isNullOrEmpty()){
             viewModel.getUsersFromRepository()
         } else {

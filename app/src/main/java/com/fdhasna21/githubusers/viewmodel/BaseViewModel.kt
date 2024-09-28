@@ -14,4 +14,14 @@ open class BaseViewModel : ViewModel() {
     fun setConfiguration(config : Int){
         _activityConfig.value = config
     }
+
+    private var _isLoading : MutableLiveData<Boolean> = MutableLiveData(true)
+    val isLoading : LiveData<Boolean> get() = _isLoading
+    fun startLoading(){
+        _isLoading.value = true
+    }
+
+    fun endLoading(){
+        _isLoading.value = false
+    }
 }

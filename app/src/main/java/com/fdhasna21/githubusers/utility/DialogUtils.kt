@@ -1,8 +1,9 @@
 package com.fdhasna21.githubusers.utility
 
-import android.content.Context
 import android.content.DialogInterface
+import androidx.appcompat.app.AppCompatActivity
 import com.fdhasna21.githubusers.R
+import com.fdhasna21.githubusers.activity.BaseActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
@@ -10,28 +11,35 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 
 object DialogUtils {
-    private fun builder(context: Context): MaterialAlertDialogBuilder {
+    private fun builder(context: AppCompatActivity): MaterialAlertDialogBuilder {
         return MaterialAlertDialogBuilder(context, R.style.Theme_Material3_Dark_Dialog_Alert)
+    }
+
+    private fun MaterialAlertDialogBuilder.showDialog(context: AppCompatActivity){
+        val activity = context as BaseActivity<*,*>
+        if(!activity.isFinishing){
+            this.show()
+        }
     }
 
     @JvmStatic
     fun showPositiveDialog(
-        context: Context,
-        title: String,
-        content: String,
+        context: AppCompatActivity,
+        title: String?,
+        content: String?,
         onClickListener: DialogInterface.OnClickListener?
     ) {
         builder(context).apply {
             setTitle(title)
             setMessage(content)
             setPositiveButton(context.getString(R.string.ok), onClickListener)
-            show()
+            showDialog(context)
         }
     }
 
     fun showWarningDialog(
-        context: Context,
-        content: String,
+        context: AppCompatActivity,
+        content: String?,
         onClickListener: DialogInterface.OnClickListener?
     ) {
         builder(context).apply {
@@ -39,13 +47,13 @@ object DialogUtils {
             setMessage(content)
             setPositiveButton(context.getString(R.string.ok), onClickListener)
             setCancelable(false)
-            show()
+            showDialog(context)
         }
     }
 
     fun showConfirmationDialog(
-        context: Context,
-        content: String,
+        context: AppCompatActivity,
+        content: String?,
         positiveClick: DialogInterface.OnClickListener?
     ) {
         builder(context).apply {
@@ -53,7 +61,7 @@ object DialogUtils {
             setMessage(content)
             setPositiveButton(context.getString(R.string.ok), positiveClick)
             setNegativeButton(context.getString(R.string.cancel), null)
-            show()
+            showDialog(context)
         }
     }
 }

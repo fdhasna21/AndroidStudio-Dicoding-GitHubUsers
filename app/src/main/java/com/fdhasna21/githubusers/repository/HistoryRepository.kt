@@ -16,31 +16,43 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
     override val apiService = null
     override val daoService = roomDb.historyDao()
 
-    override suspend fun getAllHistories(onSuccess: (List<HistoryDb>) -> Unit) {
+    override suspend fun getAllHistories(onSuccess: (List<HistoryDb>) -> Unit, onFailed: (String?) -> Unit) {
         localDbHandler(
             process = "getAllHistories",
             databaseCall = { daoService.getAllHistories() },
-            onSuccess = onSuccess
+            onSuccess = onSuccess,
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
+            }
         )
     }
 
-    override suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit) {
+    override suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit, onFailed: (String?) -> Unit) {
         localDbHandler(
             process = "getHistoryByUserId",
             databaseCall = { daoService.getHistoryByUserId(userId) },
-            onSuccess = onSuccess
+            onSuccess = onSuccess,
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
+            }
         )
     }
 
-    override suspend fun insertOrUpdateHistory(history: HistoryDb, onSuccess: () -> Unit) {
+    override suspend fun insertOrUpdateHistory(history: HistoryDb, onSuccess: () -> Unit, onFailed: (String?) -> Unit) {
         localDbHandler(
             process = "insertOrUpdateHistory",
             databaseCall = { daoService.insertOrUpdateHistory(history) },
-            onSuccess = { onSuccess() }
+            onSuccess = { onSuccess() },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
+            }
         )
     }
 
-    override suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit) {
+    override suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit, onFailed: (String?) -> Unit) {
         localDbHandler(
             process = "updateHistory",
             databaseCall = {
@@ -50,32 +62,44 @@ class HistoryRepositoryImp(override var context: Context) : BaseRepository<BaseA
                     timestamp = history.timestamp,
                     photoProfile = history.photoProfile
                 ) },
-            onSuccess = { onSuccess() }
+            onSuccess = { onSuccess() },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
+            }
         )
     }
 
-    override suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit) {
+    override suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit, onFailed: (String?) -> Unit) {
         localDbHandler(
             process = "deleteHistory",
             databaseCall = { daoService.deleteHistory(userId) },
-            onSuccess = { onSuccess() }
+            onSuccess = { onSuccess() },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
+            }
         )
     }
 
-    override suspend fun deleteAllHistories(onSuccess: () -> Unit) {
+    override suspend fun deleteAllHistories(onSuccess: () -> Unit, onFailed: (String?) -> Unit) {
         localDbHandler(
             process = "deleteAllHistories",
             databaseCall = { daoService.deleteAllHistories() },
-            onSuccess = { onSuccess() }
+            onSuccess = { onSuccess() },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
+            }
         )
     }
 }
 
 interface HistoryRepository {
-    suspend fun getAllHistories(onSuccess: (List<HistoryDb>) -> Unit)
-    suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit)
-    suspend fun insertOrUpdateHistory(history: HistoryDb, onSuccess: () -> Unit)
-    suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit)
-    suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit)
-    suspend fun deleteAllHistories(onSuccess: () -> Unit)
+    suspend fun getAllHistories(onSuccess: (List<HistoryDb>) -> Unit, onFailed: (String?) -> Unit)
+    suspend fun getHistoryByUserId(userId: Int, onSuccess: (HistoryDb?) -> Unit, onFailed: (String?) -> Unit)
+    suspend fun insertOrUpdateHistory(history: HistoryDb, onSuccess: () -> Unit, onFailed: (String?) -> Unit)
+    suspend fun updateHistory(history: HistoryDb, onSuccess: () -> Unit, onFailed: (String?) -> Unit)
+    suspend fun deleteHistory(userId: Int, onSuccess: () -> Unit, onFailed: (String?) -> Unit)
+    suspend fun deleteAllHistories(onSuccess: () -> Unit, onFailed: (String?) -> Unit)
 }

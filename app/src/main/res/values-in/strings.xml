@@ -49,4 +49,9 @@
     <string name="timestamp">Waktu</string>
     <string name="undo">Batal</string>
     <string name="success_deleted">%1$s berhasil dihapus.</string>
+    <string name="request_failed">Masalah internal server. Silakan coba beberapa saat lagi.</string>
+    <string name="no_internet_connection">Masalah jaringan, cek koneksi internet Anda dan silakan coba kembali.</string>
+    <string name="server_down">Pemeliharaan sistem. Silakan coba beberapa saat lagi.</string>
+    <string name="cannot_connect_to_server">Tidak dapat berkomunikasi dengan server, coba beberapa saat lagi.</string>
+    <string name="cannot_access_to_database">Tidak dapat mengakses database.</string>
 </resources>

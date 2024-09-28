@@ -7,7 +7,7 @@ import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.model.entity.toUserResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.repository.HistoryRepositoryImp
-import com.fdhasna21.githubusers.utility.type.convertToArrayList
+import com.fdhasna21.githubusers.utility.ext.convertToArrayList
 import kotlinx.coroutines.launch
 
 /**
@@ -22,10 +22,15 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
 
     fun getAllHistoriesFromRepository(){
         viewModelScope.launch {
+            startLoading()
             repository.getAllHistories(
                 onSuccess = { histories ->
                     val userResponses = histories.convertToArrayList { it.toUserResponse() }
                     _allHistories.value = userResponses
+                    endLoading()
+                },
+                onFailed = {
+                    endLoading()
                 }
             )
         }
@@ -33,19 +38,29 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
 
     fun deleteAllHistoriesFromRepository(){
         viewModelScope.launch {
-            repository.deleteAllHistories {
-                getAllHistoriesFromRepository()
-            }
+            startLoading()
+            repository.deleteAllHistories(
+                onSuccess = {
+                    getAllHistoriesFromRepository()
+                },
+                onFailed = {
+                    endLoading()
+                }
+            )
         }
     }
 
     fun deleteHistoryFromRepository(user: UserResponse){
         user.id?.let{
             viewModelScope.launch {
+                startLoading()
                 repository.deleteHistory(
                     userId = it,
                     onSuccess = {
                         getAllHistoriesFromRepository()
+                    },
+                    onFailed = {
+                        endLoading()
                     }
                 )
             }
@@ -58,10 +73,14 @@ class HistoryViewModel(private val repository: HistoryRepositoryImp) : BaseViewM
                 val username = user.username ?: ""
                 val userPict = user.imageCachePath ?: ""
                 val userTimestamp = user.timestampAsLong ?: 0
+                startLoading()
                 repository.insertOrUpdateHistory(
                     history = HistoryDb(username = username, userId = it, photoProfile = userPict, timestamp = userTimestamp),
                     onSuccess = {
                         getAllHistoriesFromRepository()
+                    },
+                    onFailed = {
+                        endLoading()
                     }
                 )
             }

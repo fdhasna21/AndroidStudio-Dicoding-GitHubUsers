@@ -3,6 +3,7 @@ package com.fdhasna21.githubusers.activity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.fdhasna21.githubusers.adapter.UserRowAdapter
 import com.fdhasna21.githubusers.databinding.ActivityHistoryBinding
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.utility.DialogUtils
+import com.fdhasna21.githubusers.utility.type.ErrorType
 import com.fdhasna21.githubusers.viewmodel.HistoryViewModel
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,26 +45,35 @@ class HistoryActivity : BaseActivity<ActivityHistoryBinding, HistoryViewModel>(
     }
 
     override fun setupUIWithoutConfigChange() {
+        viewModel.isLoading.observe(this){
+            when(it){
+                true -> {
+                    binding.historyResponse.progressCircular.visibility = View.VISIBLE
+                }
+                false -> {
+                    binding.historyResponse.progressCircular.visibility = View.INVISIBLE
+                    binding.refreshRecyclerView.isRefreshing = false
+                }
+            }
+        }
         viewModel.allHistories.observe(this){
             if (it == null || it.isEmpty()) {
-//                val error: ArrayList<Int> = viewModel.errorResponse.type?.setError(this)!!
-//                binding.mainResponse.layoutError.visibility = View.VISIBLE
-//                binding.mainResponse.errorImage.setImageDrawable(
-//                    AppCompatResources.getDrawable(
-//                        this,
-//                        error[0]
-//                    )
-//                )
-//                binding.mainResponse.errorMessage.text = listOf(
-//                    getString(error[1]),
-//                    viewModel.errorResponse.code
-//                ).joinToString(". Code:")
-                binding.recyclerView.visibility = View.INVISIBLE
+//                if(viewModel.isLoading.value == false){
+                    val error: ArrayList<Int> = ErrorType.DATA_EMPTY.setError(this)
+                    binding.historyResponse.layoutError.visibility = View.VISIBLE
+                    binding.historyResponse.errorImage.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this,
+                            error[0]
+                        )
+                    )
+                    binding.historyResponse.errorMessage.text = getString(error[1])
+                    binding.recyclerView.visibility = View.INVISIBLE
+//                }
             } else {
                 binding.recyclerView.visibility = View.VISIBLE
                 rowAdapter.updateData(it)
             }
-            binding.refreshRecyclerView.isRefreshing = false
         }
     }
 

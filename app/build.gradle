@@ -88,4 +88,5 @@ dependencies {
     releaseImplementation(libs.chucker.library.no.op)
 
     implementation(libs.koin.android)
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.22"
 }

@@ -7,15 +7,6 @@
     android:orientation="horizontal"
     android:fitsSystemWindows="true">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressCircular"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        app:trackCornerRadius="4dp"
-        app:trackThickness="6dp"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutError"
         android:layout_width="match_parent"
@@ -53,4 +44,13 @@
             app:layout_constraintTop_toBottomOf="@id/errorImage"
             app:layout_constraintVertical_bias="0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressCircular"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="6dp"/>
 </FrameLayout>

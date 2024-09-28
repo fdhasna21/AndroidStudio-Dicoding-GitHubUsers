@@ -13,7 +13,7 @@
 
     <include
         android:id="@+id/tablayout_response"
-        layout="@layout/layout_retrofit_response"
+        layout="@layout/layout_data_handler_response"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />

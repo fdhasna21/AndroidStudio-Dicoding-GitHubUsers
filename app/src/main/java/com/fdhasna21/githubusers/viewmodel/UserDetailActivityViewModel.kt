@@ -49,12 +49,17 @@ class UserDetailActivityViewModel(
 
     private fun getUserDetail(){
         _username.value?.let { username ->
+            startLoading()
             userRepository.getUserDetail(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
                         _userDetail.value = it
                     }
+                    endLoading()
+                },
+                onFailed = {
+                    endLoading()
                 }
             )
         }
@@ -62,12 +67,17 @@ class UserDetailActivityViewModel(
 
     fun getFollowingsFromRepository(){
         _username.value?.let { username ->
+            startLoading()
             userRepository.getUserFollowings(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
                         _allFollowings.value = it
                     }
+                    endLoading()
+                },
+                onFailed = {
+                    endLoading()
                 }
             )
         }
@@ -75,12 +85,17 @@ class UserDetailActivityViewModel(
 
     fun getFollowersFromRepository(){
         _username.value?.let { username ->
+            startLoading()
             userRepository.getUserFollowers(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
                         _allFollowers.value = it
                     }
+                    endLoading()
+                },
+                onFailed = {
+                    endLoading()
                 }
             )
         }
@@ -88,12 +103,17 @@ class UserDetailActivityViewModel(
 
     fun getReposFromRepository(){
         _username.value?.let { username ->
+            startLoading()
             userRepository.getUserRepos(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
                         _allRepos.value = it
                     }
+                    endLoading()
+                },
+                onFailed = {
+                    endLoading()
                 }
             )
         }
@@ -101,18 +121,24 @@ class UserDetailActivityViewModel(
 
     fun getStarsFromRepository(){
         _username.value?.let { username ->
+            startLoading()
             userRepository.getUserStars(
                 username = username,
                 onSuccess = { result ->
                     result.data.let {
                         _allStars.value = it
                     }
+                    endLoading()
+                },
+                onFailed = {
+                    endLoading()
                 }
             )
         }
     }
 
     fun updateHistoryFromRepository(userPictCachePath: String){
+        startLoading()
         userDetail.value?.let { user ->
             user.id?.let{
                 viewModelScope.launch {
@@ -122,6 +148,10 @@ class UserDetailActivityViewModel(
                     historyRepository.updateHistory(
                         history = updated,
                         onSuccess = {
+                            endLoading()
+                        },
+                        onFailed = {
+                            endLoading()
                         }
                     )
                 }

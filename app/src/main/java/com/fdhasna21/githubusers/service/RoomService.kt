@@ -10,11 +10,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.fdhasna21.githubusers.BuildConfig
 import com.fdhasna21.githubusers.model.entity.HistoryDb
 import com.fdhasna21.githubusers.service.dao.HistoryDao
-import com.fdhasna21.githubusers.utility.type.TAG
+import com.fdhasna21.githubusers.utility.ext.TAG
 import java.util.concurrent.Executors
 
 /**
  * Created by Fernanda Hasna on 26/09/2024.
+ *  * Updated by Fernanda Hasna on 28/09/2024.
  */
 
 @Database(entities = [HistoryDb::class], version = 1, exportSchema = false)

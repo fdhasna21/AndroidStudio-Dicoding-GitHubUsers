@@ -43,6 +43,7 @@ class MainActivityViewModel(
     }
 
     private fun getUsersByKeywordFromRepository(keyword:String, lastPage:Int){
+        startLoading()
         userRepository.getUsersByKeyword(
             key = keyword,
             page = lastPage,
@@ -53,11 +54,16 @@ class MainActivityViewModel(
                         _lastPage.value = (this@MainActivityViewModel.lastPage.value ?: 0) + 1
                     }
                 }
+                endLoading()
+            },
+            onFailed = {
+                endLoading()
             }
         )
     }
 
     fun getUsersFromRepository(){
+        startLoading()
         val lastID = lastID.value ?: 0
         userRepository.getUsers(
             lastID = lastID,
@@ -67,10 +73,16 @@ class MainActivityViewModel(
                     _lastPage.value = (this@MainActivityViewModel.lastPage.value ?: 0) + 1
                     _lastID.value = users[users.size-1].id ?: 0
                 }
-            })
+                endLoading()
+            },
+            onFailed = {
+                endLoading()
+            }
+        )
     }
 
     fun insertOrUpdateHistoryToRepository(user: UserResponse){
+        startLoading()
         user.id?.let {
             viewModelScope.launch {
                 val username = user.username ?: ""
@@ -78,6 +90,10 @@ class MainActivityViewModel(
                 historyRepository.insertOrUpdateHistory(
                     history = HistoryDb(username = username, userId = it, photoProfile = userPict, timestamp = System.currentTimeMillis()),
                     onSuccess = {
+                        endLoading()
+                    },
+                    onFailed = {
+                        endLoading()
                     }
                 )
             }

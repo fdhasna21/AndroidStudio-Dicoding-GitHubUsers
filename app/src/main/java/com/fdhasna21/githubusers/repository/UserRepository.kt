@@ -20,8 +20,9 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
     override fun getUsersByKeyword(
         key: String,
         page: Int,
-        onSuccess: (DataResult.Success<AllUsersResponse>)->Unit
-    ){
+        onSuccess: (DataResult.Success<AllUsersResponse>) -> Unit,
+        onFailed: (String?) -> Unit
+    ) {
         remoteDbHandler(
             apiCall = {
                 apiService.getUsersByKeyword(
@@ -32,13 +33,18 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 
     override fun getUsers(
         lastID: Int,
-        onSuccess: (DataResult.Success<ArrayList<UserResponse>>)->Unit
+        onSuccess: (DataResult.Success<ArrayList<UserResponse>>) -> Unit,
+        onFailed: (String?) -> Unit
     ) {
         remoteDbHandler(
             apiCall = {
@@ -48,13 +54,18 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 
     override fun getUserDetail(
         username: String,
-        onSuccess: (DataResult.Success<UserResponse>) -> Unit
+        onSuccess: (DataResult.Success<UserResponse>) -> Unit,
+        onFailed: (String?) -> Unit
     ) {
         remoteDbHandler(
             apiCall = {
@@ -64,13 +75,18 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 
     override fun getUserFollowings(
         username: String,
-        onSuccess: (DataResult.Success<ArrayList<UserResponse>>) -> Unit
+        onSuccess: (DataResult.Success<ArrayList<UserResponse>>) -> Unit,
+        onFailed: (String?) -> Unit
     ) {
         remoteDbHandler(
             apiCall = {
@@ -80,13 +96,18 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 
     override fun getUserFollowers(
         username: String,
-        onSuccess: (DataResult.Success<ArrayList<UserResponse>>) -> Unit
+        onSuccess: (DataResult.Success<ArrayList<UserResponse>>) -> Unit,
+        onFailed: (String?) -> Unit
     ) {
         remoteDbHandler(
             apiCall = {
@@ -96,13 +117,18 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 
     override fun getUserRepos(
         username: String,
-        onSuccess: (DataResult.Success<ArrayList<RepoResponse>>) -> Unit
+        onSuccess: (DataResult.Success<ArrayList<RepoResponse>>) -> Unit,
+        onFailed: (String?) -> Unit
     ) {
         remoteDbHandler(
             apiCall = {
@@ -111,13 +137,18 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 
     override fun getUserStars(
         username: String,
-        onSuccess: (DataResult.Success<ArrayList<RepoResponse>>) -> Unit
+        onSuccess: (DataResult.Success<ArrayList<RepoResponse>>) -> Unit,
+        onFailed: (String?) -> Unit
     ) {
         remoteDbHandler(
             apiCall = {
@@ -127,17 +158,21 @@ class UserRepositoryImp(override var context: Context) : BaseRepository<UserAPI,
                 result.data.let {
                     onSuccess(result)
                 }
+            },
+            onFailed = {
+                onFailed(it.exception.message)
+                onFailedHandler(it)
             }
         )
     }
 }
 
 interface UserRepository {
-    fun getUsersByKeyword(key:String, page:Int, onSuccess: (DataResult.Success<AllUsersResponse>)->Unit)
-    fun getUsers(lastID: Int, onSuccess: (DataResult.Success<ArrayList<UserResponse>>)->Unit)
-    fun getUserDetail(username: String, onSuccess: (DataResult.Success<UserResponse>)->Unit)
-    fun getUserFollowings(username: String, onSuccess: (DataResult.Success<ArrayList<UserResponse>>)->Unit)
-    fun getUserFollowers(username: String, onSuccess: (DataResult.Success<ArrayList<UserResponse>>)->Unit)
-    fun getUserRepos(username: String, onSuccess: (DataResult.Success<ArrayList<RepoResponse>>)->Unit)
-    fun getUserStars(username: String, onSuccess: (DataResult.Success<ArrayList<RepoResponse>>)->Unit)
+    fun getUsersByKeyword(key:String, page:Int, onSuccess: (DataResult.Success<AllUsersResponse>)-> Unit, onFailed: (String?) -> Unit)
+    fun getUsers(lastID: Int, onSuccess: (DataResult.Success<ArrayList<UserResponse>>)-> Unit, onFailed: (String?) -> Unit)
+    fun getUserDetail(username: String, onSuccess: (DataResult.Success<UserResponse>)-> Unit, onFailed: (String?) -> Unit)
+    fun getUserFollowings(username: String, onSuccess: (DataResult.Success<ArrayList<UserResponse>>)-> Unit, onFailed: (String?) -> Unit)
+    fun getUserFollowers(username: String, onSuccess: (DataResult.Success<ArrayList<UserResponse>>)-> Unit, onFailed: (String?) -> Unit)
+    fun getUserRepos(username: String, onSuccess: (DataResult.Success<ArrayList<RepoResponse>>)-> Unit, onFailed: (String?) -> Unit)
+    fun getUserStars(username: String, onSuccess: (DataResult.Success<ArrayList<RepoResponse>>)-> Unit, onFailed: (String?) -> Unit)
 }

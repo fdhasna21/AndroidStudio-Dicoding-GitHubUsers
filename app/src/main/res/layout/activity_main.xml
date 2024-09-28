@@ -49,7 +49,7 @@
 
     <include
         android:id="@+id/main_response"
-        layout="@layout/layout_retrofit_response"
+        layout="@layout/layout_data_handler_response"
         android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

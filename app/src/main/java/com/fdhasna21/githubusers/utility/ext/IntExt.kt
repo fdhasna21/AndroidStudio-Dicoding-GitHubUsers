@@ -1,4 +1,4 @@
-package com.fdhasna21.githubusers.utility.type
+package com.fdhasna21.githubusers.utility.ext
 
 import android.content.res.Resources
 
@@ -10,8 +10,4 @@ const val TAG = "fdhasna21-Git.Debug"
 fun Int.dpToPx(): Int {
     val density = Resources.getSystem().displayMetrics.density
     return (this * density).toInt()
-}
-
-fun <T, R> List<T>.convertToArrayList(transform: (T) -> R): ArrayList<R> {
-    return ArrayList(this.map(transform))
 }

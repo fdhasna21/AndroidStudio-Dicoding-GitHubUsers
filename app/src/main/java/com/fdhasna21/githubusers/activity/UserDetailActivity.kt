@@ -23,8 +23,8 @@ import com.fdhasna21.githubusers.model.response.RepoResponse
 import com.fdhasna21.githubusers.model.response.UserResponse
 import com.fdhasna21.githubusers.utility.DataUtils
 import com.fdhasna21.githubusers.utility.Key
+import com.fdhasna21.githubusers.utility.ext.dpToPx
 import com.fdhasna21.githubusers.utility.type.DataType
-import com.fdhasna21.githubusers.utility.type.dpToPx
 import com.fdhasna21.githubusers.viewmodel.UserDetailActivityViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
